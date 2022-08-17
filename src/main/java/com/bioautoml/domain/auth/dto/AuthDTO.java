@@ -12,5 +12,6 @@ import lombok.NoArgsConstructor;
 public class AuthDTO {
 
     private String token;
+    private String type;
 
 }

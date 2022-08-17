@@ -1,5 +1,6 @@
 package com.bioautoml.handlers;
 
+import com.bioautoml.exceptions.AlreadyExistsException;
 import com.bioautoml.exceptions.ExceptionResponse;
 import com.bioautoml.exceptions.NotFoundException;
 import com.bioautoml.exceptions.UnauthorizedException;
@@ -16,6 +17,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public final ResponseEntity<ExceptionResponse> handleAllException(Exception e){
         ExceptionResponse exceptionResponse = new ExceptionResponse(LocalDateTime.now(), e.getMessage());
+        e.printStackTrace();
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exceptionResponse);
     }
 
@@ -29,6 +31,12 @@ public class GlobalExceptionHandler {
     public final ResponseEntity<ExceptionResponse> handleUnauthorizedException(Exception e){
         ExceptionResponse exceptionResponse = new ExceptionResponse(LocalDateTime.now(), e.getMessage());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(exceptionResponse);
+    }
+
+    @ExceptionHandler(AlreadyExistsException.class)
+    public final ResponseEntity<ExceptionResponse> handleAlreadyExistsException(Exception e){
+        ExceptionResponse exceptionResponse = new ExceptionResponse(LocalDateTime.now(), e.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
     }
 
 }

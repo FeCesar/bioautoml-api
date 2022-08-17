@@ -3,6 +3,7 @@ package com.bioautoml.domain.user.service;
 import com.bioautoml.domain.user.dto.UserDTO;
 import com.bioautoml.domain.user.model.UserModel;
 import com.bioautoml.domain.user.repository.UserRepository;
+import com.bioautoml.exceptions.AlreadyExistsException;
 import com.bioautoml.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,6 +42,11 @@ public class UserService {
     }
 
     public UserDTO save(UserModel userModel) {
+        this.userRepository.findByEmail(userModel.getEmail())
+                .ifPresent(user -> {
+                    throw new AlreadyExistsException("Email already exists!");
+                });
+
         return this.userRepository.save(userModel).toDTO();
     }
 

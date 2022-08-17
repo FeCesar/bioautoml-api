@@ -1,6 +1,7 @@
 spring:
   profiles:
     active: ${PROFILE}
+
   jpa:
     hibernate:
       ddl-auto: update
@@ -14,6 +15,16 @@ server:
   servlet:
     context-path: /api
 
+application:
+  rabbit:
+    queues:
+      process: processes
+      results: results
+
+  jwt:
+    secret: d3DF31da1
+    expiration: 86400000
+
 ---
 
 spring:
@@ -23,6 +34,12 @@ spring:
     username: postgres
     password: postgres
 
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
 ---
 
 spring:
@@ -31,3 +48,9 @@ spring:
     url: ${POSTGRES_URL}
     username: ${POSTGRES_USERNAME}
     password: ${POSTGRES_PASSWORD}
+
+  rabbitmq:
+    host: ${RABBIT_HOST}
+    port: ${RABBIT_PORT}
+    username: ${RABBIT_USERNAME}
+    password: ${RABBIT_PASSWORD}

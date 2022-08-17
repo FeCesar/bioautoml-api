@@ -1,5 +1,9 @@
 package com.bioautoml.domain.user.controller;
 
+import com.bioautoml.domain.role.dto.RoleDTO;
+import com.bioautoml.domain.role.enums.Role;
+import com.bioautoml.domain.role.model.RoleModel;
+import com.bioautoml.domain.role.service.RoleService;
 import com.bioautoml.domain.user.dto.UserDTO;
 import com.bioautoml.domain.user.form.UserForm;
 import com.bioautoml.domain.user.model.UserModel;
@@ -12,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -22,6 +27,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private RoleService roleService;
 
     @GetMapping("/")
     public ResponseEntity<List<UserDTO>> getAll(){
@@ -38,7 +46,16 @@ public class UserController {
         UserModel userModel = new UserModel();
         BeanUtils.copyProperties(userForm, userModel);
 
+        List<RoleModel> userRoles = new ArrayList<>();
+        RoleDTO roleDTO = roleService.getByName(Role.DEFAULT);
+
+        userRoles.add(RoleModel.builder()
+                .id(roleDTO.getId())
+                .roleName(Role.DEFAULT)
+                .build());
+
         userModel.setPassword(SecurityUtil.encode(userForm.getPassword()));
+        userModel.setRoles(userRoles);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(this.userService.save(userModel));
     }

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -26,5 +27,9 @@ public class AuthForm {
     @NotNull(message = "The password cannot be null")
     @NotBlank(message = "The password cannot be empty")
     private String password;
+
+    public UsernamePasswordAuthenticationToken toAuthenticationToken() {
+        return new UsernamePasswordAuthenticationToken(this.getEmail(), this.getPassword());
+    }
 
 }
