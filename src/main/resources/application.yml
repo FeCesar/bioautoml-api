@@ -22,8 +22,16 @@ application:
       results: results
 
   jwt:
-    secret: d3DF31da1
-    expiration: 86400000
+    secret: ${JWT_SECRET}
+    expiration: ${JWT_EXPIRATION}
+
+  aws:
+    secret: ${AWS_SECRET}
+    access: ${AWS_ACCESS}
+
+    s3:
+      bucket:
+        name: ${AWS_S3_BUCKET_NAME}
 
 ---
 

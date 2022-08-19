@@ -1,16 +1,17 @@
 package com.bioautoml.domain.process.service;
 
-import com.bioautoml.domain.message.model.MessageModel;
 import com.bioautoml.domain.message.service.MessageSender;
 import com.bioautoml.domain.process.dto.ProcessDTO;
 import com.bioautoml.domain.process.model.ProcessModel;
 import com.bioautoml.domain.process.repository.ProcessRepository;
 import com.bioautoml.exceptions.NotFoundException;
+import com.bioautoml.folders.AmazonCredentials;
+import com.bioautoml.folders.FolderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -23,6 +24,9 @@ public class ProcessService {
 
     @Autowired
     private MessageSender messageSender;
+
+    @Autowired
+    private FolderService folderService;
 
     @Value("${application.rabbit.queues.process}")
     private String processQueue;
@@ -46,16 +50,9 @@ public class ProcessService {
         return this.processRepository.save(processModel).toDTO();
     }
 
-    public ProcessDTO start(ProcessModel processModel){
-
-
-
-        this.messageSender.send(MessageModel.builder()
-                .id(UUID.randomUUID())
-                .date(LocalDateTime.now())
-                .message(processModel.toDTO())
-                .build(), this.processQueue);
-
-        return this.save(processModel);
+    public ProcessDTO start(String processName, List<MultipartFile> files, String userId){
+        UUID processId = UUID.randomUUID();
+        this.folderService.createFolders(files, processId);
+        return ProcessDTO.builder().build();
     }
 }
