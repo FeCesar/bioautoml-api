@@ -18,9 +18,15 @@ server:
 application:
   rabbit:
     queues:
-      process: processes
-      results: results
+      process:
+        dna-rna: dna-rna
+        wnm-dna-rna: wnm-dna-rna
+        protein: protein
+        binary-problems: binary-problems
+        multiclass-problems: multiclass-problems
 
+      results:
+        generate: create-results
   jwt:
     secret: ${JWT_SECRET}
     expiration: ${JWT_EXPIRATION}

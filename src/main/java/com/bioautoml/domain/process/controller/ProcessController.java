@@ -3,6 +3,7 @@ package com.bioautoml.domain.process.controller;
 import com.bioautoml.domain.process.dto.ProcessDTO;
 import com.bioautoml.domain.process.service.ProcessService;
 import com.bioautoml.domain.user.service.UserService;
+import com.bioautoml.security.services.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -25,6 +26,8 @@ public class ProcessController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private JwtService jwtService;
 
 
     @GetMapping("/")
@@ -38,10 +41,9 @@ public class ProcessController {
     }
 
     @PostMapping(value = "/{processName}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<ProcessDTO> start(@PathVariable String processName, @RequestPart MultipartFile[] files){
-
-
-        return ResponseEntity.status(HttpStatus.OK).body(this.processService.start(processName, Arrays.asList(files), "jwt"));
+    public ResponseEntity<ProcessDTO> start(@PathVariable String processName, @RequestPart MultipartFile[] files, @RequestHeader(value = "Authorization") String token){
+        UUID userId = this.jwtService.getUserId(token.split(" ")[1]);
+        return ResponseEntity.status(HttpStatus.OK).body(this.processService.start(processName, Arrays.asList(files), userId));
     }
 
 }

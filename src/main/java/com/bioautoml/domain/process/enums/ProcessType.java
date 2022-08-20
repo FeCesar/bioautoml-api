@@ -8,12 +8,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public enum ProcessType {
-    DNA_RNA("DNA_RNA"),
-    WITH_NUMERICAL_MAPPING_DNA_RNA("WITH_NUMERICAL_MAPPING_DNA_RNA"),
-    PROTEIN("PROTEIN"),
-    BINARY_PROBLEMS("BINARY_PROBLEMS"),
-    MULTICLASS_PROBLEMS("MULTICLASS_PROBLEMS");
+    DNA_RNA("DNA_RNA", "dna-rna"),
+    WITH_NUMERICAL_MAPPING_DNA_RNA("WITH_NUMERICAL_MAPPING_DNA_RNA", "wnm-dna-rna"),
+    PROTEIN("PROTEIN", "protein"),
+    BINARY_PROBLEMS("BINARY_PROBLEMS", "binary-problems"),
+    MULTICLASS_PROBLEMS("MULTICLASS_PROBLEMS", "multiclass-problems");
 
-    private String ProcessType;
+    private String processType;
+    private String queueName;
 
 }
