@@ -14,8 +14,4 @@ public class DnaRna implements Process{
         return 6;
     }
 
-    public static Process getInstance() {
-        return new DnaRna();
-    }
-
 }

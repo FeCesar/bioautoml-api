@@ -13,7 +13,4 @@ public class Protein implements Process{
         return 2;
     }
 
-    public static Process getInstance() {
-        return new Protein();
-    }
 }

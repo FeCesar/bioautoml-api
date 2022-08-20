@@ -11,7 +11,6 @@ import com.bioautoml.domain.process.types.Process;
 import com.bioautoml.domain.process.types.ProcessSelector;
 import com.bioautoml.domain.user.service.UserService;
 import com.bioautoml.exceptions.NotFoundException;
-import com.bioautoml.folders.AmazonCredentials;
 import com.bioautoml.folders.FolderService;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,7 +76,6 @@ public class ProcessService {
         processModel.setProcessType(ProcessType.valueOf(processName));
 
 //        this.folderService.createFolders(files, processId);
-
         this.requestTheStartOfProcess(processModel, ProcessType.valueOf(processName).getQueueName());
         this.requestCreationOfResultObject(processName, processId, userId);
 

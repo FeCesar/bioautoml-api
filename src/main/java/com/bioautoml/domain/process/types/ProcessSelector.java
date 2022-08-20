@@ -18,7 +18,7 @@ public class ProcessSelector {
 
     public Optional<Process> getProcessByName(String name){
         return processes.stream()
-                .filter(process1 -> process1.getName().equals(name))
+                .filter(process -> process.getName().equals(name))
                 .findFirst();
     }
 

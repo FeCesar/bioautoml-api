@@ -23,7 +23,6 @@ import java.util.UUID;
 public class ProcessModel implements BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
     @Column(nullable = false)

@@ -14,9 +14,4 @@ public class BinaryProblems implements Process{
         return 5;
     }
 
-    public static Process getInstance() {
-        return new BinaryProblems();
-    }
-
-
 }

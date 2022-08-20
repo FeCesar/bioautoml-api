@@ -13,7 +13,4 @@ public class WNMDnaRna implements Process{
         return 4;
     }
 
-    public static Process getInstance() {
-        return new WNMDnaRna();
-    }
 }

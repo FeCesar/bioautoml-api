@@ -13,9 +13,4 @@ public class MulticlassProblems implements Process{
         return 4;
     }
 
-    public static Process getInstance() {
-        return new MulticlassProblems();
-    }
-
-
 }
