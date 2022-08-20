@@ -21,10 +21,6 @@ public class AuthenticationService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email){
         UserModel userModel = this.userService.getByEmail(email).toModel();
         userModel.setPassword(this.userService.getEncryptedPassword(email));
-        userModel.getRoles().add(RoleModel.builder()
-                .id(UUID.fromString("623be3e8-10a8-4277-8d23-47c38c82f987"))
-                .roleName(Role.ADMIN)
-                .build());
 
         return userModel;
     }
