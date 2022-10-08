@@ -13,10 +13,10 @@ import java.util.Optional;
 @Setter
 public class ProcessSelector {
 
-    private List<Process> processes = Arrays.asList(new BinaryProblems(), new DnaRna(),
+    private List<ProcessStrategy> processes = Arrays.asList(new BinaryProblems(), new DnaRna(),
             new MulticlassProblems(), new Protein(), new WNMDnaRna());
 
-    public Optional<Process> getProcessByName(String name){
+    public Optional<ProcessStrategy> getProcessByName(String name){
         return processes.stream()
                 .filter(process -> process.getName().equals(name))
                 .findFirst();

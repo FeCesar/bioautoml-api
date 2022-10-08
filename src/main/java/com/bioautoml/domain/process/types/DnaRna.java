@@ -2,7 +2,7 @@ package com.bioautoml.domain.process.types;
 
 import com.bioautoml.domain.process.enums.ProcessType;
 
-public class DnaRna implements Process{
+public class DnaRna implements ProcessStrategy {
 
     @Override
     public String getName() {

@@ -2,7 +2,7 @@ package com.bioautoml.domain.process.types;
 
 import java.io.Serializable;
 
-public interface Process extends Serializable {
+public interface ProcessStrategy extends Serializable {
 
     String getName();
     Integer getResultsFields();

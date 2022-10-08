@@ -2,7 +2,7 @@ package com.bioautoml.domain.process.types;
 
 import com.bioautoml.domain.process.enums.ProcessType;
 
-public class BinaryProblems implements Process{
+public class BinaryProblems implements ProcessStrategy {
 
     @Override
     public String getName() {

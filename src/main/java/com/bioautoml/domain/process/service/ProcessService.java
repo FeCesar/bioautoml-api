@@ -7,7 +7,7 @@ import com.bioautoml.domain.process.dto.ResultObjectCreationRequestTemplateDTO;
 import com.bioautoml.domain.process.enums.ProcessType;
 import com.bioautoml.domain.process.model.ProcessModel;
 import com.bioautoml.domain.process.repository.ProcessRepository;
-import com.bioautoml.domain.process.types.Process;
+import com.bioautoml.domain.process.types.ProcessStrategy;
 import com.bioautoml.domain.process.types.ProcessSelector;
 import com.bioautoml.domain.user.service.UserService;
 import com.bioautoml.exceptions.NotFoundException;
@@ -18,7 +18,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
@@ -93,7 +92,7 @@ public class ProcessService {
     }
 
     private void requestCreationOfResultObject(String processName, UUID processId, UUID userId){
-        Optional<Process> process = this.processSelector.getProcessByName(processName);
+        Optional<ProcessStrategy> process = this.processSelector.getProcessByName(processName);
 
         if(process.isEmpty()){
             throw new NotFoundException("Process Not Exists");

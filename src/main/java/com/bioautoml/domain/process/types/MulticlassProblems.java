@@ -2,7 +2,8 @@ package com.bioautoml.domain.process.types;
 
 import com.bioautoml.domain.process.enums.ProcessType;
 
-public class MulticlassProblems implements Process{
+public class MulticlassProblems implements ProcessStrategy {
+
     @Override
     public String getName() {
         return ProcessType.MULTICLASS_PROBLEMS.getProcessType();
