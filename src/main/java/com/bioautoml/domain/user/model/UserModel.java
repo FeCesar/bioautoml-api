@@ -5,6 +5,7 @@ import com.bioautoml.domain.process.model.ProcessModel;
 import com.bioautoml.domain.role.dto.RoleDTO;
 import com.bioautoml.domain.role.model.RoleModel;
 import com.bioautoml.domain.user.dto.UserDTO;
+import com.bioautoml.domain.user.dto.UserProcessDTO;
 import com.bioautoml.domain.user.enums.Type;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -64,6 +65,15 @@ public class UserModel implements BaseEntity, UserDetails {
                 .email(this.getEmail())
                 .type(this.getType())
                 .roles(roleDTOS)
+                .build();
+    }
+
+    public UserProcessDTO toUserProcessDTO(){
+        return UserProcessDTO.builder()
+                .id(this.getId())
+                .email(this.getEmail())
+                .fullName(this.getFullName())
+                .type(this.getType())
                 .build();
     }
 

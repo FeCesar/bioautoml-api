@@ -13,7 +13,7 @@ import java.util.UUID;
 public class MessageModel implements BaseEntity {
 
     private UUID id;
-    private LocalDateTime date;
+    private Long timestamp;
     private Object message;
 
 }

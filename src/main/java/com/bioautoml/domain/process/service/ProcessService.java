@@ -18,7 +18,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -45,7 +47,7 @@ public class ProcessService {
     @Autowired
     private FolderService folderService;
 
-    private Gson gson = new Gson();
+    private final Gson gson = new Gson();
 
     public List<ProcessDTO> getAll(){
         return this.processRepository.findAll()
@@ -72,7 +74,7 @@ public class ProcessService {
         ProcessModel processModel = new ProcessModel();
         processModel.setId(processId);
         processModel.setUserModel(this.userService.getById(userId).toModel());
-        processModel.setStartupTime(LocalDateTime.now());
+        processModel.setStartupTime(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
         processModel.setProcessType(ProcessType.valueOf(processName));
 
 //        this.folderService.createFolders(files, processId);
@@ -85,7 +87,7 @@ public class ProcessService {
     private void requestTheStartOfProcess(ProcessModel processModel, String processName){
         this.messageSender.send(this.gson.toJson(MessageModel.builder()
                 .id(UUID.randomUUID())
-                .date(LocalDateTime.now())
+                .timestamp(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
                 .message(processModel)
                 .build()), processName);
     }
@@ -105,7 +107,7 @@ public class ProcessService {
 
         this.messageSender.send(this.gson.toJson(MessageModel.builder()
                 .id(UUID.randomUUID())
-                .date(LocalDateTime.now())
+                .timestamp(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
                 .message(templateDTO)
                 .build()), this.resultQueueName);
     }
