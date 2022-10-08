@@ -4,12 +4,14 @@ import com.bioautoml.domain.message.model.MessageModel;
 import com.bioautoml.domain.message.service.MessageSender;
 import com.bioautoml.domain.process.dto.ProcessDTO;
 import com.bioautoml.domain.process.dto.ResultObjectCreationRequestTemplateDTO;
+import com.bioautoml.domain.process.enums.ProcessStatus;
 import com.bioautoml.domain.process.enums.ProcessType;
 import com.bioautoml.domain.process.model.ProcessModel;
 import com.bioautoml.domain.process.repository.ProcessRepository;
 import com.bioautoml.domain.process.types.ProcessStrategy;
 import com.bioautoml.domain.process.types.ProcessSelector;
 import com.bioautoml.domain.user.service.UserService;
+import com.bioautoml.exceptions.AlreadyExistsException;
 import com.bioautoml.exceptions.NotFoundException;
 import com.bioautoml.folders.FolderService;
 import com.google.gson.Gson;
@@ -20,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -110,4 +113,23 @@ public class ProcessService {
                 .message(templateDTO)
                 .build()), this.resultQueueName);
     }
+
+    public void updateStatus(UUID id) {
+         Optional<ProcessModel> processModelOptional = this.processRepository.findById(id);
+
+         if(processModelOptional.isEmpty()){
+             throw new NotFoundException("Process not exists!");
+         }
+
+         ProcessModel processModel = processModelOptional.get();
+         ProcessStatus nextProcessStatus = processModel.getProcessStatus().next();
+
+         if(nextProcessStatus.equals(ProcessStatus.WAITING)){
+             throw new AlreadyExistsException("Process already completed");
+         }
+
+         processModel.setProcessStatus(nextProcessStatus);
+         this.save(processModel);
+    }
+
 }

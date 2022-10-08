@@ -46,4 +46,10 @@ public class ProcessController {
         return ResponseEntity.status(HttpStatus.OK).body(this.processService.start(processName, Arrays.asList(files), userId));
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateStatus(@PathVariable UUID id){
+        this.processService.updateStatus(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
 }
