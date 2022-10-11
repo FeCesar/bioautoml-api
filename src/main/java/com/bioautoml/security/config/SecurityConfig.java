@@ -56,6 +56,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/process/").hasAuthority(Role.ADMIN.name())
                 .antMatchers(HttpMethod.GET, "/process/*").hasAnyAuthority(Role.ADMIN.name(), Role.DEFAULT.name())
                 .antMatchers(HttpMethod.PUT, "/process/").hasAnyAuthority(Role.ADMIN.name(), Role.EXTERNAL.name())
+                .antMatchers(HttpMethod.GET, "/actuator/*").hasAnyAuthority(Role.ADMIN.name(), Role.EXTERNAL.name())
                 .anyRequest().authenticated()
                 .and().csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
