@@ -142,8 +142,9 @@ public class ProcessService {
 
          processModel.setProcessStatus(nextProcessStatus);
 
-         logger.info("Updated status from ".concat(processModel.getProcessStatus().prev().toString()).concat(" to ")
-            .concat(processModel.getProcessStatus().toString()));
+         logger.info("Process status ".concat(processModel.getId().toString()).concat(" updated from ")
+                 .concat(processModel.getProcessStatus().prev().toString()).concat(" to ")
+                 .concat(processModel.getProcessStatus().toString()));
 
          this.save(processModel);
     }
