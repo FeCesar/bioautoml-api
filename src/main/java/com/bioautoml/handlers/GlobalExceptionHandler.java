@@ -1,9 +1,6 @@
 package com.bioautoml.handlers;
 
-import com.bioautoml.exceptions.AlreadyExistsException;
-import com.bioautoml.exceptions.ExceptionResponse;
-import com.bioautoml.exceptions.NotFoundException;
-import com.bioautoml.exceptions.UnauthorizedException;
+import com.bioautoml.exceptions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -33,7 +30,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(exceptionResponse);
     }
 
-    @ExceptionHandler(AlreadyExistsException.class)
+    @ExceptionHandler({AlreadyExistsException.class, InvalidFileException.class})
     public final ResponseEntity<ExceptionResponse> handleAlreadyExistsException(Exception e){
         ExceptionResponse exceptionResponse = new ExceptionResponse(LocalDateTime.now(), e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
