@@ -1,8 +1,8 @@
 package com.bioautoml.domain.process.service;
 
-import com.bioautoml.domain.message.model.MessageModel;
 import com.bioautoml.domain.message.service.MessageSender;
 import com.bioautoml.domain.process.dto.ProcessDTO;
+import com.bioautoml.domain.process.dto.ProcessMessageDTO;
 import com.bioautoml.domain.process.dto.ResultObjectCreationRequestTemplateDTO;
 import com.bioautoml.domain.process.enums.ProcessStatus;
 import com.bioautoml.domain.process.enums.ProcessType;
@@ -82,20 +82,25 @@ public class ProcessService {
         processModel.setStartupTime(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
         processModel.setProcessType(ProcessType.valueOf(processName));
 
+        ProcessMessageDTO processMessageDTO = ProcessMessageDTO.builder()
+                .id(processId)
+                .processStatus(processModel.getProcessStatus())
+                .processType(processModel.getProcessType())
+                .completionTime(processModel.getCompletionTime())
+                .startupTime(processModel.getStartupTime())
+                .userId(processModel.getUserModel().getId())
+                .build();
+
 //        this.folderService.createFolders(files, processId);
-        this.requestTheStartOfProcess(processModel, ProcessType.valueOf(processName).getQueueName());
+        this.requestTheStartOfProcess(processMessageDTO, ProcessType.valueOf(processName).getQueueName());
         this.requestCreationOfResultObject(processName, processId, userId);
 
         logger.info("Process ".concat(processId.toString()).concat(" started."));
         return this.save(processModel);
     }
 
-    private void requestTheStartOfProcess(ProcessModel processModel, String processName){
-        String message = this.gson.toJson(MessageModel.builder()
-                .id(UUID.randomUUID())
-                .timestamp(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
-                .message(processModel)
-                .build());
+    private void requestTheStartOfProcess(ProcessMessageDTO processMessageDTO, String processName){
+        String message = this.gson.toJson(processMessageDTO);
 
         logger.info("Sending start process: ".concat(message));
         this.messageSender.send(message, processName);
@@ -115,11 +120,7 @@ public class ProcessService {
                 .resultsFields(process.get().getResultsFields())
                 .build();
 
-        String message = this.gson.toJson(MessageModel.builder()
-                .id(UUID.randomUUID())
-                .timestamp(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
-                .message(templateDTO)
-                .build());
+        String message = this.gson.toJson(templateDTO);
 
         logger.info("Sending request result object create: ".concat(message));
         this.messageSender.send(message, this.resultQueueName);
