@@ -9,6 +9,7 @@ import com.bioautoml.domain.process.parameters.service.strategy.MetalearningServ
 import com.google.gson.Gson;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,7 +28,15 @@ public class ParametersService {
     @Autowired
     private MetalearningService metalearningService;
 
+    @Value("${application.output.init.path}")
+    private String initOutputPath;
+
+    @Value("${application.output.end.path}")
+    private String endOutputPath;
+
     private final Gson gson = new Gson();
+
+    private static final String SEPARATOR = "/";
 
     public void createParameters(ProcessType processType, ProcessModel processModel, List<MultipartFile> files) {
 
@@ -36,6 +45,7 @@ public class ParametersService {
                 AFEMDTO afemdto = gson.fromJson(this.getJsonFile(files).toString(), AFEMDTO.class);
                 afemdto.setId(UUID.randomUUID());
                 afemdto.setProcess(processModel.toDTO());
+                afemdto.setOutput(this.createOutputPath(processModel.getId()));
 
                 afemService.save(afemdto.toModel());
                 break;
@@ -44,6 +54,7 @@ public class ParametersService {
                 MetalearningDTO metalearningDTO = gson.fromJson(this.getJsonFile(files).toString(), MetalearningDTO.class);
                 metalearningDTO.setId(UUID.randomUUID());
                 metalearningDTO.setProcess(processModel.toDTO());
+                metalearningDTO.setOutput(this.createOutputPath(processModel.getId()));
 
                 metalearningService.save(metalearningDTO.toModel());
                 break;
@@ -65,5 +76,9 @@ public class ParametersService {
         } catch (Exception e){
             throw new IllegalStateException("");
         }
+    }
+
+    private String createOutputPath(UUID processId){
+        return this.initOutputPath.concat(SEPARATOR).concat(processId.toString()).concat(this.endOutputPath).concat(SEPARATOR);
     }
 }

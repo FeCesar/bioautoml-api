@@ -46,6 +46,11 @@ application:
       bucket:
         name: ${AWS_S3_BUCKET_NAME}
 
+  output:
+    init:
+      path: ${OUTPUT_INIT_PATH}
+    end:
+      path: ${OUTPUT_END_PATH}
 ---
 
 spring:
