@@ -1,12 +1,13 @@
 package com.bioautoml.domain.process.service;
 
-import com.bioautoml.domain.message.service.MessageSender;
+import com.bioautoml.domain.message.MessageSender;
 import com.bioautoml.domain.process.dto.ProcessDTO;
 import com.bioautoml.domain.process.dto.ProcessMessageDTO;
 import com.bioautoml.domain.process.dto.ResultObjectCreationRequestTemplateDTO;
 import com.bioautoml.domain.process.enums.ProcessStatus;
 import com.bioautoml.domain.process.enums.ProcessType;
 import com.bioautoml.domain.process.model.ProcessModel;
+import com.bioautoml.domain.process.parameters.service.ParametersService;
 import com.bioautoml.domain.process.repository.ProcessRepository;
 import com.bioautoml.domain.process.types.ProcessStrategy;
 import com.bioautoml.domain.process.types.ProcessSelector;
@@ -47,6 +48,9 @@ public class ProcessService {
 
     @Autowired
     private FolderService folderService;
+
+    @Autowired
+    private ParametersService parametersService;
 
     private final Gson gson = new Gson();
 
@@ -91,12 +95,17 @@ public class ProcessService {
                 .userId(processModel.getUserModel().getId())
                 .build();
 
-//        this.folderService.createFolders(files, processId);
+//        List<String> filePaths = this.folderService.createFolders(files, processId);
+
         this.requestTheStartOfProcess(processMessageDTO, ProcessType.valueOf(processName).getQueueName());
         this.requestCreationOfResultObject(processName, processId, userId);
 
         logger.info("Process ".concat(processId.toString()).concat(" started."));
-        return this.save(processModel);
+
+        ProcessDTO processDTO = this.save(processModel);
+        this.parametersService.createParameters(processModel.getProcessType(), processModel, files);
+
+        return processDTO;
     }
 
     private void requestTheStartOfProcess(ProcessMessageDTO processMessageDTO, String processName){

@@ -4,14 +4,12 @@ import com.bioautoml.domain.commons.BaseEntity;
 import com.bioautoml.domain.process.enums.ProcessStatus;
 import com.bioautoml.domain.process.enums.ProcessType;
 import com.bioautoml.domain.process.model.ProcessModel;
-import com.bioautoml.domain.user.dto.UserDTO;
 import com.bioautoml.domain.user.dto.UserProcessDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
@@ -27,7 +25,7 @@ public class ProcessDTO implements BaseEntity {
     private Long completionTime;
     private UserProcessDTO user;
 
-    private ProcessModel toModel(){
+    public ProcessModel toModel(){
         return ProcessModel.builder()
                 .id(this.getId())
                 .processType(this.getProcessType())

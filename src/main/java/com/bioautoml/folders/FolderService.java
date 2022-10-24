@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -51,7 +52,9 @@ public class FolderService {
     }
 
 
-    public void createFolders(List<MultipartFile> files, UUID processId){
+    public List<String> createFolders(List<MultipartFile> files, UUID processId){
+        ArrayList<String> filePaths = new ArrayList<>();
+
         files.forEach(file -> {
             String folderPath = String.valueOf(processId).concat(this.SEPARATOR).concat(Objects.requireNonNull(file.getOriginalFilename()));
 
@@ -66,10 +69,13 @@ public class FolderService {
 
             try {
                 this.createFolder(folderPath, file.getInputStream(), data);
+                filePaths.add(folderPath);
             } catch (IOException e) {
                 logger.error(file.getOriginalFilename().concat(": ").concat(e.getMessage()));
             }
         });
+
+        return filePaths;
     }
 
 }
