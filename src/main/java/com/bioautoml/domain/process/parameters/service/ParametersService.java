@@ -8,11 +8,14 @@ import com.bioautoml.domain.process.parameters.service.strategy.AFEMService;
 import com.bioautoml.domain.process.parameters.service.strategy.MetalearningService;
 import com.google.gson.Gson;
 import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Objects;
@@ -38,6 +41,8 @@ public class ParametersService {
 
     private static final String SEPARATOR = "/";
 
+    private final Logger logger = LoggerFactory.getLogger(ParametersService.class);
+
     public void createParameters(ProcessType processType, ProcessModel processModel, List<MultipartFile> files) {
 
         switch (processType.getParameterType()){
@@ -46,6 +51,7 @@ public class ParametersService {
                 afemdto.setId(UUID.randomUUID());
                 afemdto.setProcess(processModel.toDTO());
                 afemdto.setOutput(this.createOutputPath(processModel.getId()));
+                logger.info("Created the AFEM parameters from ".concat(afemdto.getId().toString()).concat(" process!"));
 
                 afemService.save(afemdto.toModel());
                 break;
@@ -55,6 +61,7 @@ public class ParametersService {
                 metalearningDTO.setId(UUID.randomUUID());
                 metalearningDTO.setProcess(processModel.toDTO());
                 metalearningDTO.setOutput(this.createOutputPath(processModel.getId()));
+                logger.info("Created the Metaleraning parameters from ".concat(metalearningDTO.getId().toString()).concat(" process!"));
 
                 metalearningService.save(metalearningDTO.toModel());
                 break;
@@ -73,8 +80,9 @@ public class ParametersService {
     private String getFileString(MultipartFile file){
         try{
             return IOUtils.toString(file.getInputStream(), StandardCharsets.UTF_8);
-        } catch (Exception e){
-            throw new IllegalStateException("");
+        } catch (IOException e){
+            logger.error("When get string from json file.");
+            throw new IllegalStateException("It sent invalid json file.");
         }
     }
 
