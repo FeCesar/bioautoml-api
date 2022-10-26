@@ -24,7 +24,7 @@ public class MetalearningDTO implements ParametersEntity {
     private String test;
     private String testLabel;
     private String testNamesEq;
-    private Boolean nf = false;
+    private Boolean normalization = false;
     private Integer cpuNumbers = 1;
     private Classifiers classifiers;
     private Boolean imbalance = false;
@@ -40,7 +40,7 @@ public class MetalearningDTO implements ParametersEntity {
                 .test(this.getTest())
                 .testLabel(this.getTestLabel())
                 .testNamesEq(this.getTestNamesEq())
-                .nf(this.getNf())
+                .normalization(this.getNormalization())
                 .cpuNumbers(this.getCpuNumbers())
                 .classifiers(this.getClassifiers())
                 .imbalance(this.getImbalance())

@@ -40,8 +40,8 @@ public class MetalearningModel implements ParametersEntity, BaseEntity {
     @Column(name = "test_names_eq")
     private String testNamesEq;
 
-    @Column(name = "nf", nullable = false)
-    private Boolean nf = false;
+    @Column(name = "normalization", nullable = false)
+    private Boolean normalization = false;
 
     @Column(name = "cpu_numbers")
     private Integer cpuNumbers = 1;
@@ -71,7 +71,7 @@ public class MetalearningModel implements ParametersEntity, BaseEntity {
                 .test(this.getTest())
                 .testLabel(this.getTestLabel())
                 .testNamesEq(this.getTestNamesEq())
-                .nf(this.getNf())
+                .normalization(this.getNormalization())
                 .cpuNumbers(this.getCpuNumbers())
                 .classifiers(this.getClassifiers())
                 .imbalance(this.getImbalance())
@@ -89,7 +89,7 @@ public class MetalearningModel implements ParametersEntity, BaseEntity {
                 .test(this.getTest())
                 .testLabel(this.getTestLabel())
                 .testNamesEq(this.getTestNamesEq())
-                .nf(this.getNf())
+                .normalization(this.getNormalization())
                 .cpuNumbers(this.getCpuNumbers())
                 .classifiers(this.getClassifiers())
                 .imbalance(this.getImbalance())

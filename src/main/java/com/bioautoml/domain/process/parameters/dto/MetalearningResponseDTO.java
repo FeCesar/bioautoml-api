@@ -21,7 +21,7 @@ public class MetalearningResponseDTO implements ParametersEntity {
     private String test;
     private String testLabel;
     private String testNamesEq;
-    private Boolean nf = false;
+    private Boolean normalization = false;
     private Integer cpuNumbers = 1;
     private Classifiers classifiers;
     private Boolean imbalance = false;
