@@ -1,5 +1,6 @@
 package com.bioautoml.domain.user.controller;
 
+import com.bioautoml.domain.process.dto.ProcessByUserDTO;
 import com.bioautoml.domain.role.dto.RoleDTO;
 import com.bioautoml.domain.role.enums.Role;
 import com.bioautoml.domain.role.model.RoleModel;
@@ -39,6 +40,11 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<UserDTO> getById(@PathVariable UUID id){
         return ResponseEntity.status(HttpStatus.OK).body(this.userService.getById(id));
+    }
+
+    @GetMapping("/{id}/processes")
+    public ResponseEntity<List<ProcessByUserDTO>> getProcesses(@PathVariable UUID id){
+        return ResponseEntity.status(HttpStatus.OK).body(this.userService.getAllServicesByUser(id));
     }
 
     @PostMapping("/")

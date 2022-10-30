@@ -1,5 +1,8 @@
 package com.bioautoml.domain.user.service;
 
+import com.bioautoml.domain.process.dto.ProcessByUserDTO;
+import com.bioautoml.domain.process.model.ProcessModel;
+import com.bioautoml.domain.process.repository.ProcessRepository;
 import com.bioautoml.domain.user.dto.UserDTO;
 import com.bioautoml.domain.user.model.UserModel;
 import com.bioautoml.domain.user.repository.UserRepository;
@@ -17,6 +20,9 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private ProcessRepository processRepository;
 
     public List<UserDTO> getAll(){
         return this.userRepository.findAll()
@@ -56,5 +62,13 @@ public class UserService {
                 .map(UserModel::getPassword)
                 .findFirst()
                 .orElseThrow(() -> new NotFoundException("User not exists!"));
+    }
+
+    public List<ProcessByUserDTO> getAllServicesByUser(UUID userId) {
+        this.getById(userId);
+        return this.processRepository.findByUserId(userId)
+                .stream()
+                .map(ProcessModel::toProcessByUserDTO)
+                .collect(Collectors.toList());
     }
 }

@@ -1,6 +1,7 @@
 package com.bioautoml.domain.process.model;
 
 import com.bioautoml.domain.commons.BaseEntity;
+import com.bioautoml.domain.process.dto.ProcessByUserDTO;
 import com.bioautoml.domain.process.dto.ProcessDTO;
 import com.bioautoml.domain.process.enums.ProcessStatus;
 import com.bioautoml.domain.process.enums.ProcessType;
@@ -52,6 +53,16 @@ public class ProcessModel implements BaseEntity {
                 .startupTime(this.getStartupTime())
                 .completionTime((this.getCompletionTime()))
                 .user(this.getUserModel().toUserProcessDTO())
+                .build();
+    }
+
+    public ProcessByUserDTO toProcessByUserDTO(){
+        return ProcessByUserDTO.builder()
+                .id(this.getId())
+                .processType(this.getProcessType())
+                .processStatus(this.getProcessStatus())
+                .startupTime(this.getStartupTime())
+                .completionTime((this.getCompletionTime()))
                 .build();
     }
 
