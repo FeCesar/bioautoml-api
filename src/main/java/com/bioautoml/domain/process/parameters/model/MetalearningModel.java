@@ -31,7 +31,7 @@ public class MetalearningModel implements ParametersEntity, BaseEntity {
     @Column(name = "train_label")
     private String trainLabel;
 
-    @Column(name = "test", nullable = false)
+    @Column(name = "test")
     private String test;
 
     @Column(name = "test_label")

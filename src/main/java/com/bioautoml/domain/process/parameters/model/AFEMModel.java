@@ -30,7 +30,7 @@ public class AFEMModel implements ParametersEntity, BaseEntity {
     @Column(name = "fasta_label_train")
     public String fastaLabelTrain;
 
-    @Column(name = "fasta_test", nullable = false)
+    @Column(name = "fasta_test")
     public String fastaTest;
 
     @Column(name = "fasta_label_test")
