@@ -97,7 +97,7 @@ public class ProcessService {
                 .build();
         logger.info("Crated the process message: ".concat(processMessageDTO.toString()));
 
-//        List<String> filePaths = this.folderService.createFolders(files, processId);
+        this.folderService.createFolders(files, processId);
 
         this.requestTheStartOfProcess(processMessageDTO, ProcessType.valueOf(processName).getQueueName());
         this.requestCreationOfResultObject(processName, processId, userId);

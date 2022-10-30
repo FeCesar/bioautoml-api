@@ -52,30 +52,27 @@ public class FolderService {
     }
 
 
-    public List<String> createFolders(List<MultipartFile> files, UUID processId){
-        ArrayList<String> filePaths = new ArrayList<>();
+    public void createFolders(List<MultipartFile> files, UUID processId){
+        files.stream()
+                .filter(file -> !Objects.requireNonNull(file.getOriginalFilename()).contains(".json"))
+                .forEach(file -> {
+                    String folderPath = String.valueOf(processId).concat(this.SEPARATOR).concat(Objects.requireNonNull(file.getOriginalFilename()));
 
-        files.forEach(file -> {
-            String folderPath = String.valueOf(processId).concat(this.SEPARATOR).concat(Objects.requireNonNull(file.getOriginalFilename()));
+                    logger.info("Creating file: ".concat(file.getOriginalFilename()));
+                    logger.info("Folder path: ".concat(folderPath));
 
-            logger.info("Creating file: ".concat(file.getOriginalFilename()));
-            logger.info("Folder path: ".concat(folderPath));
+                    ObjectMetadata data = new ObjectMetadata();
+                    data.setContentType(file.getContentType());
+                    data.setContentLength(file.getSize());
 
-            ObjectMetadata data = new ObjectMetadata();
-            data.setContentType(file.getContentType());
-            data.setContentLength(file.getSize());
+                    logger.info("Metadata- ".concat(file.getOriginalFilename()).concat(": ".concat(gson.toJson(data))));
 
-            logger.info("Metadata- ".concat(file.getOriginalFilename()).concat(": ".concat(gson.toJson(data))));
-
-            try {
-                this.createFolder(folderPath, file.getInputStream(), data);
-                filePaths.add(folderPath);
-            } catch (IOException e) {
-                logger.error(file.getOriginalFilename().concat(": ").concat(e.getMessage()));
-            }
-        });
-
-        return filePaths;
+                    try {
+                        this.createFolder(folderPath, file.getInputStream(), data);
+                    } catch (IOException e) {
+                        logger.error(file.getOriginalFilename().concat(": ").concat(e.getMessage()));
+                    }
+                });
     }
 
 }
