@@ -17,7 +17,7 @@ import java.util.UUID;
 
 @RestController
 @CrossOrigin(value = "*", maxAge = 3600)
-@RequestMapping("/process")
+@RequestMapping("/processes")
 public class ProcessController {
 
     @Autowired
