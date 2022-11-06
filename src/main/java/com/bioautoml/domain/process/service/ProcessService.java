@@ -7,6 +7,7 @@ import com.bioautoml.domain.process.dto.ResultObjectCreationRequestTemplateDTO;
 import com.bioautoml.domain.process.enums.ProcessStatus;
 import com.bioautoml.domain.process.enums.ProcessType;
 import com.bioautoml.domain.process.model.ProcessModel;
+import com.bioautoml.domain.process.parameters.model.ParametersEntity;
 import com.bioautoml.domain.process.parameters.service.ParametersService;
 import com.bioautoml.domain.process.repository.ProcessRepository;
 import com.bioautoml.domain.process.types.ProcessStrategy;
@@ -77,7 +78,7 @@ public class ProcessService {
         return this.processRepository.save(processModel).toDTO();
     }
 
-    public ProcessDTO start(String processName, List<MultipartFile> files, UUID userId){
+    public ProcessDTO start(String processName, List<MultipartFile> files, UUID userId, ParametersEntity parameters){
         UUID processId = UUID.randomUUID();
 
         ProcessModel processModel = new ProcessModel();
@@ -99,13 +100,13 @@ public class ProcessService {
 
         this.folderService.createFolders(files, processId);
 
+        ProcessDTO processDTO = this.save(processModel);
+        this.parametersService.createParameters(processModel.getProcessType(), processModel, parameters);
+
         this.requestTheStartOfProcess(processMessageDTO, ProcessType.valueOf(processName).getQueueName());
         this.requestCreationOfResultObject(processName, processId, userId);
 
         logger.info("Sent all messages from process ".concat(processId.toString()));
-
-        ProcessDTO processDTO = this.save(processModel);
-        this.parametersService.createParameters(processModel.getProcessType(), processModel, files);
 
         return processDTO;
     }

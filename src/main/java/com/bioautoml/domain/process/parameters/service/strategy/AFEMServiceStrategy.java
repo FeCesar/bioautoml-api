@@ -13,7 +13,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
-public class AFEMService implements ParametersService<AFEMModel, AFEMDTO, AFEMResponseDTO>{
+public class AFEMServiceStrategy implements ParametersServiceStrategy<AFEMModel, AFEMDTO, AFEMResponseDTO> {
 
     @Autowired
     private AFEMRepository afemRepository;

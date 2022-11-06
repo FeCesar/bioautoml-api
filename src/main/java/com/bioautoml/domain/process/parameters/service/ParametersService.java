@@ -4,32 +4,29 @@ import com.bioautoml.domain.process.enums.ProcessType;
 import com.bioautoml.domain.process.model.ProcessModel;
 import com.bioautoml.domain.process.parameters.dto.AFEMDTO;
 import com.bioautoml.domain.process.parameters.dto.MetalearningDTO;
-import com.bioautoml.domain.process.parameters.service.strategy.AFEMService;
-import com.bioautoml.domain.process.parameters.service.strategy.MetalearningService;
+import com.bioautoml.domain.process.parameters.enums.Classifiers;
+import com.bioautoml.domain.process.parameters.model.ParametersEntity;
+import com.bioautoml.domain.process.parameters.service.strategy.AFEMServiceStrategy;
+import com.bioautoml.domain.process.parameters.service.strategy.MetalearningServiceStrategy;
+import com.bioautoml.exceptions.ProcessNotValid;
 import com.google.gson.Gson;
-import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
-import java.util.function.Function;
 
 @Service
 public class ParametersService {
 
     @Autowired
-    private AFEMService afemService;
+    private AFEMServiceStrategy afemService;
 
     @Autowired
-    private MetalearningService metalearningService;
+    private MetalearningServiceStrategy metalearningService;
 
     @Value("${application.output.init.path}")
     private String initOutputPath;
@@ -43,21 +40,26 @@ public class ParametersService {
 
     private final Logger logger = LoggerFactory.getLogger(ParametersService.class);
 
-    public void createParameters(ProcessType processType, ProcessModel processModel, List<MultipartFile> files) {
+    public void createParameters(ProcessType processType, ProcessModel processModel, ParametersEntity parameters) {
 
         switch (processType.getParameterType()){
             case AFEM:
-                AFEMDTO afemdto = gson.fromJson(this.getJsonFile(files).toString(), AFEMDTO.class);
+                AFEMDTO afemdto = new AFEMDTO();
+                BeanUtils.copyProperties(parameters, afemdto);
+
                 afemdto.setId(UUID.randomUUID());
                 afemdto.setProcess(processModel.toDTO());
                 afemdto.setOutput(this.createOutputPath(processModel.getId()));
+
                 logger.info("Created the AFEM parameters from ".concat(afemdto.getId().toString()).concat(" process!"));
 
                 afemService.save(afemdto.toModel());
                 break;
 
             case METALEARNING:
-                MetalearningDTO metalearningDTO = gson.fromJson(this.getJsonFile(files).toString(), MetalearningDTO.class);
+                MetalearningDTO metalearningDTO = new MetalearningDTO();
+                BeanUtils.copyProperties(parameters, metalearningDTO);
+
                 metalearningDTO.setId(UUID.randomUUID());
                 metalearningDTO.setProcess(processModel.toDTO());
                 metalearningDTO.setOutput(this.createOutputPath(processModel.getId()));
@@ -68,22 +70,40 @@ public class ParametersService {
         }
     }
 
-    private Object getJsonFile(List<MultipartFile> files){
-        return files.stream()
-                .filter(file -> Objects.requireNonNull(file.getOriginalFilename()).contains(".json"))
-                .limit(1)
-                .map((Function<MultipartFile, Object>) this::getFileString)
-                .findFirst()
-                .orElse(null);
-    }
+    public ParametersEntity createParameterServiceObject(ProcessType processType, String fastaTrain, String fastaLabelTrain,
+                                                         String fastaTest, String fastaLabelTest, String train,
+                                                         String trainLabel, String test, String testLabel, String testNameEq,
+                                                         Classifiers classifiers, Boolean normalization, Boolean imbalance, Boolean tuning){
 
-    private String getFileString(MultipartFile file){
-        try{
-            return IOUtils.toString(file.getInputStream(), StandardCharsets.UTF_8);
-        } catch (IOException e){
-            logger.error("When get string from json file.");
-            throw new IllegalStateException("It sent invalid json file.");
+        switch (processType.getParameterType()){
+            case AFEM:
+                AFEMDTO afemdto = new AFEMDTO();
+                afemdto.setFastaTrain(fastaTrain);
+                afemdto.setFastaLabelTrain(fastaLabelTrain);
+                afemdto.setFastaTest(fastaTest);
+                afemdto.setFastaLabelTest(fastaLabelTest);
+
+                return afemdto;
+
+            case METALEARNING:
+                MetalearningDTO metalearningDTO = new MetalearningDTO();
+                metalearningDTO.setTrain(train);
+                metalearningDTO.setTrainLabel(trainLabel);
+                metalearningDTO.setTest(test);
+                metalearningDTO.setTestLabel(testLabel);
+                metalearningDTO.setTestNamesEq(testNameEq);
+                metalearningDTO.setClassifiers(classifiers);
+                metalearningDTO.setNormalization(normalization);
+                metalearningDTO.setImbalance(imbalance);
+                metalearningDTO.setTuning(tuning);
+
+                return metalearningDTO;
+
+            default:
+                logger.error("Parameters is not validate");
+                throw new ProcessNotValid("Process not valid, please, check parameters");
         }
+
     }
 
     private String createOutputPath(UUID processId){

@@ -1,7 +1,6 @@
 package com.bioautoml.domain.process.parameters.dto;
 
 import com.bioautoml.domain.process.dto.ProcessDTO;
-import com.bioautoml.domain.process.model.ProcessModel;
 import com.bioautoml.domain.process.parameters.enums.Classifiers;
 import com.bioautoml.domain.process.parameters.model.MetalearningModel;
 import com.bioautoml.domain.process.parameters.model.ParametersEntity;

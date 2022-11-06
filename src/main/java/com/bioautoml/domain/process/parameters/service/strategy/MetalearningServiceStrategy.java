@@ -13,7 +13,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
-public class MetalearningService implements ParametersService<MetalearningModel, MetalearningDTO, MetalearningResponseDTO>{
+public class MetalearningServiceStrategy implements ParametersServiceStrategy<MetalearningModel, MetalearningDTO, MetalearningResponseDTO> {
 
     @Autowired
     private MetalearningRepository metalearningRepository;

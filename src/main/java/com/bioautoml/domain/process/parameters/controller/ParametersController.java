@@ -4,8 +4,8 @@ import com.bioautoml.domain.process.parameters.dto.AFEMDTO;
 import com.bioautoml.domain.process.parameters.dto.AFEMResponseDTO;
 import com.bioautoml.domain.process.parameters.dto.MetalearningDTO;
 import com.bioautoml.domain.process.parameters.dto.MetalearningResponseDTO;
-import com.bioautoml.domain.process.parameters.service.strategy.AFEMService;
-import com.bioautoml.domain.process.parameters.service.strategy.MetalearningService;
+import com.bioautoml.domain.process.parameters.service.strategy.AFEMServiceStrategy;
+import com.bioautoml.domain.process.parameters.service.strategy.MetalearningServiceStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,10 +20,10 @@ import java.util.UUID;
 public class ParametersController {
 
     @Autowired
-    private AFEMService afemService;
+    private AFEMServiceStrategy afemService;
 
     @Autowired
-    private MetalearningService metalearningService;
+    private MetalearningServiceStrategy metalearningService;
 
     @GetMapping("/afem")
     public ResponseEntity<List<AFEMDTO>> getAllAfem(){
