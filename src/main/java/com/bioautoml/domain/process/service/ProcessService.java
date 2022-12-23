@@ -98,7 +98,7 @@ public class ProcessService {
                 .build();
         logger.info("Crated the process message: ".concat(processMessageDTO.toString()));
 
-        this.folderService.createFolders(files, processId);
+//        this.folderService.createFolders(files, processId);
 
         ProcessDTO processDTO = this.save(processModel);
         this.parametersService.createParameters(processModel.getProcessType(), processModel, parameters);

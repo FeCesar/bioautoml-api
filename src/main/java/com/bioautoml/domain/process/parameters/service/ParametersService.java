@@ -4,11 +4,9 @@ import com.bioautoml.domain.process.enums.ProcessType;
 import com.bioautoml.domain.process.model.ProcessModel;
 import com.bioautoml.domain.process.parameters.dto.AFEMDTO;
 import com.bioautoml.domain.process.parameters.dto.MetalearningDTO;
-import com.bioautoml.domain.process.parameters.enums.Classifiers;
 import com.bioautoml.domain.process.parameters.model.ParametersEntity;
 import com.bioautoml.domain.process.parameters.service.strategy.AFEMServiceStrategy;
 import com.bioautoml.domain.process.parameters.service.strategy.MetalearningServiceStrategy;
-import com.bioautoml.exceptions.ProcessNotValid;
 import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,42 +66,6 @@ public class ParametersService {
                 metalearningService.save(metalearningDTO.toModel());
                 break;
         }
-    }
-
-    public ParametersEntity createParameterServiceObject(ProcessType processType, String fastaTrain, String fastaLabelTrain,
-                                                         String fastaTest, String fastaLabelTest, String train,
-                                                         String trainLabel, String test, String testLabel, String testNameEq,
-                                                         Classifiers classifiers, Boolean normalization, Boolean imbalance, Boolean tuning){
-
-        switch (processType.getParameterType()){
-            case AFEM:
-                AFEMDTO afemdto = new AFEMDTO();
-                afemdto.setFastaTrain(fastaTrain);
-                afemdto.setFastaLabelTrain(fastaLabelTrain);
-                afemdto.setFastaTest(fastaTest);
-                afemdto.setFastaLabelTest(fastaLabelTest);
-
-                return afemdto;
-
-            case METALEARNING:
-                MetalearningDTO metalearningDTO = new MetalearningDTO();
-                metalearningDTO.setTrain(train);
-                metalearningDTO.setTrainLabel(trainLabel);
-                metalearningDTO.setTest(test);
-                metalearningDTO.setTestLabel(testLabel);
-                metalearningDTO.setTestNamesEq(testNameEq);
-                metalearningDTO.setClassifiers(classifiers);
-                metalearningDTO.setNormalization(normalization);
-                metalearningDTO.setImbalance(imbalance);
-                metalearningDTO.setTuning(tuning);
-
-                return metalearningDTO;
-
-            default:
-                logger.error("Parameters is not validate");
-                throw new ProcessNotValid("Process not valid, please, check parameters");
-        }
-
     }
 
     private String createOutputPath(UUID processId){

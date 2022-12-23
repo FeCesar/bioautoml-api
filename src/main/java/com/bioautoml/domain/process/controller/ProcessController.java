@@ -1,13 +1,17 @@
 package com.bioautoml.domain.process.controller;
 
 import com.bioautoml.domain.process.dto.ProcessDTO;
-import com.bioautoml.domain.process.enums.ProcessType;
-import com.bioautoml.domain.process.parameters.enums.Classifiers;
+import com.bioautoml.domain.process.form.AFEMForm;
+import com.bioautoml.domain.process.form.MetalearningForm;
+import com.bioautoml.domain.process.parameters.dto.AFEMDTO;
+import com.bioautoml.domain.process.parameters.dto.MetalearningDTO;
 import com.bioautoml.domain.process.parameters.model.ParametersEntity;
 import com.bioautoml.domain.process.parameters.service.ParametersService;
 import com.bioautoml.domain.process.service.ProcessService;
 import com.bioautoml.domain.user.service.UserService;
 import com.bioautoml.security.services.JwtService;
+import com.google.gson.Gson;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -36,6 +40,8 @@ public class ProcessController {
     @Autowired
     private JwtService jwtService;
 
+    private final Gson gson = new Gson();
+
 
     @GetMapping("/")
     public ResponseEntity<List<ProcessDTO>> getAll(){
@@ -47,30 +53,34 @@ public class ProcessController {
         return ResponseEntity.status(HttpStatus.OK).body(this.processService.getById(id));
     }
 
-    @PostMapping(value = "/{processName}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<ProcessDTO> start(
+    @PostMapping(value = "/afem/{processName}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<ProcessDTO> afemStart(
             @PathVariable String processName,
             @RequestPart MultipartFile[] files,
-            @RequestParam(required = false) String fastaTrain,
-            @RequestParam(required = false) String fastaLabelTrain,
-            @RequestParam(required = false) String fastaTest,
-            @RequestParam(required = false) String fastaLabelTest,
-            @RequestParam(required = false) String train,
-            @RequestParam(required = false) String trainLabel,
-            @RequestParam(required = false) String test,
-            @RequestParam(required = false) String testLabel,
-            @RequestParam(required = false) String testNameEq,
-            @RequestParam(required = false) Classifiers classifiers,
-            @RequestParam(required = false) Boolean normalization,
-            @RequestParam(required = false) Boolean imbalance,
-            @RequestParam(required = false) Boolean tuning,
+            @RequestParam String parameters,
             @RequestHeader(value = "Authorization") String token) {
         UUID userId = this.jwtService.getUserId(token.split(" ")[1]);
 
-        ParametersEntity parameters = this.parametersService.createParameterServiceObject(ProcessType.valueOf(processName), fastaTrain, fastaLabelTrain,
-                fastaTest, fastaLabelTest, train, trainLabel, test, testLabel, testNameEq, classifiers, normalization, imbalance, tuning);
+        ParametersEntity parametersEntity = new AFEMDTO();
+        AFEMForm afemForm = this.gson.fromJson(parameters, AFEMForm.class);
+        BeanUtils.copyProperties(afemForm, parametersEntity);
 
-        return ResponseEntity.status(HttpStatus.OK).body(this.processService.start(processName, Arrays.asList(files), userId, parameters));
+        return ResponseEntity.status(HttpStatus.OK).body(this.processService.start(processName, Arrays.asList(files), userId, parametersEntity));
+    }
+
+    @PostMapping(value = "/metalearning/{processName}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<ProcessDTO> metalearningStart(
+            @PathVariable String processName,
+            @RequestPart MultipartFile[] files,
+            @RequestParam String parameters,
+            @RequestHeader(value = "Authorization") String token) {
+        UUID userId = this.jwtService.getUserId(token.split(" ")[1]);
+
+        ParametersEntity parametersEntity = new MetalearningDTO();
+        MetalearningForm metalearningForm = this.gson.fromJson(parameters, MetalearningForm.class);
+        BeanUtils.copyProperties(metalearningForm, parametersEntity);
+
+        return ResponseEntity.status(HttpStatus.OK).body(this.processService.start(processName, Arrays.asList(files), userId, parametersEntity));
     }
 
     @PutMapping("/{id}")
