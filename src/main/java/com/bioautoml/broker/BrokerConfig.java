@@ -26,6 +26,9 @@ public class BrokerConfig {
     @Value("${application.rabbit.queues.results.generate}")
     private String generateResultsQueue;
 
+    @Value("${application.rabbit.queues.processes.parameters}")
+    private String parametersQueue;
+
     @Bean
     private Queue createDnaRnaQueue(){
         return new Queue(this.dnaRnaQueue, true);
@@ -54,6 +57,11 @@ public class BrokerConfig {
     @Bean
     private Queue createGenerateResultsQueue(){
         return new Queue(this.generateResultsQueue, true);
+    }
+
+    @Bean
+    private Queue createParametersQueue() {
+        return new Queue(this.parametersQueue, true);
     }
 
 }
