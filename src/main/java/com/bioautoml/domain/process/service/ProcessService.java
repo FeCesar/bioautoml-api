@@ -113,8 +113,9 @@ public class ProcessService {
 
     private void requestTheStartOfProcess(ProcessMessageDTO processMessageDTO, String processName){
         String message = this.gson.toJson(processMessageDTO);
+        String queueName = "baml.processes.".concat(processName);
 
-        this.messageSender.send(message, processName);
+        this.messageSender.send(message, queueName);
         logger.info("Sent message: ".concat(message));
     }
 
