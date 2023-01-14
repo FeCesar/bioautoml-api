@@ -26,14 +26,12 @@ application:
   rabbit:
     queues:
       process:
-        dna-rna: dna-rna
-        wnm-dna-rna: wnm-dna-rna
-        protein: protein
-        binary-problems: binary-problems
-        multiclass-problems: multiclass-problems
+        dna-rna: baml.processes.dna-rna
+        wnm-dna-rna: baml.processes.wnm-dna-rna
+        protein: baml.processes.protein
+        binary-problems: baml.processes.binary-problems
+        multiclass-problems: baml.processes.multiclass-problems
 
-      results:
-        generate: create-results
   jwt:
     secret: ${JWT_SECRET}
     expiration: ${JWT_EXPIRATION}
