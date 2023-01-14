@@ -32,6 +32,10 @@ application:
         binary-problems: baml.processes.binary-problems
         multiclass-problems: baml.processes.multiclass-problems
 
+        parameters:
+          afem: baml.processes.parameters.afem
+          metalearning: baml.processes.parameters.metalearning
+
       results:
         generate: baml.results.create-results
 
