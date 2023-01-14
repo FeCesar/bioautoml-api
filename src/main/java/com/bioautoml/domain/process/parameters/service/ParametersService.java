@@ -1,5 +1,6 @@
 package com.bioautoml.domain.process.parameters.service;
 
+import com.bioautoml.domain.message.MessageSender;
 import com.bioautoml.domain.process.enums.ProcessType;
 import com.bioautoml.domain.process.model.ProcessModel;
 import com.bioautoml.domain.process.parameters.dto.AFEMDTO;
@@ -26,11 +27,20 @@ public class ParametersService {
     @Autowired
     private MetalearningServiceStrategy metalearningService;
 
+    @Autowired
+    private MessageSender messageSender;
+
     @Value("${application.output.init.path}")
     private String initOutputPath;
 
     @Value("${application.output.end.path}")
     private String endOutputPath;
+
+    @Value("${application.rabbit.queues.process.parameters.afem}")
+    private String afemParametersQueue;
+
+    @Value("${application.rabbit.queues.process.parameters.metalearning}")
+    private String metalearningParametersQueue;
 
     private final Gson gson = new Gson();
 
@@ -52,6 +62,9 @@ public class ParametersService {
                 logger.info("Created the AFEM parameters from ".concat(afemdto.getId().toString()).concat(" process!"));
 
                 afemService.save(afemdto.toModel());
+
+                String AFEMMessage = this.gson.toJson(afemdto.toModel());
+                this.messageSender.send(AFEMMessage, this.afemParametersQueue);
                 break;
 
             case METALEARNING:
@@ -64,6 +77,9 @@ public class ParametersService {
                 logger.info("Created the Metaleraning parameters from ".concat(metalearningDTO.getId().toString()).concat(" process!"));
 
                 metalearningService.save(metalearningDTO.toModel());
+
+                String metalearningMessage = this.gson.toJson(metalearningDTO.toModel());
+                this.messageSender.send(metalearningMessage, this.metalearningParametersQueue);
                 break;
         }
     }

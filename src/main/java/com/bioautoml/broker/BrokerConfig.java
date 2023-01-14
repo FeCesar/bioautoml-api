@@ -26,6 +26,12 @@ public class BrokerConfig {
     @Value("${application.rabbit.queues.results.generate}")
     private String generateResultsQueue;
 
+    @Value("${application.rabbit.queues.process.parameters.afem}")
+    private String afemParametersQueue;
+
+    @Value("${application.rabbit.queues.process.parameters.metalearning}")
+    private String metalearningParametersQueue;
+
     @Bean
     private Queue createDnaRnaQueue(){
         return new Queue(this.dnaRnaQueue, true);
@@ -54,6 +60,16 @@ public class BrokerConfig {
     @Bean
     private Queue createGenerateResultsQueue(){
         return new Queue(this.generateResultsQueue, true);
+    }
+
+    @Bean
+    private Queue createAFEMParametersQueue() {
+        return new Queue(this.afemParametersQueue, true);
+    }
+
+    @Bean
+    private Queue createMetalearningParametersQueue() {
+        return new Queue(this.metalearningParametersQueue, true);
     }
 
 }
