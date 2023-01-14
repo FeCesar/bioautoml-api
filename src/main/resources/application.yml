@@ -32,6 +32,9 @@ application:
         binary-problems: baml.processes.binary-problems
         multiclass-problems: baml.processes.multiclass-problems
 
+        results:
+          generate: baml.results.create-results
+
   jwt:
     secret: ${JWT_SECRET}
     expiration: ${JWT_EXPIRATION}
