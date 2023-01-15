@@ -4,6 +4,7 @@ import com.bioautoml.domain.process.dto.ProcessDTO;
 import com.bioautoml.domain.process.parameters.enums.Classifiers;
 import com.bioautoml.domain.process.parameters.model.MetalearningModel;
 import com.bioautoml.domain.process.parameters.model.ParametersEntity;
+import com.bioautoml.domain.process.parameters.vo.MetalearningParameterVO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -46,6 +47,24 @@ public class MetalearningDTO implements ParametersEntity {
                 .tuning(this.getTuning())
                 .output(this.getOutput())
                 .process(this.getProcess().toModel())
+                .build();
+    }
+
+    public MetalearningParameterVO toVO(){
+        return MetalearningParameterVO.builder()
+                .id(this.getId())
+                .train(this.getTrain())
+                .trainLabel(this.getTrainLabel())
+                .test(this.getTest())
+                .testLabel(this.getTestLabel())
+                .testNamesEq(this.getTestNamesEq())
+                .normalization(this.getNormalization())
+                .cpuNumbers(this.getCpuNumbers())
+                .classifiers(this.getClassifiers())
+                .imbalance(this.getImbalance())
+                .tuning(this.getTuning())
+                .output(this.getOutput())
+                .processId(this.getProcess().getId())
                 .build();
     }
 

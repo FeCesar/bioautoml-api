@@ -3,6 +3,7 @@ package com.bioautoml.domain.process.parameters.dto;
 import com.bioautoml.domain.process.dto.ProcessDTO;
 import com.bioautoml.domain.process.parameters.model.AFEMModel;
 import com.bioautoml.domain.process.parameters.model.ParametersEntity;
+import com.bioautoml.domain.process.parameters.vo.AFEMParameterVO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -37,6 +38,20 @@ public class AFEMDTO implements ParametersEntity {
                 .cpuNumbers(this.getCpuNumbers())
                 .output(this.getOutput())
                 .process(this.getProcess().toModel())
+                .build();
+    }
+
+    public AFEMParameterVO toVO(){
+        return AFEMParameterVO.builder()
+                .id(this.getId())
+                .fastaTrain(this.getFastaTrain())
+                .fastaLabelTrain(this.getFastaLabelTrain())
+                .fastaTest(this.getFastaTest())
+                .fastaLabelTest(this.getFastaLabelTest())
+                .estimations(this.getEstimations())
+                .cpuNumbers(this.getCpuNumbers())
+                .output(this.getOutput())
+                .processId(this.getProcess().getId())
                 .build();
     }
 

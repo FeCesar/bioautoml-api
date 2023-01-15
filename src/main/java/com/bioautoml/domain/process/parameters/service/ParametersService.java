@@ -63,7 +63,7 @@ public class ParametersService {
 
                 afemService.save(afemdto.toModel());
 
-                String AFEMMessage = this.gson.toJson(afemdto.toModel());
+                String AFEMMessage = this.gson.toJson(afemdto.toVO());
                 this.messageSender.send(AFEMMessage, this.afemParametersQueue);
                 break;
 
@@ -78,7 +78,7 @@ public class ParametersService {
 
                 metalearningService.save(metalearningDTO.toModel());
 
-                String metalearningMessage = this.gson.toJson(metalearningDTO.toModel());
+                String metalearningMessage = this.gson.toJson(metalearningDTO.toVO());
                 this.messageSender.send(metalearningMessage, this.metalearningParametersQueue);
                 break;
         }
