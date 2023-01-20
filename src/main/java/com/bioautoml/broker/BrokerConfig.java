@@ -32,6 +32,9 @@ public class BrokerConfig {
     @Value("${application.rabbit.queues.process.parameters.metalearning}")
     private String metalearningParametersQueue;
 
+    @Value("${application.rabbit.queues.process.status}")
+    private String processesStatusQueue;
+
     @Bean
     private Queue createDnaRnaQueue(){
         return new Queue(this.dnaRnaQueue, true);
@@ -70,6 +73,11 @@ public class BrokerConfig {
     @Bean
     private Queue createMetalearningParametersQueue() {
         return new Queue(this.metalearningParametersQueue, true);
+    }
+
+    @Bean
+    private Queue createProcessesStatusQueue() {
+        return new Queue(this.processesStatusQueue, true);
     }
 
 }

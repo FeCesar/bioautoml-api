@@ -36,6 +36,8 @@ application:
           afem: baml.processes.parameters.afem
           metalearning: baml.processes.parameters.metalearning
 
+        status: baml.processes.status
+
       results:
         generate: baml.results.create-results
 
