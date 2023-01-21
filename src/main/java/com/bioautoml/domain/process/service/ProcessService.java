@@ -78,7 +78,7 @@ public class ProcessService {
         return this.processRepository.save(processModel).toDTO();
     }
 
-    public ProcessDTO start(String processName, List<MultipartFile> files, UUID userId, ParametersEntity parameters){
+    public ProcessDTO start(String processName, Map<String, MultipartFile[]> files, UUID userId, ParametersEntity parameters){
         UUID processId = UUID.randomUUID();
 
         ProcessModel processModel = new ProcessModel();
@@ -98,7 +98,7 @@ public class ProcessService {
                 .build();
         logger.info("Crated the process message: ".concat(processMessageDTO.toString()));
 
-        this.folderService.createFolders(files, processId);
+        this.createFilesInS3(files, processId);
 
         ProcessDTO processDTO = this.save(processModel);
         this.parametersService.createParameters(processModel.getProcessType(), processModel, parameters);
@@ -109,6 +109,16 @@ public class ProcessService {
         logger.info("Sent all messages from process ".concat(processId.toString()));
 
         return processDTO;
+    }
+
+    private void createFilesInS3(Map<String, MultipartFile[]> files, UUID processId) {
+        List<MultipartFile> allFiles = new ArrayList<>();
+
+        files.forEach((key, value) -> {
+            allFiles.addAll(Arrays.asList(value));
+        });
+
+        this.folderService.createFolders(allFiles, processId);
     }
 
     private void requestTheStartOfProcess(ProcessMessageDTO processMessageDTO, String processName){

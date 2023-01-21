@@ -11,9 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class AFEMForm implements ParametersForm {
 
-    private String fastaTrain;
-    private String fastaLabelTrain;
-    private String fastaTest;
-    private String fastaLabelTest;
+    private Integer estimations;
+    private Integer cpuNumbers;
 
 }

@@ -19,9 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 @CrossOrigin(value = "*", maxAge = 3600)
@@ -56,31 +54,43 @@ public class ProcessController {
     @PostMapping(value = "/afem/{processName}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<ProcessDTO> afemStart(
             @PathVariable String processName,
-            @RequestPart MultipartFile[] files,
-            @RequestParam String parameters,
+            @RequestPart MultipartFile[] train,
+            @RequestPart MultipartFile[] train_label,
+            @RequestPart MultipartFile[] test,
+            @RequestPart MultipartFile[] test_label,
+            @RequestParam AFEMForm parameters,
             @RequestHeader(value = "Authorization") String token) {
         UUID userId = this.jwtService.getUserId(token.split(" ")[1]);
 
-        ParametersEntity parametersEntity = new AFEMDTO();
-        AFEMForm afemForm = this.gson.fromJson(parameters, AFEMForm.class);
-        BeanUtils.copyProperties(afemForm, parametersEntity);
+        Map<String, MultipartFile[]> files = new HashMap<>();
+        files.put("train", train);
+        files.put("trainLabel", train_label);
+        files.put("test", test);
+        files.put("testLabel", test_label);
 
-        return ResponseEntity.status(HttpStatus.OK).body(this.processService.start(processName, Arrays.asList(files), userId, parametersEntity));
+        return ResponseEntity.status(HttpStatus.OK).body(this.processService.start(processName, files, userId, parameters));
     }
 
     @PostMapping(value = "/metalearning/{processName}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<ProcessDTO> metalearningStart(
             @PathVariable String processName,
-            @RequestPart MultipartFile[] files,
-            @RequestParam String parameters,
+            @RequestPart MultipartFile[] train,
+            @RequestPart MultipartFile[] train_label,
+            @RequestPart MultipartFile[] test,
+            @RequestPart MultipartFile[] test_label,
+            @RequestPart MultipartFile[] test_name_sequence,
+            @RequestParam MetalearningForm parameters,
             @RequestHeader(value = "Authorization") String token) {
         UUID userId = this.jwtService.getUserId(token.split(" ")[1]);
 
-        ParametersEntity parametersEntity = new MetalearningDTO();
-        MetalearningForm metalearningForm = this.gson.fromJson(parameters, MetalearningForm.class);
-        BeanUtils.copyProperties(metalearningForm, parametersEntity);
+        Map<String, MultipartFile[]> files = new HashMap<>();
+        files.put("train", train);
+        files.put("trainLabel", train_label);
+        files.put("test", test);
+        files.put("testLabel", test_label);
+        files.put("testNameSequence", test_name_sequence);
 
-        return ResponseEntity.status(HttpStatus.OK).body(this.processService.start(processName, Arrays.asList(files), userId, parametersEntity));
+        return ResponseEntity.status(HttpStatus.OK).body(this.processService.start(processName, files, userId, parameters));
     }
 
     @PutMapping("/{id}")
