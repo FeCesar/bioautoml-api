@@ -54,7 +54,6 @@ public class FolderService {
 
     public void createFolders(List<MultipartFile> files, UUID processId){
         files.stream()
-                .filter(file -> !Objects.requireNonNull(file.getOriginalFilename()).contains(".json"))
                 .forEach(file -> {
                     String folderPath = String.valueOf(processId).concat(this.SEPARATOR).concat(Objects.requireNonNull(file.getOriginalFilename()));
 

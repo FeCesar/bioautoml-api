@@ -54,17 +54,19 @@ public class ProcessController {
             @RequestPart MultipartFile[] train_label,
             @RequestPart MultipartFile[] test,
             @RequestPart MultipartFile[] test_label,
-            @RequestParam AFEMForm parameters,
+            @RequestParam String parameters,
             @RequestHeader(value = "Authorization") String token) {
         UUID userId = this.jwtService.getUserId(token.split(" ")[1]);
 
         Map<String, MultipartFile[]> files = new HashMap<>();
-        files.put("train", train);
-        files.put("trainLabel", train_label);
-        files.put("test", test);
-        files.put("testLabel", test_label);
+        files.put("TRAIN", train);
+        files.put("LABEL_TRAIN", train_label);
+        files.put("TEST", test);
+        files.put("LABEL_TEST", test_label);
 
-        return ResponseEntity.status(HttpStatus.OK).body(this.processService.start(processName, files, userId, parameters));
+        AFEMForm afemForm = this.gson.fromJson(parameters, AFEMForm.class);
+
+        return ResponseEntity.status(HttpStatus.OK).body(this.processService.start(processName, files, userId, afemForm));
     }
 
     @PostMapping(value = "/metalearning/{processName}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
@@ -75,18 +77,20 @@ public class ProcessController {
             @RequestPart MultipartFile[] test,
             @RequestPart MultipartFile[] test_label,
             @RequestPart MultipartFile[] test_name_sequence,
-            @RequestParam MetalearningForm parameters,
+            @RequestParam String parameters,
             @RequestHeader(value = "Authorization") String token) {
         UUID userId = this.jwtService.getUserId(token.split(" ")[1]);
 
         Map<String, MultipartFile[]> files = new HashMap<>();
-        files.put("train", train);
-        files.put("trainLabel", train_label);
-        files.put("test", test);
-        files.put("testLabel", test_label);
-        files.put("testNameSequence", test_name_sequence);
+        files.put("TRAIN", train);
+        files.put("LABEL_TRAIN", train_label);
+        files.put("TEST", test);
+        files.put("LABEL_TEST", test_label);
+        files.put("SEQUENCE", test_name_sequence);
 
-        return ResponseEntity.status(HttpStatus.OK).body(this.processService.start(processName, files, userId, parameters));
+        MetalearningForm metalearningForm = this.gson.fromJson(parameters, MetalearningForm.class);
+
+        return ResponseEntity.status(HttpStatus.OK).body(this.processService.start(processName, files, userId, metalearningForm));
     }
 
     @PutMapping("/{id}")

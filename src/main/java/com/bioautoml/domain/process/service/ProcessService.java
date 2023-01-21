@@ -1,17 +1,15 @@
 package com.bioautoml.domain.process.service;
 
+import com.bioautoml.domain.file.service.FileService;
 import com.bioautoml.domain.message.MessageSender;
 import com.bioautoml.domain.process.dto.ProcessDTO;
 import com.bioautoml.domain.process.dto.ProcessMessageDTO;
-import com.bioautoml.domain.process.dto.ResultObjectCreationRequestTemplateDTO;
 import com.bioautoml.domain.process.enums.ProcessStatus;
 import com.bioautoml.domain.process.enums.ProcessType;
 import com.bioautoml.domain.process.model.ProcessModel;
 import com.bioautoml.domain.process.parameters.form.ParametersForm;
-import com.bioautoml.domain.process.parameters.model.ParametersEntity;
 import com.bioautoml.domain.process.parameters.service.ParametersService;
 import com.bioautoml.domain.process.repository.ProcessRepository;
-import com.bioautoml.domain.process.types.ProcessStrategy;
 import com.bioautoml.domain.process.types.ProcessSelector;
 import com.bioautoml.domain.user.service.UserService;
 import com.bioautoml.exceptions.AlreadyExistsException;
@@ -23,6 +21,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
@@ -44,6 +43,9 @@ public class ProcessService {
 
     @Autowired
     private ProcessSelector processSelector;
+
+    @Autowired
+    private FileService fileService;
 
     @Value("${application.rabbit.queues.results.generate}")
     private String resultQueueName;
@@ -79,6 +81,7 @@ public class ProcessService {
         return this.processRepository.save(processModel).toDTO();
     }
 
+    @Transactional
     public ProcessDTO start(String processName, Map<String, MultipartFile[]> files, UUID userId, ParametersForm parameters){
         UUID processId = UUID.randomUUID();
 
@@ -99,13 +102,12 @@ public class ProcessService {
                 .build();
         logger.info("Crated the process message: ".concat(processMessageDTO.toString()));
 
-        this.createFilesInS3(files, processId);
-
         ProcessDTO processDTO = this.save(processModel);
         this.parametersService.createParameters(processModel.getProcessType(), processModel, parameters);
+        this.fileService.save(files, processId);
 
+        this.createFilesInS3(files, processId);
         this.requestTheStartOfProcess(processMessageDTO, ProcessType.valueOf(processName).getQueueName());
-        this.requestCreationOfResultObject(processName, processId, userId);
 
         logger.info("Sent all messages from process ".concat(processId.toString()));
 
@@ -127,26 +129,6 @@ public class ProcessService {
         String queueName = "baml.processes.".concat(processName);
 
         this.messageSender.send(message, queueName);
-        logger.info("Sent message: ".concat(message));
-    }
-
-    private void requestCreationOfResultObject(String processName, UUID processId, UUID userId){
-        Optional<ProcessStrategy> process = this.processSelector.getProcessByName(processName);
-
-        if(process.isEmpty()){
-            logger.error("Process ".concat(processId.toString()).concat(" not exists!"));
-            throw new NotFoundException("Process not exists");
-        }
-
-        ResultObjectCreationRequestTemplateDTO templateDTO = ResultObjectCreationRequestTemplateDTO.builder()
-                .processId(processId)
-                .userId(userId)
-                .resultsFields(process.get().getResultsFields())
-                .build();
-
-        String message = this.gson.toJson(templateDTO);
-
-        this.messageSender.send(message, this.resultQueueName);
         logger.info("Sent message: ".concat(message));
     }
 
