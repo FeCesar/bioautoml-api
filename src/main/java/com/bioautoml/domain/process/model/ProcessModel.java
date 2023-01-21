@@ -1,6 +1,7 @@
 package com.bioautoml.domain.process.model;
 
 import com.bioautoml.domain.commons.BaseEntity;
+import com.bioautoml.domain.file.model.FileModel;
 import com.bioautoml.domain.process.dto.ProcessByUserDTO;
 import com.bioautoml.domain.process.dto.ProcessDTO;
 import com.bioautoml.domain.process.enums.ProcessStatus;
@@ -14,6 +15,8 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -44,6 +47,10 @@ public class ProcessModel implements BaseEntity {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private UserModel userModel;
+
+    @OneToMany(mappedBy = "processModel")
+    private List<FileModel> files = new ArrayList<>();
+
 
     public ProcessDTO toDTO(){
         return ProcessDTO.builder()
