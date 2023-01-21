@@ -19,11 +19,6 @@ import java.util.UUID;
 public class MetalearningDTO implements ParametersEntity {
 
     private UUID id;
-    private String train;
-    private String trainLabel;
-    private String test;
-    private String testLabel;
-    private String testNamesEq;
     private Boolean normalization = false;
     private Integer cpuNumbers = 1;
     private Classifiers classifiers;
@@ -35,11 +30,6 @@ public class MetalearningDTO implements ParametersEntity {
     public MetalearningModel toModel(){
         return MetalearningModel.builder()
                 .id(this.getId())
-                .train(this.getTrain())
-                .trainLabel(this.getTrainLabel())
-                .test(this.getTest())
-                .testLabel(this.getTestLabel())
-                .testNamesEq(this.getTestNamesEq())
                 .normalization(this.getNormalization())
                 .cpuNumbers(this.getCpuNumbers())
                 .classifiers(this.getClassifiers())
@@ -53,11 +43,6 @@ public class MetalearningDTO implements ParametersEntity {
     public MetalearningParameterVO toVO(){
         return MetalearningParameterVO.builder()
                 .id(this.getId())
-                .train(this.getTrain())
-                .trainLabel(this.getTrainLabel())
-                .test(this.getTest())
-                .testLabel(this.getTestLabel())
-                .testNamesEq(this.getTestNamesEq())
                 .normalization(this.getNormalization())
                 .cpuNumbers(this.getCpuNumbers())
                 .classifiers(this.getClassifiers())

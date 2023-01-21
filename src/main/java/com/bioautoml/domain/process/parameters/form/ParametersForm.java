@@ -1,4 +1,4 @@
-package com.bioautoml.domain.process.form;
+package com.bioautoml.domain.process.parameters.form;
 
 import java.io.Serializable;
 

@@ -15,10 +15,6 @@ import java.util.UUID;
 public class AFEMParameterVO implements Serializable {
 
     public UUID id;
-    public String fastaTrain;
-    public String fastaLabelTrain;
-    public String fastaTest;
-    public String fastaLabelTest;
     public Integer estimations = 50;
     public Integer cpuNumbers = 1;
     public String output;

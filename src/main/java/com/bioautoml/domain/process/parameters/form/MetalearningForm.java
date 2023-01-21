@@ -1,4 +1,4 @@
-package com.bioautoml.domain.process.form;
+package com.bioautoml.domain.process.parameters.form;
 
 import com.bioautoml.domain.process.parameters.enums.Classifiers;
 import lombok.AllArgsConstructor;
@@ -12,11 +12,10 @@ import lombok.NoArgsConstructor;
 @Data
 public class MetalearningForm implements ParametersForm {
 
-    private String train;
-    private String trainLabel;
-    private String test;
-    private String testLabel;
-    private String testNameEq;
+    private Boolean normalization;
+    private Integer cpuNumbers;
     private Classifiers classifiers;
+    private Boolean imbalance;
+    private Boolean tuning;
 
 }
