@@ -38,6 +38,8 @@ application:
 
         status: baml.processes.status
 
+        results: baml.processes.results
+
       results:
         generate: baml.results.create-results
 

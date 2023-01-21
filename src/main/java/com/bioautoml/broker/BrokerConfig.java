@@ -35,6 +35,9 @@ public class BrokerConfig {
     @Value("${application.rabbit.queues.process.status}")
     private String processesStatusQueue;
 
+    @Value("${application.rabbit.queues.process.results}")
+    private String processesResultsQueue;
+
     @Bean
     private Queue createDnaRnaQueue(){
         return new Queue(this.dnaRnaQueue, true);
@@ -78,6 +81,11 @@ public class BrokerConfig {
     @Bean
     private Queue createProcessesStatusQueue() {
         return new Queue(this.processesStatusQueue, true);
+    }
+
+    @Bean
+    private Queue createProcessesResultsQueue() {
+        return new Queue(this.processesResultsQueue, true);
     }
 
 }
