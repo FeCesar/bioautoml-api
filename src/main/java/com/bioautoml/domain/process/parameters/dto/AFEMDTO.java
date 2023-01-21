@@ -18,10 +18,6 @@ import java.util.UUID;
 public class AFEMDTO implements ParametersEntity {
 
     public UUID id;
-    public String fastaTrain;
-    public String fastaLabelTrain;
-    public String fastaTest;
-    public String fastaLabelTest;
     public Integer estimations = 50;
     public Integer cpuNumbers = 1;
     public String output;
@@ -30,10 +26,6 @@ public class AFEMDTO implements ParametersEntity {
     public AFEMModel toModel(){
         return AFEMModel.builder()
                 .id(this.getId())
-                .fastaTrain(this.getFastaTrain())
-                .fastaLabelTrain(this.getFastaLabelTrain())
-                .fastaTest(this.getFastaTest())
-                .fastaLabelTest(this.getFastaLabelTest())
                 .estimations(this.getEstimations())
                 .cpuNumbers(this.getCpuNumbers())
                 .output(this.getOutput())
@@ -44,10 +36,6 @@ public class AFEMDTO implements ParametersEntity {
     public AFEMParameterVO toVO(){
         return AFEMParameterVO.builder()
                 .id(this.getId())
-                .fastaTrain(this.getFastaTrain())
-                .fastaLabelTrain(this.getFastaLabelTrain())
-                .fastaTest(this.getFastaTest())
-                .fastaLabelTest(this.getFastaLabelTest())
                 .estimations(this.getEstimations())
                 .cpuNumbers(this.getCpuNumbers())
                 .output(this.getOutput())

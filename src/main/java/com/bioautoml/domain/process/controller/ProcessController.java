@@ -1,17 +1,13 @@
 package com.bioautoml.domain.process.controller;
 
 import com.bioautoml.domain.process.dto.ProcessDTO;
-import com.bioautoml.domain.process.form.AFEMForm;
-import com.bioautoml.domain.process.form.MetalearningForm;
-import com.bioautoml.domain.process.parameters.dto.AFEMDTO;
-import com.bioautoml.domain.process.parameters.dto.MetalearningDTO;
-import com.bioautoml.domain.process.parameters.model.ParametersEntity;
+import com.bioautoml.domain.process.parameters.form.AFEMForm;
+import com.bioautoml.domain.process.parameters.form.MetalearningForm;
 import com.bioautoml.domain.process.parameters.service.ParametersService;
 import com.bioautoml.domain.process.service.ProcessService;
 import com.bioautoml.domain.user.service.UserService;
 import com.bioautoml.security.services.JwtService;
 import com.google.gson.Gson;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

@@ -5,6 +5,7 @@ import com.bioautoml.domain.process.enums.ProcessType;
 import com.bioautoml.domain.process.model.ProcessModel;
 import com.bioautoml.domain.process.parameters.dto.AFEMDTO;
 import com.bioautoml.domain.process.parameters.dto.MetalearningDTO;
+import com.bioautoml.domain.process.parameters.form.ParametersForm;
 import com.bioautoml.domain.process.parameters.model.ParametersEntity;
 import com.bioautoml.domain.process.parameters.service.strategy.AFEMServiceStrategy;
 import com.bioautoml.domain.process.parameters.service.strategy.MetalearningServiceStrategy;
@@ -48,7 +49,7 @@ public class ParametersService {
 
     private final Logger logger = LoggerFactory.getLogger(ParametersService.class);
 
-    public void createParameters(ProcessType processType, ProcessModel processModel, ParametersEntity parameters) {
+    public void createParameters(ProcessType processType, ProcessModel processModel, ParametersForm parameters) {
 
         switch (processType.getParameterType()){
             case AFEM:

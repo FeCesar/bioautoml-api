@@ -24,18 +24,6 @@ public class AFEMModel implements ParametersEntity, BaseEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     public UUID id;
 
-    @Column(name = "fasta_train", nullable = false)
-    public String fastaTrain;
-
-    @Column(name = "fasta_label_train")
-    public String fastaLabelTrain;
-
-    @Column(name = "fasta_test")
-    public String fastaTest;
-
-    @Column(name = "fasta_label_test")
-    public String fastaLabelTest;
-
     @Column(name = "estimations")
     public Integer estimations = 50;
 
@@ -52,10 +40,6 @@ public class AFEMModel implements ParametersEntity, BaseEntity {
     public AFEMDTO toDTO(){
         return AFEMDTO.builder()
                 .id(this.getId())
-                .fastaTrain(this.getFastaTrain())
-                .fastaLabelTrain(this.getFastaLabelTrain())
-                .fastaTest(this.getFastaTest())
-                .fastaLabelTest(this.getFastaLabelTest())
                 .estimations(this.getEstimations())
                 .cpuNumbers(this.getCpuNumbers())
                 .output(this.getOutput())
@@ -66,10 +50,6 @@ public class AFEMModel implements ParametersEntity, BaseEntity {
     public AFEMResponseDTO toResponseDTO(){
         return AFEMResponseDTO.builder()
                 .id(this.getId())
-                .fastaTrain(this.getFastaTrain())
-                .fastaLabelTrain(this.getFastaLabelTrain())
-                .fastaTest(this.getFastaTest())
-                .fastaLabelTest(this.getFastaLabelTest())
                 .estimations(this.getEstimations())
                 .cpuNumbers(this.getCpuNumbers())
                 .output(this.getOutput())

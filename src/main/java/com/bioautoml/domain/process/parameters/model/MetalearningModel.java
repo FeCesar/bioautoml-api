@@ -25,21 +25,6 @@ public class MetalearningModel implements ParametersEntity, BaseEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @Column(name = "train", nullable = false)
-    private String train;
-
-    @Column(name = "train_label")
-    private String trainLabel;
-
-    @Column(name = "test")
-    private String test;
-
-    @Column(name = "test_label")
-    private String testLabel;
-
-    @Column(name = "test_names_eq")
-    private String testNamesEq;
-
     @Column(name = "normalization", nullable = false)
     private Boolean normalization = false;
 
@@ -66,11 +51,6 @@ public class MetalearningModel implements ParametersEntity, BaseEntity {
     public MetalearningDTO toDTO(){
         return MetalearningDTO.builder()
                 .id(this.getId())
-                .train(this.getTrain())
-                .trainLabel(this.getTrainLabel())
-                .test(this.getTest())
-                .testLabel(this.getTestLabel())
-                .testNamesEq(this.getTestNamesEq())
                 .normalization(this.getNormalization())
                 .cpuNumbers(this.getCpuNumbers())
                 .classifiers(this.getClassifiers())
@@ -84,11 +64,6 @@ public class MetalearningModel implements ParametersEntity, BaseEntity {
     public MetalearningResponseDTO toResponseDTO(){
         return MetalearningResponseDTO.builder()
                 .id(this.getId())
-                .train(this.getTrain())
-                .trainLabel(this.getTrainLabel())
-                .test(this.getTest())
-                .testLabel(this.getTestLabel())
-                .testNamesEq(this.getTestNamesEq())
                 .normalization(this.getNormalization())
                 .cpuNumbers(this.getCpuNumbers())
                 .classifiers(this.getClassifiers())

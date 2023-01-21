@@ -16,11 +16,6 @@ import java.util.UUID;
 public class MetalearningParameterVO implements Serializable {
 
     private UUID id;
-    private String train;
-    private String trainLabel;
-    private String test;
-    private String testLabel;
-    private String testNamesEq;
     private Boolean normalization = false;
     private Integer cpuNumbers = 1;
     private Classifiers classifiers;
