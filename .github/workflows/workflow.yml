@@ -22,34 +22,10 @@ jobs:
     - name: Build with Maven      
       run: mvn clean install -DskipTests
       
-    - name: Set up QEMU
-      uses: docker/setup-qemu-action@v2
-
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v2
-      
-    - name: Login to Docker Hub
-      uses: docker/login-action@v2
+    - name: Deploy to EC2
+      uses: bitovi/github-actions-deploy-docker-to-ec2@v0.4.1
       with:
-        username: ${{ secrets.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_TOKEN }}
-      
-    - name: Build and push
-      uses: docker/build-push-action@v3
-      with:
-        context: ./
-        push: true
-        tags: bioautoml/api:latest, bioautoml/api:${{ github.run_number }}
-        
-  EC2-deploy:
-    runs-on: ubuntu-latest
-    needs: build-application
-    steps:
-      - name: Deploy to EC2
-        uses: bitovi/github-actions-deploy-docker-to-ec2@v0.4.1
-        with:
-          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws_default_region: us-east-1
-          dot_env: ${{ secrets.DOT_ENV }}
-          app_port: 8764
+        aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws_default_region: us-east-1
+        dot_env: ${{ secrets.DOT_ENV }}
