@@ -40,3 +40,16 @@ jobs:
         context: ./
         push: true
         tags: bioautoml/api:latest, bioautoml/api:${{ github.run_number }}
+        
+  EC2-deploy:
+    runs-on: ubuntu-latest
+    needs: build-application
+    steps:
+      - name: Deploy to EC2
+        uses: bitovi/github-actions-deploy-docker-to-ec2@v0.4.1
+        with:
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws_default_region: us-east-1
+          dot_env: ${{ secrets.DOT_ENV }}
+          app_port: 8764
