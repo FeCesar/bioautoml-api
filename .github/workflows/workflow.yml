@@ -24,6 +24,7 @@ jobs:
 
   build-docker-image:
     name: Build and Deploy image
+    needs: build-application
     runs-on: ubuntu-latest
     
     steps:
