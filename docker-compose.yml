@@ -1,0 +1,7 @@
+version: '3.9'
+services:
+  app:
+    image: bioautoml/api:latest
+    env_file: .env
+    ports:
+      - "8764:8764"
