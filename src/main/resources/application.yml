@@ -20,7 +20,7 @@ server:
   servlet:
     context-path: /api
 
-  port: 8080
+  port: ${APPLICATION_PORT}
 
 application:
   rabbit:
