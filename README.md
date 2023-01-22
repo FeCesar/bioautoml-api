@@ -1,1 +1,1 @@
-# BioAutoML-API
+# Bioautoml/API
