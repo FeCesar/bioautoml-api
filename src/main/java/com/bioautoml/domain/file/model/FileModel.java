@@ -21,7 +21,6 @@ import java.util.UUID;
 public class FileModel implements BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
     @Column(name = "file_name")
@@ -40,7 +39,7 @@ public class FileModel implements BaseEntity {
                 .id(this.getId())
                 .fileName(this.getFileName())
                 .fileType(this.getFileType())
-                .processDTO(this.processModel.toDTO())
+                .processId(this.processModel.toDTO().getId())
                 .build();
     }
 

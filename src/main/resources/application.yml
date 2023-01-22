@@ -38,6 +38,8 @@ application:
 
         status: baml.processes.status
 
+        files: baml.processes.files
+
         results: baml.processes.results
 
       results:

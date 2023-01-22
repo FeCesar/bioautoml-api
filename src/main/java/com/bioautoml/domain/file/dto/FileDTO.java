@@ -19,6 +19,6 @@ public class FileDTO implements Serializable {
     private UUID id;
     private String fileName;
     private FileType fileType;
-    private ProcessDTO processDTO;
+    private UUID processId;
 
 }
