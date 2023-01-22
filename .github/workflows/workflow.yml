@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: Build Application and Deploy Image
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
 jobs:
 
   build-application:
-    name: Build Application
+    name: Build Application and Deploy Image
     runs-on: ubuntu-latest
     
     steps:
@@ -21,15 +21,6 @@ jobs:
        
     - name: Build with Maven      
       run: mvn clean install -DskipTests
-
-  build-docker-image:
-    name: Build and Deploy image
-    needs: build-application
-    runs-on: ubuntu-latest
-    
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v3
       
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v2
