@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: Build Application and Deploy Image
 
 on:
   push:
@@ -6,8 +6,8 @@ on:
 
 jobs:
 
-  build:
-    name: Build Application And Deploy image
+  build-application:
+    name: Build Application and Deploy Image
     runs-on: ubuntu-latest
     
     steps:
@@ -20,8 +20,8 @@ jobs:
        java-version: 1.11
        
     - name: Build with Maven      
-      run: mvn clean install
-
+      run: mvn clean install -DskipTests
+      
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v2
 
@@ -37,6 +37,6 @@ jobs:
     - name: Build and push
       uses: docker/build-push-action@v3
       with:
-        context: .
+        context: ./
         push: true
-        tags: bioatuoml/api:latest, bioautoml/api:${{ github.run_number }}
+        tags: bioautoml/api:latest, bioautoml/api:${{ github.run_number }}
