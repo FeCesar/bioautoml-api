@@ -1,6 +1,8 @@
 FROM openjdk:11
 
-COPY --chown=appuser:appuser target/**.jar /home/appuser/app.jar
+ARG JAR_FILE=target/*.jar
+
+COPY ${JAR_FILE} app.jar
 
 EXPOSE 8764
 
