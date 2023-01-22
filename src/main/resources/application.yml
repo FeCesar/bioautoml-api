@@ -87,6 +87,7 @@ spring:
     password: ${POSTGRES_PASSWORD}
 
   rabbitmq:
+    vhost: ${RABBIT_VHOST}
     host: ${RABBIT_HOST}
     port: ${RABBIT_PORT}
     username: ${RABBIT_USERNAME}
