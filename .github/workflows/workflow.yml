@@ -55,7 +55,7 @@ jobs:
       with:
         image: gcr.io/${{ secrets.GCP_SERVICE_ID }}/bioautoml-api
         service: ${{ secrets.GCP_SERVICE_ID }}
-        flags: --port=${{ secrets.APP_APPLICATION_PORT }}
+        flags: --port=${{ secrets.APP_APPLICATION_PORT }} --allow-unauthenticated
         env_vars: 
           PROFILE=${{ secrets.APP_PROFILE }},
           MAX_FILE_SIZE=${{ secrets.APP_MAX_FILE_SIZE }},
