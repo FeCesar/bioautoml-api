@@ -40,3 +40,25 @@ jobs:
         context: ./
         push: true
         tags: bioautoml/api:latest, bioautoml/api:${{ github.run_number }}
+        
+  deploy:
+    name: Deploy to GCP
+    needs: build-application
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      
+    - name: GCP Auth
+      uses: 'google-github-actions/auth@v1'
+      with:
+        credentials_json: ${{ secrets.GCP_CREDENTIALS_JSON }}
+        
+    - name: Deploy to GCP
+      uses: 'google-github-actions/deploy-cloudrun@v1'
+      with:
+        image: 'docker.io/bioautoml/api:latest'
+        secrets: ${{ secrets.DOT_ENV }}
+        
+        
