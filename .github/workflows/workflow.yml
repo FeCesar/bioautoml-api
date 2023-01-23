@@ -58,7 +58,7 @@ jobs:
     - name: Deploy to GCP
       uses: 'google-github-actions/deploy-cloudrun@v1'
       with:
-        image: 'docker.io/bioautoml/api:latest'
+        image: 'bioautoml/api:latest'
         service: ${{ secrets.GCP_SERVICE_ID }}
         env_vars: 
           PROFILE=${{ secrets.APP_PROFILE }},
