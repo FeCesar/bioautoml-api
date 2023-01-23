@@ -1,4 +1,4 @@
-name: Build Application and Deploy Image
+name: Build and Deploy APP
 
 on:
   push:
@@ -59,7 +59,7 @@ jobs:
       uses: 'google-github-actions/deploy-cloudrun@v1'
       with:
         image: 'docker.io/bioautoml/api:latest'
-        secrets: 
+        env_vars: 
           PROFILE=${{ secrets.APP_PROFILE }},
           MAX_FILE_SIZE=${{ secrets.APP_MAX_FILE_SIZE }},
           MAX_REQUEST_SIZE=${{ secrets.APP_MAX_REQUEST_SIZE }},
