@@ -59,6 +59,7 @@ jobs:
       uses: 'google-github-actions/deploy-cloudrun@v1'
       with:
         image: 'docker.io/bioautoml/api:latest'
+        service: ${{ secrets.GCP_SERVICE_ID }}
         env_vars: 
           PROFILE=${{ secrets.APP_PROFILE }},
           MAX_FILE_SIZE=${{ secrets.APP_MAX_FILE_SIZE }},
