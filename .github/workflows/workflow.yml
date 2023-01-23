@@ -33,7 +33,7 @@ jobs:
       with:
         project_id: ${{ secrets.GCP_SERVICE_ID }}
         dockerfile: ./Dockerfile
-        image: gcr.io/bioautoml/api
+        image: gcr.io/${{ secrets.GCP_SERVICE_ID }}/bioautoml-api
         service_account_key: ${{ secrets.GCLOUD_AUTH }}
         
   deploy:
@@ -53,7 +53,7 @@ jobs:
     - name: Deploy to GCP
       uses: 'google-github-actions/deploy-cloudrun@v1'
       with:
-        image: 'bioautoml/api:latest'
+        image: gcr.io/${{ secrets.GCP_SERVICE_ID }}/bioautoml-api
         service: ${{ secrets.GCP_SERVICE_ID }}
         env_vars: 
           PROFILE=${{ secrets.APP_PROFILE }},
