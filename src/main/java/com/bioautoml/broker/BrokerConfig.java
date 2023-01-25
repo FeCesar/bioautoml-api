@@ -8,81 +8,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class BrokerConfig {
 
-    @Value("${application.rabbit.queues.process.dna-rna}")
-    private String dnaRnaQueue;
-
-    @Value("${application.rabbit.queues.process.wnm-dna-rna}")
-    private String wnmDnaRnaQueue;
-
-    @Value("${application.rabbit.queues.process.protein}")
-    private String proteinQueue;
-
-    @Value("${application.rabbit.queues.process.binary-problems}")
-    private String binaryProblemsQueue;
-
-    @Value("${application.rabbit.queues.process.multiclass-problems}")
-    private String multiclassProblemsQueue;
-
-    @Value("${application.rabbit.queues.results.generate}")
-    private String generateResultsQueue;
-
-    @Value("${application.rabbit.queues.process.parameters.afem}")
-    private String afemParametersQueue;
-
-    @Value("${application.rabbit.queues.process.parameters.metalearning}")
-    private String metalearningParametersQueue;
-
-    @Value("${application.rabbit.queues.process.status}")
+    @Value("${application.rabbit.queues.processes.status}")
     private String processesStatusQueue;
 
-    @Value("${application.rabbit.queues.process.results}")
+    @Value("${application.rabbit.queues.processes.results}")
     private String processesResultsQueue;
-
-    @Value("${application.rabbit.queues.process.files}")
-    private String processFileQueue;
 
     @Value("${application.rabbit.queues.processes.init}")
     private String processesInitQueue;
-
-    @Bean
-    private Queue createDnaRnaQueue(){
-        return new Queue(this.dnaRnaQueue, true);
-    }
-
-    @Bean
-    private Queue createWnmDnaRnaQueue(){
-        return new Queue(this.wnmDnaRnaQueue, true);
-    }
-
-    @Bean
-    private Queue createProteinQueue(){
-        return new Queue(this.proteinQueue, true);
-    }
-
-    @Bean
-    private Queue createBinaryProblemsQueue(){
-        return new Queue(this.binaryProblemsQueue, true);
-    }
-
-    @Bean
-    private Queue createMulticlassProblemsQueue(){
-        return new Queue(this.multiclassProblemsQueue, true);
-    }
-
-    @Bean
-    private Queue createGenerateResultsQueue(){
-        return new Queue(this.generateResultsQueue, true);
-    }
-
-    @Bean
-    private Queue createAFEMParametersQueue() {
-        return new Queue(this.afemParametersQueue, true);
-    }
-
-    @Bean
-    private Queue createMetalearningParametersQueue() {
-        return new Queue(this.metalearningParametersQueue, true);
-    }
 
     @Bean
     private Queue createProcessesStatusQueue() {
@@ -92,11 +25,6 @@ public class BrokerConfig {
     @Bean
     private Queue createProcessesResultsQueue() {
         return new Queue(this.processesResultsQueue, true);
-    }
-
-    @Bean
-    private Queue createProcessFileQueue() {
-        return new Queue(this.processFileQueue, true);
     }
 
     @Bean

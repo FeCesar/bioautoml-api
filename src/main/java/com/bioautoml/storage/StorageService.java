@@ -1,4 +1,4 @@
-package com.bioautoml.folders;
+package com.bioautoml.storage;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
@@ -17,13 +17,12 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
 @Service
-public class FolderService {
+public class StorageService {
 
     @Autowired
     private AmazonCredentials amazonCredentials;
@@ -33,7 +32,7 @@ public class FolderService {
     private final String SEPARATOR = "/";
 
     private final Gson gson = new Gson();
-    private final Logger logger = LoggerFactory.getLogger(FolderService.class);
+    private final Logger logger = LoggerFactory.getLogger(StorageService.class);
 
     @PostConstruct
     public void createConnection(){
@@ -53,8 +52,7 @@ public class FolderService {
 
 
     public void createFolders(List<MultipartFile> files, UUID processId){
-        files.stream()
-                .forEach(file -> {
+        files.forEach(file -> {
                     String folderPath = String.valueOf(processId).concat(this.SEPARATOR).concat(Objects.requireNonNull(file.getOriginalFilename()));
 
                     logger.info("Creating file: ".concat(file.getOriginalFilename()));

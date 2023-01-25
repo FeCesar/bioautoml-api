@@ -17,7 +17,7 @@ public class UpdateStatusConsumer {
 
     private static final Logger logger = LoggerFactory.getLogger(UpdateStatusConsumer.class);
 
-    @RabbitListener(queues = {"${application.rabbit.queues.process.status}"})
+    @RabbitListener(queues = {"${application.rabbit.queues.processes.status}"})
     public void receive(String processId) {
         logger.info("received request to update process=" + processId);
         this.processService.updateStatus(UUID.fromString(processId.replaceAll("\"", "")));

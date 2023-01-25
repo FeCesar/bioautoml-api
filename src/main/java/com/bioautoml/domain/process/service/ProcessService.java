@@ -1,20 +1,25 @@
 package com.bioautoml.domain.process.service;
 
+import com.bioautoml.domain.file.repository.FileRepository;
 import com.bioautoml.domain.file.service.FileService;
-import com.bioautoml.domain.message.MessageSender;
+import com.bioautoml.domain.outbox.service.OutboxService;
+import com.bioautoml.domain.process.dto.ProcessArrangementDTO;
 import com.bioautoml.domain.process.dto.ProcessDTO;
 import com.bioautoml.domain.process.dto.ProcessMessageDTO;
 import com.bioautoml.domain.process.enums.ProcessStatus;
 import com.bioautoml.domain.process.enums.ProcessType;
 import com.bioautoml.domain.process.model.ProcessModel;
+import com.bioautoml.domain.process.parameters.enums.ParametersType;
 import com.bioautoml.domain.process.parameters.form.ParametersForm;
+import com.bioautoml.domain.process.parameters.repository.AFEMRepository;
+import com.bioautoml.domain.process.parameters.repository.MetalearningRepository;
 import com.bioautoml.domain.process.parameters.service.ParametersService;
 import com.bioautoml.domain.process.repository.ProcessRepository;
 import com.bioautoml.domain.process.types.ProcessSelector;
 import com.bioautoml.domain.user.service.UserService;
 import com.bioautoml.exceptions.AlreadyExistsException;
 import com.bioautoml.exceptions.NotFoundException;
-import com.bioautoml.folders.FolderService;
+import com.bioautoml.storage.StorageService;
 import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +29,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
@@ -39,22 +45,31 @@ public class ProcessService {
     private UserService userService;
 
     @Autowired
-    private MessageSender messageSender;
-
-    @Autowired
     private ProcessSelector processSelector;
 
     @Autowired
     private FileService fileService;
 
-    @Value("${application.rabbit.queues.results.generate}")
-    private String resultQueueName;
-
     @Autowired
-    private FolderService folderService;
+    private StorageService storageService;
 
     @Autowired
     private ParametersService parametersService;
+
+    @Autowired
+    private OutboxService outboxService;
+
+    @Autowired
+    private AFEMRepository afemRepository;
+
+    @Autowired
+    private MetalearningRepository metalearningRepository;
+
+    @Autowired
+    private FileRepository fileRepository;
+
+    @Value("${application.config.processes.amount}")
+    private int amountOfRunProcesses;
 
     private final Gson gson = new Gson();
 
@@ -107,7 +122,6 @@ public class ProcessService {
         this.fileService.save(files, processId);
 
         this.createFilesInS3(files, processId);
-        this.requestTheStartOfProcess(processMessageDTO, ProcessType.valueOf(processName).getQueueName());
 
         logger.info("Sent all messages from process ".concat(processId.toString()));
 
@@ -121,15 +135,7 @@ public class ProcessService {
             allFiles.addAll(Arrays.asList(value));
         });
 
-        this.folderService.createFolders(allFiles, processId);
-    }
-
-    private void requestTheStartOfProcess(ProcessMessageDTO processMessageDTO, String processName){
-        String message = this.gson.toJson(processMessageDTO);
-        String queueName = "baml.processes.".concat(processName);
-
-        this.messageSender.send(message, queueName);
-        logger.info("Sent message: ".concat(message));
+        this.storageService.createFolders(allFiles, processId);
     }
 
     public void updateStatus(UUID id) {
@@ -157,4 +163,42 @@ public class ProcessService {
          this.save(processModel);
     }
 
+    public void check() {
+        long amountOfProcessingProcesses = this.processRepository.countByProcessStatusIs(ProcessStatus.PROCESSING);
+
+        this.processRepository.findByProcessStatusIsOrderByStartupTime(ProcessStatus.WAITING)
+                .ifPresent(processes -> {
+                    if(amountOfProcessingProcesses < this.amountOfRunProcesses) {
+                        processes.stream()
+                                .limit(this.amountOfRunProcesses - amountOfProcessingProcesses)
+                                .forEach(this::prepareToSend);
+                    }
+                });
+    }
+
+    private void prepareToSend(ProcessModel processModel) {
+        ProcessArrangementDTO processArrangementDTO = ProcessArrangementDTO.builder()
+                .processModel(processModel)
+                .build();
+
+        if(processModel.getProcessType().getParameterType() == ParametersType.AFEM) {
+            processArrangementDTO.setParametersEntity(this.afemRepository.findByProcessId(processModel.getId()).get());
+        }
+
+        if(processModel.getProcessType().getParameterType() == ParametersType.METALEARNING) {
+            processArrangementDTO.setParametersEntity(this.metalearningRepository.findByProcessId(processModel.getId()).get());
+        }
+
+        processArrangementDTO.setFiles(this.fileRepository.findAllByProcessModel(processModel).get());
+        this.sendToInit(processArrangementDTO);
+    }
+
+    private void sendToInit(ProcessArrangementDTO processArrangementDTO) {
+        String message = this.gson.toJson(processArrangementDTO);
+        logger.info("process to init will to save={}", message);
+
+        Base64.Encoder encoder = Base64.getEncoder();
+
+        this.outboxService.create(encoder.encodeToString(message.getBytes(StandardCharsets.UTF_8)));
+    }
 }

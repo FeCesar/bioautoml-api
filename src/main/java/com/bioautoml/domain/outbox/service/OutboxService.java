@@ -7,6 +7,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.UUID;
+
 @Service
 public class OutboxService {
 
@@ -15,7 +18,17 @@ public class OutboxService {
 
     private static final Logger logger = LoggerFactory.getLogger(OutboxService.class);
 
-    public void save(OutboxModel outboxModel) {
+    private void save(OutboxModel outboxModel) {
         this.outboxRepository.save(outboxModel);
+    }
+
+    public void create(String message) {
+        OutboxModel outboxModel = OutboxModel.builder()
+                .id(UUID.randomUUID())
+                .date(LocalDateTime.now())
+                .message(message)
+                .build();
+
+        this.save(outboxModel);
     }
 }

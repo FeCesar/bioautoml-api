@@ -1,4 +1,4 @@
-package com.bioautoml.folders;
+package com.bioautoml.storage;
 
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;

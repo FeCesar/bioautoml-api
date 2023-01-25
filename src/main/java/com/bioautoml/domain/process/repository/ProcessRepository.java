@@ -1,5 +1,6 @@
 package com.bioautoml.domain.process.repository;
 
+import com.bioautoml.domain.process.enums.ProcessStatus;
 import com.bioautoml.domain.process.model.ProcessModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -16,5 +17,9 @@ public interface ProcessRepository extends JpaRepository<ProcessModel, UUID> {
 
     @Query(value = "SELECT * FROM processes WHERE user_id = :userId", nativeQuery = true)
     List<ProcessModel> findByUserId(UUID userId);
+
+    Optional<List<ProcessModel>> findByProcessStatusIsOrderByStartupTime(ProcessStatus processStatus);
+
+    long countByProcessStatusIs(ProcessStatus processStatus);
 
 }

@@ -27,26 +27,8 @@ application:
     queues:
       processes:
         init: baml.processes.init
-
-      process:
-        dna-rna: baml.processes.dna-rna
-        wnm-dna-rna: baml.processes.wnm-dna-rna
-        protein: baml.processes.protein
-        binary-problems: baml.processes.binary-problems
-        multiclass-problems: baml.processes.multiclass-problems
-
-        parameters:
-          afem: baml.processes.parameters.afem
-          metalearning: baml.processes.parameters.metalearning
-
         status: baml.processes.status
-
-        files: baml.processes.files
-
         results: baml.processes.results
-
-      results:
-        generate: baml.results.create-results
 
   jwt:
     secret: ${JWT_SECRET}
@@ -65,6 +47,10 @@ application:
       path: ${OUTPUT_INIT_PATH}
     end:
       path: ${OUTPUT_END_PATH}
+
+  config:
+    processes:
+      amount: ${NUMBER_OF_CONCURRENT_PROCESSES}
 ---
 
 spring:
