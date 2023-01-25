@@ -204,7 +204,6 @@ public class ProcessService {
 
         Base64.Encoder encoder = Base64.getEncoder();
         String encodedMessage = encoder.encodeToString(message.getBytes(StandardCharsets.UTF_8));
-        logger.info("process encoded to init will to save={}", encodedMessage);
 
         this.outboxService.create(encodedMessage);
     }

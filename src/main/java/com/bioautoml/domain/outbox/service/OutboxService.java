@@ -23,11 +23,10 @@ public class OutboxService {
     }
 
     public void create(String message) {
-        OutboxModel outboxModel = OutboxModel.builder()
-                .id(UUID.randomUUID())
-                .date(LocalDateTime.now())
-                .message(message)
-                .build();
+        OutboxModel outboxModel = new OutboxModel();
+        outboxModel.setId(UUID.randomUUID());
+        outboxModel.setDateCreation(LocalDateTime.now());
+        outboxModel.setMessage(message);
 
         this.save(outboxModel);
     }

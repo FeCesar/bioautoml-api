@@ -26,9 +26,12 @@ public class OutboxModel implements BaseEntity {
     private UUID id;
 
     @Column(name = "DAT_CREATED")
-    private LocalDateTime date;
+    private LocalDateTime dateCreation = LocalDateTime.now();
 
     @Column(name = "DES_MESSAGE", columnDefinition = "text")
     private String message;
+
+    @Column(name = "WAS_SENT")
+    private Boolean wasSent = Boolean.FALSE;
 
 }
