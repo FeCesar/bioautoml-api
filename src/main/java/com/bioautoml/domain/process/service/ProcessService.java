@@ -1,5 +1,6 @@
 package com.bioautoml.domain.process.service;
 
+import com.bioautoml.domain.file.model.FileModel;
 import com.bioautoml.domain.file.repository.FileRepository;
 import com.bioautoml.domain.file.service.FileService;
 import com.bioautoml.domain.outbox.service.OutboxService;
@@ -178,27 +179,33 @@ public class ProcessService {
 
     private void prepareToSend(ProcessModel processModel) {
         ProcessArrangementDTO processArrangementDTO = ProcessArrangementDTO.builder()
-                .processModel(processModel)
+                .processModel(processModel.toProcessByUserDTO())
                 .build();
 
         if(processModel.getProcessType().getParameterType() == ParametersType.AFEM) {
-            processArrangementDTO.setParametersEntity(this.afemRepository.findByProcessId(processModel.getId()).get());
+            processArrangementDTO.setParametersEntity(this.afemRepository.findByProcessId(processModel.getId()).get().toVO());
         }
 
         if(processModel.getProcessType().getParameterType() == ParametersType.METALEARNING) {
-            processArrangementDTO.setParametersEntity(this.metalearningRepository.findByProcessId(processModel.getId()).get());
+            processArrangementDTO.setParametersEntity(this.metalearningRepository.findByProcessId(processModel.getId()).get().toVO());
         }
 
-        processArrangementDTO.setFiles(this.fileRepository.findAllByProcessModel(processModel).get());
+        processArrangementDTO.setFiles(this.fileRepository.findAllByProcessModel(processModel).get().stream()
+                .map(FileModel::toDTO)
+                .collect(Collectors.toList()));
+
+        this.updateStatus(processModel.getId());
         this.sendToInit(processArrangementDTO);
     }
 
     private void sendToInit(ProcessArrangementDTO processArrangementDTO) {
         String message = this.gson.toJson(processArrangementDTO);
-        logger.info("process to init will to save={}", message);
+        logger.debug("process to init will to save without encode={}", message);
 
         Base64.Encoder encoder = Base64.getEncoder();
+        String encodedMessage = encoder.encodeToString(message.getBytes(StandardCharsets.UTF_8));
+        logger.info("process encoded to init will to save={}", encodedMessage);
 
-        this.outboxService.create(encoder.encodeToString(message.getBytes(StandardCharsets.UTF_8)));
+        this.outboxService.create(encodedMessage);
     }
 }

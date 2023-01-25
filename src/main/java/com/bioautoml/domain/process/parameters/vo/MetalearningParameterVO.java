@@ -1,6 +1,7 @@
 package com.bioautoml.domain.process.parameters.vo;
 
 import com.bioautoml.domain.process.parameters.enums.Classifiers;
+import com.bioautoml.domain.process.parameters.model.ParametersEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,7 +14,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class MetalearningParameterVO implements Serializable {
+public class MetalearningParameterVO implements Serializable, ParametersEntity {
 
     private UUID id;
     private Boolean normalization = false;

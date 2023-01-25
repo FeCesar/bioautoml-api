@@ -28,7 +28,7 @@ public class OutboxModel implements BaseEntity {
     @Column(name = "DAT_CREATED")
     private LocalDateTime date;
 
-    @Column(name = "DES_MESSAGE")
+    @Column(name = "DES_MESSAGE", columnDefinition = "text")
     private String message;
 
 }

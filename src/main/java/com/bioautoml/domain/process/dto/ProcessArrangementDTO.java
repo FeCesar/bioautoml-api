@@ -1,5 +1,6 @@
 package com.bioautoml.domain.process.dto;
 
+import com.bioautoml.domain.file.dto.FileDTO;
 import com.bioautoml.domain.file.model.FileModel;
 import com.bioautoml.domain.process.model.ProcessModel;
 import com.bioautoml.domain.process.parameters.model.ParametersEntity;
@@ -17,8 +18,8 @@ import java.util.List;
 @Builder
 public class ProcessArrangementDTO implements Serializable {
 
-    private ProcessModel processModel;
+    private ProcessByUserDTO processModel;
     private ParametersEntity parametersEntity;
-    private List<FileModel> files;
+    private List<FileDTO> files;
 
 }

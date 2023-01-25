@@ -1,5 +1,6 @@
 package com.bioautoml.domain.process.parameters.vo;
 
+import com.bioautoml.domain.process.parameters.model.ParametersEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,7 +13,7 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AFEMParameterVO implements Serializable {
+public class AFEMParameterVO implements Serializable, ParametersEntity {
 
     public UUID id;
     public Integer estimations = 50;

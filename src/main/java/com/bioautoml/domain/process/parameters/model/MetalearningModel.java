@@ -5,6 +5,7 @@ import com.bioautoml.domain.process.model.ProcessModel;
 import com.bioautoml.domain.process.parameters.dto.MetalearningDTO;
 import com.bioautoml.domain.process.parameters.dto.MetalearningResponseDTO;
 import com.bioautoml.domain.process.parameters.enums.Classifiers;
+import com.bioautoml.domain.process.parameters.vo.MetalearningParameterVO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -70,6 +71,19 @@ public class MetalearningModel implements ParametersEntity, BaseEntity {
                 .imbalance(this.getImbalance())
                 .tuning(this.getTuning())
                 .output(this.getOutput())
+                .build();
+    }
+
+    public MetalearningParameterVO toVO(){
+        return MetalearningParameterVO.builder()
+                .id(this.getId())
+                .normalization(this.getNormalization())
+                .cpuNumbers(this.getCpuNumbers())
+                .classifiers(this.getClassifiers())
+                .imbalance(this.getImbalance())
+                .tuning(this.getTuning())
+                .output(this.getOutput())
+                .processId(this.getProcess().getId())
                 .build();
     }
 

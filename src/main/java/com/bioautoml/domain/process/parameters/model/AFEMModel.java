@@ -4,6 +4,7 @@ import com.bioautoml.domain.commons.BaseEntity;
 import com.bioautoml.domain.process.model.ProcessModel;
 import com.bioautoml.domain.process.parameters.dto.AFEMDTO;
 import com.bioautoml.domain.process.parameters.dto.AFEMResponseDTO;
+import com.bioautoml.domain.process.parameters.vo.AFEMParameterVO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -53,6 +54,16 @@ public class AFEMModel implements ParametersEntity, BaseEntity {
                 .estimations(this.getEstimations())
                 .cpuNumbers(this.getCpuNumbers())
                 .output(this.getOutput())
+                .build();
+    }
+
+    public AFEMParameterVO toVO(){
+        return AFEMParameterVO.builder()
+                .id(this.getId())
+                .estimations(this.getEstimations())
+                .cpuNumbers(this.getCpuNumbers())
+                .output(this.getOutput())
+                .processId(this.getProcess().getId())
                 .build();
     }
 }
