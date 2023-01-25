@@ -49,9 +49,8 @@ public class ParametersService {
                 afemdto.setProcess(processModel.toDTO());
                 afemdto.setOutput(this.createOutputPath(processModel.getId()));
 
-                logger.info("Created the AFEM parameters from ".concat(afemdto.getId().toString()).concat(" process!"));
-
                 afemService.save(afemdto.toModel());
+                logger.info("saved parameter={} type={}", afemdto.getId(), processType.getParameterType());
                 break;
 
             case METALEARNING:
@@ -61,9 +60,9 @@ public class ParametersService {
                 metalearningDTO.setId(UUID.randomUUID());
                 metalearningDTO.setProcess(processModel.toDTO());
                 metalearningDTO.setOutput(this.createOutputPath(processModel.getId()));
-                logger.info("Created the Metaleraning parameters from ".concat(metalearningDTO.getId().toString()).concat(" process!"));
 
                 metalearningService.save(metalearningDTO.toModel());
+                logger.info("saved parameter={} type={}", metalearningDTO.getId(), processType.getParameterType());
                 break;
         }
     }

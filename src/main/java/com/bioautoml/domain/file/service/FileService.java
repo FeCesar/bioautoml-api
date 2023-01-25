@@ -5,6 +5,8 @@ import com.bioautoml.domain.file.model.FileModel;
 import com.bioautoml.domain.file.repository.FileRepository;
 import com.bioautoml.domain.process.repository.ProcessRepository;
 import com.google.gson.Gson;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +25,8 @@ public class FileService {
 
     private final Gson gson = new Gson();
 
+    private static final Logger logger = LoggerFactory.getLogger(FileService.class);
+
     @Transactional
     public void save(Map<String, MultipartFile[]> files, UUID processId) {
         this.processRepository.findById(processId).stream()
@@ -38,6 +42,7 @@ public class FileService {
                         fileModel.setProcessModel(processModel);
 
                         this.fileRepository.save(fileModel);
+                        logger.info("file={} saved", fileModel.getId());
                     });
                 }));
     }

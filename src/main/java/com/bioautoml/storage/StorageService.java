@@ -47,7 +47,7 @@ public class StorageService {
 
     public void createFolder(String folderPath, InputStream file, ObjectMetadata data){
         this.s3client.putObject(this.amazonCredentials.getBucketName(), folderPath, file, data);
-        logger.info(folderPath.concat(": Created in S3"));
+        logger.info("folder={} created to storage", folderPath);
     }
 
 
@@ -55,19 +55,14 @@ public class StorageService {
         files.forEach(file -> {
                     String folderPath = String.valueOf(processId).concat(this.SEPARATOR).concat(Objects.requireNonNull(file.getOriginalFilename()));
 
-                    logger.info("Creating file: ".concat(file.getOriginalFilename()));
-                    logger.info("Folder path: ".concat(folderPath));
-
                     ObjectMetadata data = new ObjectMetadata();
                     data.setContentType(file.getContentType());
                     data.setContentLength(file.getSize());
 
-                    logger.info("Metadata- ".concat(file.getOriginalFilename()).concat(": ".concat(gson.toJson(data))));
-
                     try {
                         this.createFolder(folderPath, file.getInputStream(), data);
                     } catch (IOException e) {
-                        logger.error(file.getOriginalFilename().concat(": ").concat(e.getMessage()));
+                        logger.error("file={} was failed. stack={}", file.getOriginalFilename(), e.getMessage());
                     }
                 });
     }

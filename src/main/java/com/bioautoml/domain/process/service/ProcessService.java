@@ -106,7 +106,6 @@ public class ProcessService {
         processModel.setUserModel(this.userService.getById(userId).toModel());
         processModel.setStartupTime(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
         processModel.setProcessType(ProcessType.valueOf(processName));
-        logger.info("Created the process: ".concat(processModel.getId().toString()));
 
         ProcessMessageDTO processMessageDTO = ProcessMessageDTO.builder()
                 .id(processId)
@@ -116,15 +115,14 @@ public class ProcessService {
                 .startupTime(processModel.getStartupTime())
                 .userId(processModel.getUserModel().getId())
                 .build();
-        logger.info("Crated the process message: ".concat(processMessageDTO.toString()));
 
         ProcessDTO processDTO = this.save(processModel);
+        logger.info("saved process={}", processDTO.getId());
+
         this.parametersService.createParameters(processModel.getProcessType(), processModel, parameters);
         this.fileService.save(files, processId);
 
         this.createFilesInS3(files, processId);
-
-        logger.info("Sent all messages from process ".concat(processId.toString()));
 
         return processDTO;
     }
@@ -200,7 +198,6 @@ public class ProcessService {
 
     private void sendToInit(ProcessArrangementDTO processArrangementDTO) {
         String message = this.gson.toJson(processArrangementDTO);
-        logger.debug("process to init will to save without encode={}", message);
 
         Base64.Encoder encoder = Base64.getEncoder();
         String encodedMessage = encoder.encodeToString(message.getBytes(StandardCharsets.UTF_8));

@@ -29,5 +29,6 @@ public class OutboxService {
         outboxModel.setMessage(message);
 
         this.save(outboxModel);
+        logger.info("saved outbox={}", outboxModel.getId());
     }
 }
