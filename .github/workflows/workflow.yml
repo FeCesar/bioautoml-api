@@ -72,6 +72,7 @@ jobs:
           POSTGRES_USERNAME=${{ secrets.APP_POSTGRES_USERNAME }},
           POSTGRES_PASSWORD=${{ secrets.APP_POSTGRES_PASSWORD }},
           RABBITMQ_ADDRESS=${{ secrets.APP_RABBITMQ_ADDRESS }}
+          NUMBER_OF_CONCURRENT_PROCESSES=${{ secrets.APP_NUMBER_OF_CONCURRENT_PROCESSES }}
           
         
         
