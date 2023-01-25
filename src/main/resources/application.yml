@@ -25,6 +25,9 @@ server:
 application:
   rabbit:
     queues:
+      processes:
+        init: baml.processes.init
+
       process:
         dna-rna: baml.processes.dna-rna
         wnm-dna-rna: baml.processes.wnm-dna-rna

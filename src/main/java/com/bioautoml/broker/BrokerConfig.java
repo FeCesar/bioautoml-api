@@ -41,6 +41,9 @@ public class BrokerConfig {
     @Value("${application.rabbit.queues.process.files}")
     private String processFileQueue;
 
+    @Value("${application.rabbit.queues.processes.init}")
+    private String processesInitQueue;
+
     @Bean
     private Queue createDnaRnaQueue(){
         return new Queue(this.dnaRnaQueue, true);
@@ -94,5 +97,10 @@ public class BrokerConfig {
     @Bean
     private Queue createProcessFileQueue() {
         return new Queue(this.processFileQueue, true);
+    }
+
+    @Bean
+    private Queue createProcessesInitQueue() {
+        return new Queue(this.processesInitQueue, true);
     }
 }
