@@ -1,7 +1,6 @@
 package com.bioautoml.domain.file.dto;
 
 import com.bioautoml.domain.file.enums.FileType;
-import com.bioautoml.domain.process.dto.ProcessDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

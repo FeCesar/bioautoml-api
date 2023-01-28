@@ -107,15 +107,6 @@ public class ProcessService {
         processModel.setStartupTime(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
         processModel.setProcessType(ProcessType.valueOf(processName));
 
-        ProcessMessageDTO processMessageDTO = ProcessMessageDTO.builder()
-                .id(processId)
-                .processStatus(processModel.getProcessStatus())
-                .processType(processModel.getProcessType())
-                .completionTime(processModel.getCompletionTime())
-                .startupTime(processModel.getStartupTime())
-                .userId(processModel.getUserModel().getId())
-                .build();
-
         ProcessDTO processDTO = this.save(processModel);
         logger.info("saved process={}", processDTO.getId());
 
