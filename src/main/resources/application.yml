@@ -2,6 +2,9 @@ spring:
   profiles:
     active: ${PROFILE}
 
+    application:
+      name: bioautoml-api
+
   servlet:
     multipart:
       max-file-size: ${MAX_FILE_SIZE}

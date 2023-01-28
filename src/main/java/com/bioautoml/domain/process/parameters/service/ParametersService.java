@@ -68,6 +68,6 @@ public class ParametersService {
     }
 
     private String createOutputPath(UUID processId){
-        return this.initOutputPath.concat(SEPARATOR).concat(processId.toString()).concat(this.endOutputPath).concat(SEPARATOR);
+        return SEPARATOR + this.initOutputPath + SEPARATOR + processId.toString() + SEPARATOR + this.endOutputPath + SEPARATOR;
     }
 }
