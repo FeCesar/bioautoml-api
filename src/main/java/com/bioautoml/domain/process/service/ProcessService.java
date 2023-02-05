@@ -6,7 +6,6 @@ import com.bioautoml.domain.file.service.FileService;
 import com.bioautoml.domain.outbox.service.OutboxService;
 import com.bioautoml.domain.process.dto.ProcessArrangementDTO;
 import com.bioautoml.domain.process.dto.ProcessDTO;
-import com.bioautoml.domain.process.dto.ProcessMessageDTO;
 import com.bioautoml.domain.process.enums.ProcessStatus;
 import com.bioautoml.domain.process.enums.ProcessType;
 import com.bioautoml.domain.process.model.ProcessModel;

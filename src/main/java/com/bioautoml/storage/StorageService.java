@@ -18,6 +18,7 @@ import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -53,7 +54,8 @@ public class StorageService {
 
     public void createFolders(List<MultipartFile> files, UUID processId){
         files.forEach(file -> {
-                    String folderPath = String.valueOf(processId).concat(this.SEPARATOR).concat(Objects.requireNonNull(file.getOriginalFilename()));
+                    String folderPath = processId.toString() + this.SEPARATOR +
+                            Objects.requireNonNull(file.getOriginalFilename()).strip().toLowerCase(Locale.ROOT);
 
                     ObjectMetadata data = new ObjectMetadata();
                     data.setContentType(file.getContentType());

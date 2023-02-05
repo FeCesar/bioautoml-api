@@ -37,7 +37,7 @@ public class FileService {
                     allFilesByType.forEach(multipartFile -> {
                         FileModel fileModel = new FileModel();
                         fileModel.setId(UUID.randomUUID());
-                        fileModel.setFileName(multipartFile.getOriginalFilename());
+                        fileModel.setFileName(multipartFile.getOriginalFilename().strip().toLowerCase(Locale.ROOT));
                         fileModel.setFileType(FileType.valueOf(key));
                         fileModel.setProcessModel(processModel);
 
