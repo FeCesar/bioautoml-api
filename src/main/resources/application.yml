@@ -10,6 +10,10 @@ spring:
       max-file-size: ${MAX_FILE_SIZE}
       max-request-size: ${MAX_REQUEST_SIZE}
 
+  sql:
+    init:
+      mode: always
+
   jpa:
     hibernate:
       ddl-auto: update
@@ -59,7 +63,7 @@ application:
 spring:
   profiles: dev
   datasource:
-    url: jdbc:postgresql://localhost:5432/bioautoml
+    url: jdbc:postgresql://localhost:5432/bioautoml-api
     username: postgres
     password: postgres
 
