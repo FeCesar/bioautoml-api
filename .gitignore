@@ -16,6 +16,9 @@ mvnw.cmd
 .springBeans
 .sts4-cache
 
+### Fleet IDEA ###
+.fleet
+
 ### IntelliJ IDEA ###
 .idea
 *.iws
