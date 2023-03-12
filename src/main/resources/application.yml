@@ -10,10 +10,6 @@ spring:
       max-file-size: ${MAX_FILE_SIZE}
       max-request-size: ${MAX_REQUEST_SIZE}
 
-  sql:
-    init:
-      mode: always
-
   jpa:
     hibernate:
       ddl-auto: update
