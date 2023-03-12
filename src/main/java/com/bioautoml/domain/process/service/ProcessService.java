@@ -104,6 +104,9 @@ public class ProcessService {
         processModel.setId(processId);
         processModel.setUserModel(this.userService.getById(userId).toModel());
         processModel.setStartupTime(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
+
+
+
         processModel.setProcessType(ProcessType.valueOf(processName));
 
         ProcessDTO processDTO = this.save(processModel);
