@@ -45,7 +45,7 @@ public class MetalearningDTO implements ParametersEntity {
                 .id(this.getId())
                 .normalization(this.getNormalization())
                 .cpuNumbers(this.getCpuNumbers())
-                .classifiers(this.getClassifiers())
+                .classifiers(this.getClassifiers().getIndex())
                 .imbalance(this.getImbalance())
                 .tuning(this.getTuning())
                 .output(this.getOutput())

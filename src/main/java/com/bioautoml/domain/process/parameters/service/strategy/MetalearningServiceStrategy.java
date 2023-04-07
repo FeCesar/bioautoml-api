@@ -37,8 +37,6 @@ public class MetalearningServiceStrategy implements ParametersServiceStrategy<Me
                 .stream()
                 .map(MetalearningModel::toResponseDTO)
                 .findFirst()
-                .orElseThrow(() -> {
-                    throw new NotFoundException("Process not Exists!");
-                });
+                .orElseThrow(() -> new NotFoundException("Process not Exists!"));
     }
 }

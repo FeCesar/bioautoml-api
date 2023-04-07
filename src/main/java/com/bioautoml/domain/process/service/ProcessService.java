@@ -18,7 +18,6 @@ import com.bioautoml.domain.process.parameters.repository.MetalearningRepository
 import com.bioautoml.domain.process.parameters.service.LabelService;
 import com.bioautoml.domain.process.parameters.service.ParametersService;
 import com.bioautoml.domain.process.repository.ProcessRepository;
-import com.bioautoml.domain.process.types.ProcessSelector;
 import com.bioautoml.domain.user.service.UserService;
 import com.bioautoml.exceptions.AlreadyExistsException;
 import com.bioautoml.exceptions.NotFoundException;
@@ -46,9 +45,6 @@ public class ProcessService {
 
     @Autowired
     private UserService userService;
-
-    @Autowired
-    private ProcessSelector processSelector;
 
     @Autowired
     private FileService fileService;
