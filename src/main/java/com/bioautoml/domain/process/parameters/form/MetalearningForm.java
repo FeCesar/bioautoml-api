@@ -12,10 +12,10 @@ import lombok.NoArgsConstructor;
 @Data
 public class MetalearningForm implements ParametersForm {
 
-    private Boolean normalization;
-    private Integer cpuNumbers;
+    private Boolean normalization = false;
+    private Integer cpuNumbers = 2;
     private Classifiers classifiers;
-    private Boolean imbalance;
-    private Boolean tuning;
+    private Boolean imbalance = false;
+    private Boolean tuning = false;
 
 }

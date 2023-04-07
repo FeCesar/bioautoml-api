@@ -5,13 +5,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class AFEMForm implements ParametersForm {
+public class LabelForm {
 
-    private Integer estimations = 1;
-    private Integer cpuNumbers = 2;
+    private List<String> trainLabels;
+    private List<String> testLabels = List.of("unknown");
 
 }

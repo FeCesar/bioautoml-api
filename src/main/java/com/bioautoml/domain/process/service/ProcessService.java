@@ -10,9 +10,12 @@ import com.bioautoml.domain.process.enums.ProcessStatus;
 import com.bioautoml.domain.process.enums.ProcessType;
 import com.bioautoml.domain.process.model.ProcessModel;
 import com.bioautoml.domain.process.parameters.enums.ParametersType;
+import com.bioautoml.domain.process.parameters.form.LabelForm;
 import com.bioautoml.domain.process.parameters.form.ParametersForm;
+import com.bioautoml.domain.process.parameters.model.LabelModel;
 import com.bioautoml.domain.process.parameters.repository.AFEMRepository;
 import com.bioautoml.domain.process.parameters.repository.MetalearningRepository;
+import com.bioautoml.domain.process.parameters.service.LabelService;
 import com.bioautoml.domain.process.parameters.service.ParametersService;
 import com.bioautoml.domain.process.repository.ProcessRepository;
 import com.bioautoml.domain.process.types.ProcessSelector;
@@ -68,6 +71,9 @@ public class ProcessService {
     @Autowired
     private FileRepository fileRepository;
 
+    @Autowired
+    private LabelService labelService;
+
     @Value("${application.config.processes.amount}")
     private int amountOfRunProcesses;
 
@@ -87,9 +93,7 @@ public class ProcessService {
                 .stream()
                 .map(ProcessModel::toDTO)
                 .findFirst()
-                .orElseThrow(() -> {
-                    throw new NotFoundException("Process not Exists!");
-                });
+                .orElseThrow(() -> new NotFoundException("Process not Exists!"));
     }
 
     private ProcessDTO save(ProcessModel processModel) {
@@ -97,7 +101,13 @@ public class ProcessService {
     }
 
     @Transactional
-    public ProcessDTO start(String processName, Map<String, MultipartFile[]> files, UUID userId, ParametersForm parameters){
+    public ProcessDTO start(
+            String processName,
+            Map<String, MultipartFile[]> files,
+            UUID userId,
+            ParametersForm parameters,
+            LabelForm labelForm
+    ){
         UUID processId = UUID.randomUUID();
 
         ProcessModel processModel = new ProcessModel();
@@ -105,13 +115,12 @@ public class ProcessService {
         processModel.setUserModel(this.userService.getById(userId).toModel());
         processModel.setStartupTime(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
 
-
-
         processModel.setProcessType(ProcessType.valueOf(processName));
 
         ProcessDTO processDTO = this.save(processModel);
         logger.info("saved process={}", processDTO.getId());
 
+        this.labelService.save(labelForm, processId);
         this.parametersService.createParameters(processModel.getProcessType(), processModel, parameters);
         this.fileService.save(files, processId);
 
@@ -159,13 +168,13 @@ public class ProcessService {
         long amountOfProcessingProcesses = this.processRepository.countByProcessStatusIs(ProcessStatus.PROCESSING);
 
         this.processRepository.findByProcessStatusIsOrderByStartupTime(ProcessStatus.WAITING)
-                .ifPresent(processes -> {
-                    if(amountOfProcessingProcesses < this.amountOfRunProcesses) {
-                        processes.stream()
-                                .limit(this.amountOfRunProcesses - amountOfProcessingProcesses)
-                                .forEach(this::prepareToSend);
-                    }
-                });
+            .ifPresent(processes -> {
+                if(amountOfProcessingProcesses < this.amountOfRunProcesses) {
+                    processes.stream()
+                            .limit(this.amountOfRunProcesses - amountOfProcessingProcesses)
+                            .forEach(this::prepareToSend);
+                }
+            });
     }
 
     private void prepareToSend(ProcessModel processModel) {
@@ -183,6 +192,10 @@ public class ProcessService {
 
         processArrangementDTO.setFiles(this.fileRepository.findAllByProcessModel(processModel).get().stream()
                 .map(FileModel::toDTO)
+                .collect(Collectors.toList()));
+
+        processArrangementDTO.setLabels(this.labelService.findAllByProcess(processModel).get().stream()
+                .map(LabelModel::toDTO)
                 .collect(Collectors.toList()));
 
         this.updateStatus(processModel.getId());
