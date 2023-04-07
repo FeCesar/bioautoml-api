@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Collections;
 import java.util.List;
 
 @Builder
@@ -13,7 +14,7 @@ import java.util.List;
 @Data
 public class LabelForm {
 
-    private List<String> trainLabels;
+    private List<String> trainLabels = Collections.emptyList();
     private List<String> testLabels = List.of("unknown");
 
 }

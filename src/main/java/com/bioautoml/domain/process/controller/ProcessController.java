@@ -112,7 +112,7 @@ public class ProcessController {
                         files,
                         userId,
                         metalearningForm,
-                        new LabelForm()
+                        labelForm
                 )
         );
     }
