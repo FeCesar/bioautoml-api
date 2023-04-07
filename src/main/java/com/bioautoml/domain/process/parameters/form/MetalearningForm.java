@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class MetalearningForm implements ParametersForm {
 
     private Boolean normalization = false;
-    private Integer cpuNumbers = 2;
+    private Integer cpuNumbers = 1;
     private Classifiers classifiers;
     private Boolean imbalance = false;
     private Boolean tuning = false;

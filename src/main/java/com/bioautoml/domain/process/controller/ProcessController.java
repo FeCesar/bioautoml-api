@@ -83,28 +83,38 @@ public class ProcessController {
     public ResponseEntity<ProcessDTO> metalearningStart(
             @PathVariable String processName,
             @RequestPart MultipartFile[] train,
-            @RequestPart MultipartFile[] test,
+            @RequestParam MultipartFile[] train_label,
+            @RequestPart(required = false) MultipartFile[] test,
+            @RequestParam(required = false) MultipartFile[] test_label,
             @RequestPart MultipartFile[] test_name_sequence,
             @RequestParam String parameters,
-            @RequestParam String labels,
             @RequestHeader(value = "Authorization") String token) {
         UUID userId = this.jwtService.getUserId(token.split(" ")[1]);
 
         Map<String, MultipartFile[]> files = new HashMap<>();
         files.put("TRAIN", train);
+        files.put("LABEL_TRAIN", train_label);
+        files.put("SEQUENCE", test_name_sequence);
 
         if(test != null) {
             files.put("TEST", test);
+            files.put("LABEL_TEST", test_label);
         }
 
-        if(test_name_sequence != null) {
-            files.put("SEQUENCE", test_name_sequence);
-        }
-
-        LabelForm labelForm = this.gson.fromJson(labels, LabelForm.class);
         MetalearningForm metalearningForm = this.gson.fromJson(parameters, MetalearningForm.class);
 
-        return ResponseEntity.status(HttpStatus.OK).body(this.processService.start(processName, files, userId, metalearningForm, labelForm));
+        LabelForm labelForm = new LabelForm();
+        labelForm.setTestLabels(Collections.emptyList());
+
+        return ResponseEntity.status(HttpStatus.OK).body(
+                this.processService.start(
+                        processName,
+                        files,
+                        userId,
+                        metalearningForm,
+                        new LabelForm()
+                )
+        );
     }
 
     @PutMapping("/{id}")

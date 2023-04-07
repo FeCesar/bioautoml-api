@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class AFEMForm implements ParametersForm {
 
-    private Integer estimations = 1;
-    private Integer cpuNumbers = 2;
+    private Integer estimations = 50;
+    private Integer cpuNumbers = 1;
 
 }
