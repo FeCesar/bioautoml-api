@@ -24,23 +24,27 @@ public class LabelService {
 
     public void save(LabelForm labelForm, UUID processId) {
         this.processRepository.findById(processId).ifPresent(processModel -> {
-            labelForm.getTrainLabels().forEach(label -> {
-                LabelModel labelModel = new LabelModel();
-                labelModel.setLabelType(LabelType.TRAIN);
-                labelModel.setProcessModel(processModel);
-                labelModel.setValue(label);
+            if(!labelForm.getTrainLabels().isEmpty()) {
+                labelForm.getTrainLabels().forEach(label -> {
+                    LabelModel labelModel = new LabelModel();
+                    labelModel.setLabelType(LabelType.TRAIN);
+                    labelModel.setProcessModel(processModel);
+                    labelModel.setValue(label);
 
-                this.save(labelModel);
-            });
+                    this.save(labelModel);
+                });
+            }
 
-            labelForm.getTestLabels().forEach(label -> {
-                LabelModel labelModel = new LabelModel();
-                labelModel.setLabelType(LabelType.TEST);
-                labelModel.setProcessModel(processModel);
-                labelModel.setValue(label);
+            if(!labelForm.getTestLabels().isEmpty()) {
+                labelForm.getTestLabels().forEach(label -> {
+                    LabelModel labelModel = new LabelModel();
+                    labelModel.setLabelType(LabelType.TEST);
+                    labelModel.setProcessModel(processModel);
+                    labelModel.setValue(label);
 
-                this.save(labelModel);
-            });
+                    this.save(labelModel);
+                });
+            }
         });
     }
 
