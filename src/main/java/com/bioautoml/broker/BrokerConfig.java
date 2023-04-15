@@ -17,6 +17,9 @@ public class BrokerConfig {
     @Value("${application.rabbit.queues.processes.init}")
     private String processesInitQueue;
 
+    @Value("${application.rabbit.queues.processes.errors}")
+    private String processesErrorsQueue;
+
     @Bean
     private Queue createProcessesStatusQueue() {
         return new Queue(this.processesStatusQueue, true);
@@ -30,5 +33,10 @@ public class BrokerConfig {
     @Bean
     private Queue createProcessesInitQueue() {
         return new Queue(this.processesInitQueue, true);
+    }
+
+    @Bean
+    private Queue createProcessesErrorsQueue() {
+        return new Queue(this.processesErrorsQueue, true);
     }
 }
