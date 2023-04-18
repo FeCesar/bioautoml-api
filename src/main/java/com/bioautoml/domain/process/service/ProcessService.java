@@ -19,7 +19,6 @@ import com.bioautoml.domain.process.parameters.service.LabelService;
 import com.bioautoml.domain.process.parameters.service.ParametersService;
 import com.bioautoml.domain.process.repository.ProcessRepository;
 import com.bioautoml.domain.user.service.UserService;
-import com.bioautoml.exceptions.AlreadyExistsException;
 import com.bioautoml.exceptions.NotFoundException;
 import com.bioautoml.storage.StorageService;
 import com.google.gson.Gson;
@@ -135,31 +134,6 @@ public class ProcessService {
         this.storageService.createFolders(allFiles, processId);
     }
 
-    public void updateStatus(UUID id) {
-         Optional<ProcessModel> processModelOptional = this.processRepository.findById(id);
-
-         if(processModelOptional.isEmpty()){
-             logger.error("Process ".concat(id.toString()).concat(" not exists!"));
-             throw new NotFoundException("Process not exists!");
-         }
-
-         ProcessModel processModel = processModelOptional.get();
-         ProcessStatus nextProcessStatus = processModel.getProcessStatus().next();
-
-         if(nextProcessStatus.equals(ProcessStatus.WAITING)){
-             logger.error("Process ".concat(id.toString()).concat(" already completed!"));
-             throw new AlreadyExistsException("Process already completed");
-         }
-
-         processModel.setProcessStatus(nextProcessStatus);
-
-         logger.info("Process status ".concat(processModel.getId().toString()).concat(" updated from ")
-                 .concat(processModel.getProcessStatus().prev().toString()).concat(" to ")
-                 .concat(processModel.getProcessStatus().toString()));
-
-         this.save(processModel);
-    }
-
     public void check() {
         long amountOfProcessingProcesses = this.processRepository.countByProcessStatusIs(ProcessStatus.PROCESSING);
 
@@ -194,7 +168,6 @@ public class ProcessService {
                 .map(LabelModel::toDTO)
                 .collect(Collectors.toList()));
 
-        this.updateStatus(processModel.getId());
         this.sendToInit(processArrangementDTO);
     }
 

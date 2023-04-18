@@ -117,10 +117,4 @@ public class ProcessController {
         );
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateStatus(@PathVariable UUID id){
-        this.processService.updateStatus(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-    }
-
 }
