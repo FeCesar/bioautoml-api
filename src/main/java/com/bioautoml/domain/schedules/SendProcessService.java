@@ -25,12 +25,12 @@ public class SendProcessService {
 
     public void check() {
         this.outboxRepository.findByWasSentIs(Boolean.FALSE).forEach(outbox -> {
-                    this.messageSender.send(outbox.getMessage(), this.processesInitQueue);
-                    logger.info("Was sent idt_outbox={}, message={}", outbox.getId(), outbox.getMessage());
+            this.messageSender.send(outbox.getMessage(), this.processesInitQueue);
+            logger.info("Was sent idt_outbox={}, message={}", outbox.getId(), outbox.getMessage());
 
-                    outbox.setWasSent(Boolean.TRUE);
-                    this.outboxRepository.save(outbox);
-                });
+            outbox.setWasSent(Boolean.TRUE);
+            this.outboxRepository.save(outbox);
+        });
     }
 
 }

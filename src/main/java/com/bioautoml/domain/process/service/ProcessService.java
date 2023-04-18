@@ -136,21 +136,22 @@ public class ProcessService {
 
     public void check() {
         long amountOfProcessingProcesses = this.processRepository.countByProcessStatusIs(ProcessStatus.PROCESSING);
+        long amountOfProcessingInQueue = this.processRepository.countByProcessStatusIs(ProcessStatus.IN_QUEUE);
+        long totalProcessRunning = amountOfProcessingProcesses + amountOfProcessingInQueue;
 
         this.processRepository.findByProcessStatusIsOrderByStartupTime(ProcessStatus.WAITING)
             .ifPresent(processes -> {
-                if(amountOfProcessingProcesses < this.amountOfRunProcesses) {
+                if(totalProcessRunning < this.amountOfRunProcesses) {
                     processes.stream()
-                            .limit(this.amountOfRunProcesses - amountOfProcessingProcesses)
-                            .forEach(this::prepareToSend);
+                        .limit(this.amountOfRunProcesses - totalProcessRunning)
+                        .forEach(this::prepareToSend);
                 }
             });
     }
 
     private void prepareToSend(ProcessModel processModel) {
         ProcessArrangementDTO processArrangementDTO = ProcessArrangementDTO.builder()
-                .processModel(processModel.toProcessByUserDTO())
-                .build();
+            .build();
 
         if(processModel.getProcessType().getParameterType() == ParametersType.AFEM) {
             processArrangementDTO.setParametersEntity(this.afemRepository.findByProcessId(processModel.getId()).get().toVO());
@@ -168,7 +169,20 @@ public class ProcessService {
                 .map(LabelModel::toDTO)
                 .collect(Collectors.toList()));
 
+        this.updateStatus(processModel.getId());
+
+        processArrangementDTO.setProcessModel(processModel.toProcessByUserDTO());
+
         this.sendToInit(processArrangementDTO);
+    }
+
+    private void updateStatus(UUID processId) {
+        Optional<ProcessModel> processModel = this.processRepository.findById(processId);
+
+        processModel.ifPresent(process -> {
+            process.setProcessStatus(ProcessStatus.IN_QUEUE);
+            this.processRepository.save(process);
+        });
     }
 
     private void sendToInit(ProcessArrangementDTO processArrangementDTO) {
