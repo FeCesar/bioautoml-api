@@ -15,5 +15,6 @@ public class ProcessUpdateStatusDTO implements Serializable {
 
     String processId;
     String status;
+    String referenceDate;
 
 }

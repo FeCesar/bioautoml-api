@@ -11,6 +11,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Base64;
 import java.util.Optional;
 import java.util.UUID;
@@ -29,14 +32,19 @@ public class ProcessUpdateService {
         Optional<ProcessModel> processModelOptional = this.processRepository.findById(processId);
 
         if(processModelOptional.isEmpty()){
-            logger.error("Process ".concat(processId.toString()).concat(" not exists!"));
+            logger.error("Process={} not exists!", processId);
             throw new NotFoundException("Process not exists!");
         }
 
         ProcessModel processModel = processModelOptional.get();
-        processModel.setProcessStatus(
-            ProcessStatus.valueOf(processUpdateStatusDTO.getStatus())
-        );
+        ProcessStatus processStatus = ProcessStatus.valueOf(processUpdateStatusDTO.getStatus());
+        processModel.setProcessStatus(processStatus);
+
+        if (processStatus == ProcessStatus.FINISHED || processStatus == ProcessStatus.ERROR) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            LocalDateTime referenceDate = LocalDateTime.parse(processUpdateStatusDTO.getReferenceDate(), formatter);
+            processModel.setCompletionTime(referenceDate.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
+        }
 
         this.processRepository.save(processModel);
     }
