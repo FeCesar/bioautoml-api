@@ -32,6 +32,7 @@ application:
         init: baml.processes.init
         status: baml.processes.status
         results: baml.processes.results
+        errors: baml.processes.errors
 
   jwt:
     secret: ${JWT_SECRET}
