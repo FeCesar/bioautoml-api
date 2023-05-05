@@ -9,10 +9,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "result_links")
+@Table(name = "results")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -23,18 +24,26 @@ public class ResultModel implements BaseEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @Column(name = "link")
+    @Column(name = "link", columnDefinition = "text")
     private String link;
 
     @OneToOne
     @JoinColumn(name = "process_id")
     private ProcessModel processModel;
 
+    @Column(name = "reference_date")
+    private LocalDateTime referenceDate;
+
+    @Column(name = "dat_creation")
+    private LocalDateTime creationDate = LocalDateTime.now();
+
     public ResultDTO toDTO() {
         return ResultDTO.builder()
                 .id(this.getId())
                 .link(this.getLink())
                 .processId(this.getProcessModel().getId())
+                .referenceDate(this.getReferenceDate())
+                .creationDate(this.getCreationDate())
                 .build();
     }
 }

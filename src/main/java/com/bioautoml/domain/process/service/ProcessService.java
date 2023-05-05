@@ -20,7 +20,7 @@ import com.bioautoml.domain.process.parameters.service.ParametersService;
 import com.bioautoml.domain.process.repository.ProcessRepository;
 import com.bioautoml.domain.user.service.UserService;
 import com.bioautoml.exceptions.NotFoundException;
-import com.bioautoml.storage.StorageService;
+import com.bioautoml.storage.Storage;
 import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,7 +49,7 @@ public class ProcessService {
     private FileService fileService;
 
     @Autowired
-    private StorageService storageService;
+    private Storage storageService;
 
     @Autowired
     private ParametersService parametersService;

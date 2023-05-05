@@ -1,4 +1,4 @@
-package com.bioautoml.storage;
+package com.bioautoml.storage.credentials;
 
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
