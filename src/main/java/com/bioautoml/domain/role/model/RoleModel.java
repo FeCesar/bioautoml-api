@@ -1,6 +1,7 @@
 package com.bioautoml.domain.role.model;
 
 import com.bioautoml.domain.commons.BaseEntity;
+import com.bioautoml.domain.role.dto.RoleDTO;
 import com.bioautoml.domain.role.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,5 +31,12 @@ public class RoleModel implements BaseEntity, GrantedAuthority {
     @Override
     public String getAuthority() {
         return this.getRoleName().name();
+    }
+
+    public RoleDTO toDTO(){
+        return RoleDTO.builder()
+                .id(this.getId())
+                .name(this.getRoleName().name())
+                .build();
     }
 }

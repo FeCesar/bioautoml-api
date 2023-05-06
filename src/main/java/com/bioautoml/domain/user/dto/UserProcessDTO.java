@@ -1,7 +1,5 @@
 package com.bioautoml.domain.user.dto;
 
-import com.bioautoml.domain.role.dto.RoleDTO;
-import com.bioautoml.domain.role.model.RoleModel;
 import com.bioautoml.domain.user.enums.Type;
 import com.bioautoml.domain.user.model.UserModel;
 import lombok.AllArgsConstructor;

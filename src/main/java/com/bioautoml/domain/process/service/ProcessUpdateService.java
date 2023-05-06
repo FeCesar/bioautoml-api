@@ -43,7 +43,7 @@ public class ProcessUpdateService {
         if (processStatus == ProcessStatus.FINISHED || processStatus == ProcessStatus.ERROR) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             LocalDateTime referenceDate = LocalDateTime.parse(processUpdateStatusDTO.getReferenceDate(), formatter);
-            processModel.setCompletionTime(referenceDate.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
+            processModel.setCompletionTime(referenceDate);
         }
 
         this.processRepository.save(processModel);

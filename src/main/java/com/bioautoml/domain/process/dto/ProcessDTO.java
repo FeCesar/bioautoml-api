@@ -10,6 +10,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
@@ -21,8 +22,8 @@ public class ProcessDTO implements BaseEntity {
     private UUID id;
     private ProcessType processType;
     private ProcessStatus processStatus;
-    private Long startupTime;
-    private Long completionTime;
+    private LocalDateTime startupTime;
+    private LocalDateTime completionTime;
     private UserProcessDTO user;
 
     public ProcessModel toModel(){

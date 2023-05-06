@@ -14,7 +14,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -35,14 +34,14 @@ public class ProcessModel implements BaseEntity {
     private ProcessType processType;
 
     @Column(nullable = false)
-    private Long startupTime = LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+    private LocalDateTime startupTime = LocalDateTime.now();
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private ProcessStatus processStatus = ProcessStatus.WAITING;
 
     @Column
-    private Long completionTime;
+    private LocalDateTime completionTime;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
