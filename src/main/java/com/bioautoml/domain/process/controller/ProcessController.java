@@ -1,10 +1,12 @@
 package com.bioautoml.domain.process.controller;
 
+import com.bioautoml.domain.process.dto.ProcessAggregatedDTO;
 import com.bioautoml.domain.process.dto.ProcessDTO;
 import com.bioautoml.domain.process.parameters.form.AFEMForm;
 import com.bioautoml.domain.process.parameters.form.LabelForm;
 import com.bioautoml.domain.process.parameters.form.MetalearningForm;
-import com.bioautoml.domain.process.parameters.service.ParametersService;
+import com.bioautoml.domain.process.parameters.service.ParameterService;
+import com.bioautoml.domain.process.service.ProcessAggregatedService;
 import com.bioautoml.domain.process.service.ProcessService;
 import com.bioautoml.domain.user.service.UserService;
 import com.bioautoml.security.services.JwtService;
@@ -30,7 +32,10 @@ public class ProcessController {
     private UserService userService;
 
     @Autowired
-    private ParametersService parametersService;
+    private ParameterService parameterService;
+
+    @Autowired
+    private ProcessAggregatedService processAggregatedService;
 
     @Autowired
     private JwtService jwtService;
@@ -55,6 +60,7 @@ public class ProcessController {
             @RequestPart(required = false) MultipartFile[] test,
             @RequestParam(required = false) String parameters,
             @RequestParam String labels,
+            @RequestParam String referenceName,
             @RequestHeader(value = "Authorization") String token) {
         UUID userId = this.jwtService.getUserId(token.split(" ")[1]);
 
@@ -69,13 +75,14 @@ public class ProcessController {
         AFEMForm afemForm = this.gson.fromJson(parameters, AFEMForm.class);
 
         return ResponseEntity.status(HttpStatus.OK).body(
-                this.processService.start(
-                        processName,
-                        files,
-                        userId,
-                        afemForm,
-                        labelForm
-                )
+            this.processService.start(
+                processName,
+                files,
+                userId,
+                afemForm,
+                labelForm,
+                referenceName
+            )
         );
     }
 
@@ -88,6 +95,7 @@ public class ProcessController {
             @RequestParam(required = false) MultipartFile[] test_label,
             @RequestPart MultipartFile[] test_name_sequence,
             @RequestParam String parameters,
+            @RequestParam String referenceName,
             @RequestHeader(value = "Authorization") String token) {
         UUID userId = this.jwtService.getUserId(token.split(" ")[1]);
 
@@ -107,14 +115,22 @@ public class ProcessController {
         labelForm.setTestLabels(Collections.emptyList());
 
         return ResponseEntity.status(HttpStatus.OK).body(
-                this.processService.start(
-                        processName,
-                        files,
-                        userId,
-                        metalearningForm,
-                        labelForm
-                )
+            this.processService.start(
+                processName,
+                files,
+                userId,
+                metalearningForm,
+                labelForm,
+                referenceName
+            )
         );
+    }
+
+    @GetMapping(value = "/{id}/aggregated")
+    public ResponseEntity<ProcessAggregatedDTO> getAllFromProcessBy(
+        @PathVariable UUID id
+    ){
+        return ResponseEntity.status(HttpStatus.OK).body(this.processAggregatedService.getAllInfoFrom(id));
     }
 
 }

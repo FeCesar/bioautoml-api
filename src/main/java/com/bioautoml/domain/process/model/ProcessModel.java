@@ -4,6 +4,7 @@ import com.bioautoml.domain.commons.BaseEntity;
 import com.bioautoml.domain.file.model.FileModel;
 import com.bioautoml.domain.process.dto.ProcessByUserDTO;
 import com.bioautoml.domain.process.dto.ProcessDTO;
+import com.bioautoml.domain.process.dto.ProcessSimpleDTO;
 import com.bioautoml.domain.process.enums.ProcessStatus;
 import com.bioautoml.domain.process.enums.ProcessType;
 import com.bioautoml.domain.user.model.UserModel;
@@ -36,6 +37,9 @@ public class ProcessModel implements BaseEntity {
     @Column(nullable = false)
     private LocalDateTime startupTime = LocalDateTime.now();
 
+    @Column(name = "reference_name")
+    private String referenceName;
+
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private ProcessStatus processStatus = ProcessStatus.WAITING;
@@ -59,6 +63,7 @@ public class ProcessModel implements BaseEntity {
                 .startupTime(this.getStartupTime())
                 .completionTime((this.getCompletionTime()))
                 .user(this.getUserModel().toUserProcessDTO())
+                .referenceName(this.getReferenceName())
                 .build();
     }
 
@@ -69,6 +74,16 @@ public class ProcessModel implements BaseEntity {
                 .processStatus(this.getProcessStatus())
                 .startupTime(this.getStartupTime())
                 .completionTime((this.getCompletionTime()))
+                .build();
+    }
+
+    public ProcessSimpleDTO toSimpleDTO(){
+        return ProcessSimpleDTO.builder()
+                .referenceName(this.getReferenceName())
+                .completionTime(this.getCompletionTime())
+                .processStatus(this.getProcessStatus())
+                .processType(this.getProcessType())
+                .startupTime(this.getStartupTime())
                 .build();
     }
 

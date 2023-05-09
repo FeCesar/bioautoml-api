@@ -3,6 +3,7 @@ package com.bioautoml.domain.process.parameters.model;
 import com.bioautoml.domain.commons.BaseEntity;
 import com.bioautoml.domain.process.model.ProcessModel;
 import com.bioautoml.domain.process.parameters.dto.LabelDTO;
+import com.bioautoml.domain.process.parameters.dto.LabelSimpleDTO;
 import com.bioautoml.domain.process.parameters.enums.LabelType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -39,6 +40,13 @@ public class LabelModel implements BaseEntity {
     public LabelDTO toDTO() {
         return LabelDTO.builder()
                 .id(this.getId())
+                .labelType(this.getLabelType())
+                .value(this.getValue())
+                .build();
+    }
+
+    public LabelSimpleDTO toSimpleDTO() {
+        return LabelSimpleDTO.builder()
                 .labelType(this.getLabelType())
                 .value(this.getValue())
                 .build();

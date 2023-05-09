@@ -1,6 +1,5 @@
 package com.bioautoml.domain.process.dto;
 
-import com.bioautoml.domain.commons.BaseEntity;
 import com.bioautoml.domain.process.enums.ProcessStatus;
 import com.bioautoml.domain.process.enums.ProcessType;
 import lombok.AllArgsConstructor;
@@ -8,19 +7,19 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.UUID;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
-@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProcessMessageDTO implements BaseEntity {
+@Data
+public class ProcessSimpleDTO implements Serializable {
 
-    private UUID id;
+    private String referenceName;
     private ProcessType processType;
     private ProcessStatus processStatus;
-    private Long startupTime;
-    private Long completionTime;
-    private UUID userId;
+    private LocalDateTime startupTime;
+    private LocalDateTime completionTime;
 
 }

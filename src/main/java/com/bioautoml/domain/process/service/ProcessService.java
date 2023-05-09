@@ -16,7 +16,7 @@ import com.bioautoml.domain.process.parameters.model.LabelModel;
 import com.bioautoml.domain.process.parameters.repository.AFEMRepository;
 import com.bioautoml.domain.process.parameters.repository.MetalearningRepository;
 import com.bioautoml.domain.process.parameters.service.LabelService;
-import com.bioautoml.domain.process.parameters.service.ParametersService;
+import com.bioautoml.domain.process.parameters.service.ParameterService;
 import com.bioautoml.domain.process.repository.ProcessRepository;
 import com.bioautoml.domain.user.service.UserService;
 import com.bioautoml.exceptions.NotFoundException;
@@ -32,7 +32,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -52,7 +52,7 @@ public class ProcessService {
     private Storage storageService;
 
     @Autowired
-    private ParametersService parametersService;
+    private ParameterService parameterService;
 
     @Autowired
     private OutboxService outboxService;
@@ -101,22 +101,24 @@ public class ProcessService {
             Map<String, MultipartFile[]> files,
             UUID userId,
             ParametersForm parameters,
-            LabelForm labelForm
+            LabelForm labelForm,
+            String referenceName
     ){
         UUID processId = UUID.randomUUID();
 
         ProcessModel processModel = new ProcessModel();
         processModel.setId(processId);
         processModel.setUserModel(this.userService.getById(userId).toModel());
-        processModel.setStartupTime(LocalDateTime.now());
+        processModel.setStartupTime(LocalDateTime.parse(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME)));
 
         processModel.setProcessType(ProcessType.valueOf(processName));
+        processModel.setReferenceName(referenceName);
 
         ProcessDTO processDTO = this.save(processModel);
         logger.info("saved process={}", processDTO.getId());
 
         this.labelService.save(labelForm, processId);
-        this.parametersService.createParameters(processModel.getProcessType(), processModel, parameters);
+        this.parameterService.createParameters(processModel.getProcessType(), processModel, parameters);
         this.fileService.save(files, processId);
 
         this.createFilesInS3(files, processId);

@@ -2,6 +2,7 @@ package com.bioautoml.domain.file.model;
 
 import com.bioautoml.domain.commons.BaseEntity;
 import com.bioautoml.domain.file.dto.FileDTO;
+import com.bioautoml.domain.file.dto.FileSimpleDTO;
 import com.bioautoml.domain.file.enums.FileType;
 import com.bioautoml.domain.process.model.ProcessModel;
 import lombok.AllArgsConstructor;
@@ -40,6 +41,13 @@ public class FileModel implements BaseEntity {
                 .fileName(this.getFileName())
                 .fileType(this.getFileType())
                 .processId(this.processModel.toDTO().getId())
+                .build();
+    }
+
+    public FileSimpleDTO toSimpleDTO() {
+        return FileSimpleDTO.builder()
+                .fileName(this.getFileName())
+                .fileType(this.getFileType())
                 .build();
     }
 

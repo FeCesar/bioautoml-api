@@ -8,27 +8,17 @@ import com.bioautoml.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
-public class AFEMServiceStrategy implements ParametersServiceStrategy<AFEMModel, AFEMDTO, AFEMResponseDTO> {
+public class AFEMServiceStrategy implements ParametersServiceStrategy<AFEMModel, AFEMResponseDTO> {
 
     @Autowired
     private AFEMRepository afemRepository;
 
     @Override
-    public AFEMDTO save(AFEMModel model) {
-        return this.afemRepository.save(model).toDTO();
-    }
-
-    @Override
-    public List<AFEMDTO> getAll() {
-        return this.afemRepository.findAll()
-                .stream()
-                .map(AFEMModel::toDTO)
-                .collect(Collectors.toList());
+    public void save(AFEMModel model) {
+        this.afemRepository.save(model);
     }
 
     @Override
@@ -37,8 +27,14 @@ public class AFEMServiceStrategy implements ParametersServiceStrategy<AFEMModel,
                 .stream()
                 .map(AFEMModel::toResponseDTO)
                 .findFirst()
-                .orElseThrow(() -> {
-                    throw new NotFoundException("Process not Exists!");
-                });
+                .orElseThrow(() -> new NotFoundException("Process not Exists!"));
+    }
+
+    @Override
+    public AFEMModel getModelByProcessId(UUID id) {
+        return this.afemRepository.findByProcessId(id)
+                .stream()
+                .findFirst()
+                .orElseThrow(() -> new NotFoundException("Process not Exists!"));
     }
 }

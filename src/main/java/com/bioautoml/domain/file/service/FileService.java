@@ -3,6 +3,7 @@ package com.bioautoml.domain.file.service;
 import com.bioautoml.domain.file.enums.FileType;
 import com.bioautoml.domain.file.model.FileModel;
 import com.bioautoml.domain.file.repository.FileRepository;
+import com.bioautoml.domain.process.model.ProcessModel;
 import com.bioautoml.domain.process.repository.ProcessRepository;
 import com.google.gson.Gson;
 import org.slf4j.Logger;
@@ -45,6 +46,10 @@ public class FileService {
                         logger.info("file={} saved", fileModel.getId());
                     });
                 }));
+    }
+
+    public List<FileModel> getAllBy(ProcessModel processModel) {
+        return this.fileRepository.findAllByProcessModel(processModel).get();
     }
 
 }

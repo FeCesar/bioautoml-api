@@ -24,6 +24,7 @@ public class ProcessDTO implements BaseEntity {
     private ProcessStatus processStatus;
     private LocalDateTime startupTime;
     private LocalDateTime completionTime;
+    private String referenceName;
     private UserProcessDTO user;
 
     public ProcessModel toModel(){

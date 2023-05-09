@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 import java.util.UUID;
 
 @Service
-public class ParametersService {
+public class ParameterService {
 
     @Autowired
     private AFEMServiceStrategy afemService;
@@ -36,7 +36,7 @@ public class ParametersService {
 
     private static final String SEPARATOR = "/";
 
-    private final Logger logger = LoggerFactory.getLogger(ParametersService.class);
+    private final Logger logger = LoggerFactory.getLogger(ParameterService.class);
 
     public void createParameters(ProcessType processType, ProcessModel processModel, ParametersForm parameters) {
 
