@@ -9,7 +9,7 @@ env:
   ECR_REPOSITORY: bioautoml           # set this to your Amazon ECR repository name
   ECS_SERVICE: bioautoml-service                 # set this to your Amazon ECS service name
   ECS_CLUSTER: bioautoml-cluster                 # set this to your Amazon ECS cluster name
-  ECS_TASK_DEFINITION: bioautoml-task # set this to the path to your Amazon ECS task definition
+  ECS_TASK_DEFINITION: bioautoml-deploy # set this to the path to your Amazon ECS task definition
   CONTAINER_NAME: bioautoml-app
 
 jobs:
