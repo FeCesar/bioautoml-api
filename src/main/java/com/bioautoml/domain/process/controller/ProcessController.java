@@ -21,7 +21,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.*;
 
 @RestController
-@CrossOrigin(value = "*", maxAge = 3600)
 @RequestMapping("/processes")
 public class ProcessController {
 
