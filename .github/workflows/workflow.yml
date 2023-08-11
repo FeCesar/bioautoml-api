@@ -46,8 +46,6 @@ jobs:
     needs:
       - build-application
     runs-on: ubuntu-latest
-    env:
-      APP_PORT: ${{ secrets.APP_APPLICATION_PORT }}
 
     steps:
       - name: Pull, Build and Deploy Docker Image
