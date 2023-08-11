@@ -37,8 +37,9 @@ jobs:
     - name: Build and push
       uses: docker/build-push-action@v4
       with:
+        context: .
         push: true
-        tags: bioautoml/api:latest
+        tags: bioautoml/api:latest, bioautoml/api:${{ github.run_number }}
         
   deploy:
     name: Deploy to VPS
