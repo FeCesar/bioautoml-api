@@ -40,7 +40,6 @@ jobs:
     name: Deploy to VPS
     needs:
       - build-application
-      - build-push-docker-image
     runs-on: ubuntu-latest
     env:
       APP_PORT: ${{ secrets.APP_APPLICATION_PORT }}
