@@ -9,8 +9,6 @@ jobs:
   build-application:
     name: Build Application
     runs-on: ubuntu-latest
-    env:
-      REPO: ${{ secrets.DOCKER_REPO }}
     
     steps:
     - name: Checkout
@@ -40,7 +38,7 @@ jobs:
       uses: docker/build-push-action@v4
       with:
         push: true
-        tags: $REPO:latest
+        tags: bioautoml/api:latest
         
   deploy:
     name: Deploy to VPS
@@ -49,7 +47,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       APP_PORT: ${{ secrets.APP_APPLICATION_PORT }}
-      REPO: ${{ secrets.DOCKER_REPO }}
 
     steps:
       - name: Pull, Build and Deploy Docker Image
@@ -60,7 +57,7 @@ jobs:
           port: ${{ secrets.VPS_PORT }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            docker image pull ${{ secrets.DOCKER_REPO }}:latest
+            docker image pull bioautoml/api:latest
             docker container run --restart unless-stopped -d -p $APP_PORT:$APP_PORT \
             -e PROFILE=${{ secrets.APP_PROFILE }} \
             -e MAX_FILE_SIZE=${{ secrets.APP_MAX_FILE_SIZE }} \
@@ -78,7 +75,7 @@ jobs:
             -e POSTGRES_PASSWORD=${{ secrets.APP_POSTGRES_PASSWORD }} \
             -e RABBITMQ_ADDRESS=${{ secrets.APP_RABBITMQ_ADDRESS }} \
             -e NUMBER_OF_CONCURRENT_PROCESSES=${{ secrets.APP_NUMBER_OF_CONCURRENT_PROCESSES }} \
-            $REPO:latest
+            bioautoml/api:latest
             
             
 
