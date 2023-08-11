@@ -59,7 +59,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             docker image pull bioautoml/api:latest
-            docker container run --restart unless-stopped -d -p $APP_PORT:$APP_PORT \
+            docker container run --restart unless-stopped -d -p ${{ secrets.APP_APPLICATION_PORT }}:${{ secrets.APP_APPLICATION_PORT }} \
             -e PROFILE=${{ secrets.APP_PROFILE }} \
             -e MAX_FILE_SIZE=${{ secrets.APP_MAX_FILE_SIZE }} \
             -e MAX_REQUEST_SIZE=${{ secrets.APP_MAX_REQUEST_SIZE }} \
