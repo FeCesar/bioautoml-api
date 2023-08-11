@@ -32,7 +32,8 @@ jobs:
       uses: actions/checkout@v3
 
     - name: Build Docker image
-      run: docker build -t $REPO:latest -t $REPO:${GITHUB_SHA::8} .
+      working-directory: ./bioautoml-api
+      run: docker build -t $REPO:latest -t $REPO:${GITHUB_SHA::8} -f Dockerfile .
 
     - name: Publish Docker image
       run: docker push $REPO
