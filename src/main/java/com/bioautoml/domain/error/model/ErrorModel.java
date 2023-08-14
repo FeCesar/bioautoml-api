@@ -25,7 +25,7 @@ public class ErrorModel implements BaseEntity {
     @Column
     private String type;
 
-    @Column
+    @Column(columnDefinition = "text")
     private String message;
 
     @Column
