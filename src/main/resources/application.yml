@@ -70,9 +70,6 @@ spring:
     username: guest
     password: guest
 
-#  rabbitmq:
-#    addresses: amqps://vkbghrzh:uNRo4NDc0xqo4TV2KY7zMyDrJedUVXf9@albatross.rmq.cloudamqp.com/vkbghrzh
-
 ---
 
 spring:

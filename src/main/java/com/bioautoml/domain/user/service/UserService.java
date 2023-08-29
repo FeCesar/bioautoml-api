@@ -3,6 +3,9 @@ package com.bioautoml.domain.user.service;
 import com.bioautoml.domain.process.dto.ProcessByUserDTO;
 import com.bioautoml.domain.process.model.ProcessModel;
 import com.bioautoml.domain.process.repository.ProcessRepository;
+import com.bioautoml.domain.result.dto.ResultSimpleDTO;
+import com.bioautoml.domain.result.model.ResultModel;
+import com.bioautoml.domain.result.service.ResultService;
 import com.bioautoml.domain.user.dto.UserDTO;
 import com.bioautoml.domain.user.model.UserModel;
 import com.bioautoml.domain.user.repository.UserRepository;
@@ -23,6 +26,9 @@ public class UserService {
 
     @Autowired
     private ProcessRepository processRepository;
+
+    @Autowired
+    private ResultService resultService;
 
     public List<UserDTO> getAll(){
         return this.userRepository.findAll()
@@ -69,6 +75,13 @@ public class UserService {
         return this.processRepository.findByUserId(userId)
                 .stream()
                 .map(ProcessModel::toProcessByUserDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<ResultSimpleDTO> getAllResultsBy(UUID userId) {
+        return this.resultService.getAllBy(userId)
+                .stream()
+                .map(ResultModel::toSimpleDTO)
                 .collect(Collectors.toList());
     }
 }

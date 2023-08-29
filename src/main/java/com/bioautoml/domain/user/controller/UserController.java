@@ -1,6 +1,7 @@
 package com.bioautoml.domain.user.controller;
 
 import com.bioautoml.domain.process.dto.ProcessByUserDTO;
+import com.bioautoml.domain.result.dto.ResultSimpleDTO;
 import com.bioautoml.domain.role.dto.RoleDTO;
 import com.bioautoml.domain.role.enums.Role;
 import com.bioautoml.domain.role.model.RoleModel;
@@ -63,6 +64,13 @@ public class UserController {
         userModel.setRoles(userRoles);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(this.userService.save(userModel));
+    }
+
+    @GetMapping("/{id}/results")
+    public ResponseEntity<List<ResultSimpleDTO>> getResults(
+        @PathVariable UUID id
+    ) {
+        return ResponseEntity.status(HttpStatus.OK).body(this.userService.getAllResultsBy(id));
     }
 
 }

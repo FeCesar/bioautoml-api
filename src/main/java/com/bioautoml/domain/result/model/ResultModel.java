@@ -3,6 +3,7 @@ package com.bioautoml.domain.result.model;
 import com.bioautoml.domain.commons.BaseEntity;
 import com.bioautoml.domain.process.model.ProcessModel;
 import com.bioautoml.domain.result.dto.ResultDTO;
+import com.bioautoml.domain.result.dto.ResultSimpleDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -43,6 +44,15 @@ public class ResultModel implements BaseEntity {
                 .link(this.getLink())
                 .processId(this.getProcessModel().getId())
                 .referenceDate(this.getReferenceDate())
+                .creationDate(this.getCreationDate())
+                .build();
+    }
+
+    public ResultSimpleDTO toSimpleDTO() {
+        return ResultSimpleDTO.builder()
+                .processId(this.getProcessModel().getId())
+                .processName(this.getProcessModel().getReferenceName())
+                .link(this.getLink())
                 .creationDate(this.getCreationDate())
                 .build();
     }
