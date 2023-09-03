@@ -14,6 +14,9 @@ import com.bioautoml.domain.process.parameters.service.LabelService;
 import com.bioautoml.domain.process.parameters.service.strategy.AFEMServiceStrategy;
 import com.bioautoml.domain.process.parameters.service.strategy.MetalearningServiceStrategy;
 import com.bioautoml.domain.process.repository.ProcessRepository;
+import com.bioautoml.domain.result.dto.ResultComposeAggregatedDTO;
+import com.bioautoml.domain.result.model.ResultModel;
+import com.bioautoml.domain.result.service.ResultService;
 import com.bioautoml.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,6 +43,9 @@ public class ProcessAggregatedService {
 
     @Autowired
     private FileService fileService;
+
+    @Autowired
+    private ResultService resultService;
 
     public ProcessAggregatedDTO getAllInfoFrom(UUID processId){
 
@@ -69,11 +75,16 @@ public class ProcessAggregatedService {
                 .map(FileModel::toSimpleDTO)
                 .collect(Collectors.toList());
 
+        ResultComposeAggregatedDTO resultComposeAggregatedDTO =
+                resultService.getBy(processId).map(ResultModel::resultComposeAggregatedDTO)
+                        .orElse(new ResultComposeAggregatedDTO());
+
         return ProcessAggregatedDTO.builder()
                 .process(processSimpleDTO)
                 .parameters(parameterSimpleDTO)
                 .labels(labelSimpleDTOS)
                 .files(fileSimpleDTOS)
+                .result(resultComposeAggregatedDTO)
                 .build();
     }
 

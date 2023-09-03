@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Base64;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -76,6 +77,10 @@ public class ResultService {
 
     public List<ResultModel> getAllBy(UUID userID) {
         return this.resultRepository.findAllByUserId(userID);
+    }
+
+    public Optional<ResultModel> getBy(UUID processId) {
+        return this.resultRepository.findByProcess(processId);
     }
 
 }
