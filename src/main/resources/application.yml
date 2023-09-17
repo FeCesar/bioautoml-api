@@ -55,6 +55,9 @@ application:
   config:
     processes:
       amount: ${NUMBER_OF_CONCURRENT_PROCESSES}
+
+  sendgrid:
+    apikey: ${SENDGRID_API_KEY}
 ---
 
 spring:
