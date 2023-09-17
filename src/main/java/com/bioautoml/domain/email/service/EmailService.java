@@ -24,6 +24,9 @@ public class EmailService {
     @Value("${application.sendgrid.apikey}")
     private String sendGridKey;
 
+    @Value("${application.sendgrid.from.email}")
+    private String email;
+
     private static final Logger logger = LoggerFactory.getLogger(EmailService.class);
 
     public void sendEmail(String resultLink, ProcessDTO processDTO) {
@@ -44,7 +47,7 @@ public class EmailService {
 
             Response response = sendGrid.api(request);
 
-            logger.info("send finished email from process={} with response={}", processDTO.getId(), new EmailResponseDTO(response));
+            logger.info("send finished email from process={} with details={} and returns response={}", processDTO.getId(), emailDTO, new EmailResponseDTO(response));
 
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -54,7 +57,7 @@ public class EmailService {
     private EmailDTO createEmail(String resultLink, ProcessDTO processDTO) {
         EmailDTO emailDTO = new EmailDTO();
         emailDTO.setReceiverEmail(processDTO.getUser().getEmail());
-        emailDTO.setSenderEmail("");
+        emailDTO.setSenderEmail(this.email);
         emailDTO.setSubject("Finished the " + processDTO.getReferenceName() + " process - Bioautoml");
         emailDTO.setContentType(ContentType.TEXT_PLAIN);
         emailDTO.setContent("Wow! Your bioautoml process was finished. Your download link is avaliable on " + resultLink);

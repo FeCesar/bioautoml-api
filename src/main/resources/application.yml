@@ -58,6 +58,8 @@ application:
 
   sendgrid:
     apikey: ${SENDGRID_API_KEY}
+    from:
+      email: ${SENDGRID_FROM_EMAIL}
 ---
 
 spring:
