@@ -1,13 +1,12 @@
 package com.bioautoml.domain.result.service;
 
 import com.amazonaws.SdkClientException;
-import com.bioautoml.domain.email.service.EmailService;
-import com.bioautoml.domain.process.model.ProcessModel;
 import com.bioautoml.domain.process.repository.ProcessRepository;
 import com.bioautoml.domain.result.dto.ResultTransferDTO;
 import com.bioautoml.domain.result.model.ResultModel;
 import com.bioautoml.domain.result.repository.ResultRepository;
 import com.bioautoml.domain.result.vo.ResultVO;
+import com.bioautoml.producers.EmailProducer;
 import com.bioautoml.storage.providers.AWSProviderService;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -38,7 +37,7 @@ public class ResultService {
     private AWSProviderService storageService;
 
     @Autowired
-    private EmailService emailService;
+    private EmailProducer emailProducer;
 
     private static final Logger logger = LoggerFactory.getLogger(ResultService.class);
     private final Gson gson = new Gson();
@@ -72,9 +71,7 @@ public class ResultService {
                     .build()
             );
 
-            ProcessModel processModel = processRepository.findById(
-                UUID.fromString(resultTransferDTO.getProcessId())).get();
-            this.emailService.sendEmail(s3FileURL.toString(), processModel.toDTO());
+            this.emailProducer.sendEmail(resultTransferDTO.getProcessId());
         } catch (JsonSyntaxException e) {
             logger.error("error can not deseralizable={}", resultMessage);
         } catch (SdkClientException e) {

@@ -33,6 +33,7 @@ application:
         status: baml.processes.status
         results: baml.processes.results
         errors: baml.processes.errors
+        email: baml.processes.results.send-email
 
   jwt:
     secret: ${JWT_SECRET}

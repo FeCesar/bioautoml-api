@@ -4,6 +4,8 @@ import com.bioautoml.domain.email.dto.EmailDTO;
 import com.bioautoml.domain.email.dto.EmailResponseDTO;
 import com.bioautoml.domain.email.enums.ContentType;
 import com.bioautoml.domain.process.dto.ProcessDTO;
+import com.bioautoml.domain.result.model.ResultModel;
+import com.bioautoml.domain.result.service.ResultService;
 import com.sendgrid.Method;
 import com.sendgrid.Request;
 import com.sendgrid.Response;
@@ -13,10 +15,12 @@ import com.sendgrid.helpers.mail.objects.Content;
 import com.sendgrid.helpers.mail.objects.Email;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.UUID;
 
 @Service
 public class EmailService {
@@ -27,10 +31,16 @@ public class EmailService {
     @Value("${application.sendgrid.from.email}")
     private String email;
 
+    @Autowired
+    private ResultService resultService;
+
     private static final Logger logger = LoggerFactory.getLogger(EmailService.class);
 
-    public void sendEmail(String resultLink, ProcessDTO processDTO) {
-        EmailDTO emailDTO = this.createEmail(resultLink, processDTO);
+    public void sendEmail(String processId) {
+        ResultModel result = this.resultService.getBy(UUID.fromString(processId)).get();
+        ProcessDTO processDTO = result.getProcessModel().toDTO();
+
+        EmailDTO emailDTO = this.createEmail(result.getLink(), processDTO);
 
         Email from = new Email(emailDTO.getSenderEmail());
         Email to = new Email(emailDTO.getReceiverEmail());

@@ -7,7 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum ContentType {
     TEXT_PLAIN("text/plain"),
-    HTML("html");
+    HTML("text/html");
 
     private final String type;
 }
