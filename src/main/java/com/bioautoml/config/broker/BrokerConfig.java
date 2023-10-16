@@ -1,4 +1,4 @@
-package com.bioautoml.broker;
+package com.bioautoml.config.broker;
 
 import org.springframework.amqp.core.Queue;
 import org.springframework.beans.factory.annotation.Value;
