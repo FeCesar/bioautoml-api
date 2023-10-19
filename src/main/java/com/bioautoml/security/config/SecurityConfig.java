@@ -59,7 +59,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.PUT, "/process/").hasAnyAuthority(Role.ADMIN.name())
                 .antMatchers(HttpMethod.GET, "/actuator/*").hasAnyAuthority(Role.ADMIN.name())
                 .anyRequest().authenticated()
-                .and().csrf().disable()
+                .and().cors().and().csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().addFilterBefore(new AuthenticationFilter(jwtService, userService), UsernamePasswordAuthenticationFilter.class);
     }
