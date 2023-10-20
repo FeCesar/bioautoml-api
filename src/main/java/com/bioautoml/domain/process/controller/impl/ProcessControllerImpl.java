@@ -12,31 +12,26 @@ import com.bioautoml.domain.process.service.ProcessService;
 import com.bioautoml.domain.user.service.UserService;
 import com.bioautoml.security.services.JwtService;
 import com.google.gson.Gson;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
 
 @Component
+@RestController
+@RequiredArgsConstructor
 public class ProcessControllerImpl implements ProcessController {
-    @Autowired
-    private ProcessService processService;
+    private final ProcessService processService;
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    @Autowired
-    private ParameterService parameterService;
-
-    @Autowired
-    private ProcessAggregatedService processAggregatedService;
-
-    @Autowired
-    private JwtService jwtService;
-
+    private final ParameterService parameterService;
+    private final ProcessAggregatedService processAggregatedService;
+    private final JwtService jwtService;
     private final Gson gson = new Gson();
 
 

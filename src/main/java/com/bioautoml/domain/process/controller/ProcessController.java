@@ -13,7 +13,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/processes")
 public interface ProcessController {
-    @GetMapping
+    @GetMapping(value = "")
     ResponseEntity<List<ProcessDTO>> getAll();
 
     @GetMapping("/{id}")

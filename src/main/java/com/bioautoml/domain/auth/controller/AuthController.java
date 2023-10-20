@@ -14,6 +14,6 @@ import javax.validation.Valid;
 @RequestMapping("/auth")
 public interface AuthController {
 
-    @PostMapping
+    @PostMapping(value = "")
     ResponseEntity<AuthDTO> login(@RequestBody @Valid AuthForm authForm);
 }
