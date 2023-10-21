@@ -70,6 +70,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/process/*").hasAnyAuthority(Role.ADMIN.name(), Role.DEFAULT.name())
                 .antMatchers(HttpMethod.PUT, "/process/").hasAnyAuthority(Role.ADMIN.name())
                 .antMatchers(HttpMethod.GET, "/actuator/*").hasAnyAuthority(Role.ADMIN.name())
+                .antMatchers(HttpMethod.OPTIONS, "*/*").permitAll()
                 .anyRequest().authenticated()
                 .and().cors(Customizer.withDefaults())
                 .csrf().disable()

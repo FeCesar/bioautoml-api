@@ -22,7 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
 
-@RestController(value = "ProcessController")
+@RestController
 @RequestMapping("/processes")
 public class ProcessController {
 
