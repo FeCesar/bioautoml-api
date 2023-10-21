@@ -60,6 +60,7 @@ public class ProcessModel implements BaseEntity {
                 .startupTime(this.getStartupTime())
                 .completionTime((this.getCompletionTime()))
                 .referenceName(this.getReferenceName())
+                .email(this.getEmail())
                 .build();
     }
 
@@ -70,6 +71,7 @@ public class ProcessModel implements BaseEntity {
                 .processStatus(this.getProcessStatus())
                 .processType(this.getProcessType())
                 .startupTime(this.getStartupTime())
+                .email(this.getEmail())
                 .build();
     }
 

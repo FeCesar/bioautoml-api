@@ -20,7 +20,6 @@ import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Base64;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -79,10 +78,6 @@ public class ResultService {
         } catch (Exception e) {
             logger.error("unknown error={}", e.getMessage());
         }
-    }
-
-    public List<ResultModel> getAllBy(UUID userID) {
-        return this.resultRepository.findAllByUserId(userID);
     }
 
     public Optional<ResultModel> getBy(UUID processId) {

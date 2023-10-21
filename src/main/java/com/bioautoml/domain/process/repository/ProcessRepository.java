@@ -15,9 +15,6 @@ public interface ProcessRepository extends JpaRepository<ProcessModel, UUID> {
 
     Optional<ProcessModel> findById(UUID id);
 
-    @Query(value = "SELECT * FROM processes WHERE user_id = :userId", nativeQuery = true)
-    List<ProcessModel> findByUserId(UUID userId);
-
     Optional<List<ProcessModel>> findByProcessStatusIsOrderByStartupTime(ProcessStatus processStatus);
 
     long countByProcessStatusIs(ProcessStatus processStatus);
