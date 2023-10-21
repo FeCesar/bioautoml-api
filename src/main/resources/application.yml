@@ -19,10 +19,6 @@ spring:
           lab:
             non_contextual_creation: true
 
-  mvc:
-    pathmatch:
-      matching-strategy: ANT_PATH_MATCHER
-
 springdoc:
   swagger-ui:
     enabled: true

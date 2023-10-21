@@ -33,22 +33,23 @@ public class ProcessController {
 
     private final Gson gson = new Gson();
 
-
+    @CrossOrigin(value = "*")
     @GetMapping
     public ResponseEntity<List<ProcessDTO>> getAll() {
         return ResponseEntity.status(HttpStatus.OK).body(this.processService.getAll());
     }
-
+    @CrossOrigin(value = "*")
     @GetMapping("/{id}")
     public ResponseEntity<ProcessDTO> getById(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(this.processService.getById(id));
     }
 
+    @CrossOrigin(value = "*")
     @GetMapping("/filter/{email}")
     public ResponseEntity<List<ProcessDTO>> getById(@PathVariable String email) {
         return ResponseEntity.status(HttpStatus.OK).body(this.processService.getByEmail(email));
     }
-
+    @CrossOrigin(value = "*")
     @PostMapping(value = "/afem/{processName}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<ProcessDTO> afemStart(
             @PathVariable String processName,
@@ -79,7 +80,7 @@ public class ProcessController {
                 )
         );
     }
-
+    @CrossOrigin(value = "*")
     @PostMapping(value = "/metalearning/{processName}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<ProcessDTO> metalearningStart(
             @PathVariable String processName,
@@ -117,7 +118,7 @@ public class ProcessController {
                 )
         );
     }
-
+    @CrossOrigin(value = "*")
     @GetMapping(value = "/{id}/aggregated")
     public ResponseEntity<ProcessAggregatedDTO> getAllFromProcessBy(
             @PathVariable Long id
