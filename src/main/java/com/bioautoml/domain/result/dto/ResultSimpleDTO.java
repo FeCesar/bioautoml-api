@@ -15,7 +15,7 @@ import java.util.UUID;
 @Builder
 public class ResultSimpleDTO implements Serializable {
 
-    private UUID processId;
+    private Long processId;
     private String processName;
     private String link;
     private LocalDateTime creationDate;

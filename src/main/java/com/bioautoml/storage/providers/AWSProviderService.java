@@ -54,7 +54,7 @@ public class AWSProviderService implements Storage {
     }
 
 
-    public void createFolders(List<MultipartFile> files, UUID processId){
+    public void createFolders(List<MultipartFile> files, Long processId){
         files.forEach(file -> {
             String folderPath = processId.toString() + this.SEPARATOR +
                 Objects.requireNonNull(file.getOriginalFilename()).strip().toLowerCase(Locale.ROOT);
@@ -71,7 +71,7 @@ public class AWSProviderService implements Storage {
         });
     }
 
-    public URL generateFileURL(String processId) {
+    public URL generateFileURL(Long processId) {
         Date expiration = this.generateDefaultExpirationTimeMillis();
 
         String filePathS3 = processId + "/results.zip";

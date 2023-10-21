@@ -47,7 +47,7 @@ public class ProcessAggregatedService {
     @Autowired
     private ResultService resultService;
 
-    public ProcessAggregatedDTO getAllInfoFrom(UUID processId){
+    public ProcessAggregatedDTO getAllInfoFrom(Long processId){
 
         Optional<ProcessModel> processModel =  this.processRepository.findById(processId);
 

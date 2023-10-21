@@ -22,6 +22,6 @@ public class MetalearningParameterVO implements Serializable, ParametersEntity {
     private Boolean imbalance = false;
     private Boolean tuning = false;
     public String output;
-    private UUID processId;
+    private Long processId;
 
 }

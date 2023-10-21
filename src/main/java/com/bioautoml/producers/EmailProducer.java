@@ -18,9 +18,9 @@ public class EmailProducer {
 
     private static final Logger logger = LoggerFactory.getLogger(EmailProducer.class);
 
-    public void sendEmail(String processId) {
+    public void sendEmail(Long processId) {
         logger.info("Email from the process={} send to queue", processId);
-        this.messageSender.send(processId, queue);
+        this.messageSender.send(String.valueOf(processId), queue);
     }
 
 }

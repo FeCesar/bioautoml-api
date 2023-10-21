@@ -29,7 +29,7 @@ public class FileService {
     private static final Logger logger = LoggerFactory.getLogger(FileService.class);
 
     @Transactional
-    public void save(Map<String, MultipartFile[]> files, UUID processId) {
+    public void save(Map<String, MultipartFile[]> files, Long processId) {
         this.processRepository.findById(processId).stream()
                 .findFirst()
                 .ifPresent(processModel -> files.forEach((key, value) -> {

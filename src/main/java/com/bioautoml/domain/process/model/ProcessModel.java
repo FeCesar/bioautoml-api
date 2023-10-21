@@ -15,7 +15,6 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Data
 @Builder
@@ -26,7 +25,7 @@ import java.util.UUID;
 public class ProcessModel implements BaseEntity {
 
     @Id
-    private UUID id;
+    private Long id;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)

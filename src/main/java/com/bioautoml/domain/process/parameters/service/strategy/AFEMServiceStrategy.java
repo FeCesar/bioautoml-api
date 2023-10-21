@@ -22,7 +22,7 @@ public class AFEMServiceStrategy implements ParametersServiceStrategy<AFEMModel,
     }
 
     @Override
-    public AFEMResponseDTO getByProcessId(UUID id) {
+    public AFEMResponseDTO getByProcessId(Long id) {
         return this.afemRepository.findByProcessId(id)
                 .stream()
                 .map(AFEMModel::toResponseDTO)
@@ -31,7 +31,7 @@ public class AFEMServiceStrategy implements ParametersServiceStrategy<AFEMModel,
     }
 
     @Override
-    public AFEMModel getModelByProcessId(UUID id) {
+    public AFEMModel getModelByProcessId(Long id) {
         return this.afemRepository.findByProcessId(id)
                 .stream()
                 .findFirst()

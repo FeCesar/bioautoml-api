@@ -12,7 +12,7 @@ public interface Storage {
 
     void createConnection();
     void createFolder(String folderPath, InputStream file, ObjectMetadata data);
-    void createFolders(List<MultipartFile> files, UUID processId);
-    URL generateFileURL(String processId);
+    void createFolders(List<MultipartFile> files, Long processId);
+    URL generateFileURL(Long processId);
 
 }

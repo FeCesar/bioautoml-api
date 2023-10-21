@@ -19,6 +19,6 @@ public class AFEMParameterVO implements Serializable, ParametersEntity {
     public Integer estimations = 50;
     public Integer cpuNumbers = 1;
     public String output;
-    private UUID processId;
+    private Long processId;
 
 }

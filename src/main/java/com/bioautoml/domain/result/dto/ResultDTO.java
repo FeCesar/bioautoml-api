@@ -17,7 +17,7 @@ public class ResultDTO implements BaseEntity {
 
     private UUID id;
     private String link;
-    private UUID processId;
+    private Long processId;
     private LocalDateTime referenceDate;
     private LocalDateTime creationDate;
 

@@ -13,7 +13,7 @@ import java.util.UUID;
 @Repository
 public interface ProcessRepository extends JpaRepository<ProcessModel, UUID> {
 
-    Optional<ProcessModel> findById(UUID id);
+    Optional<ProcessModel> findById(Long id);
 
     Optional<List<ProcessModel>> findByProcessStatusIsOrderByStartupTime(ProcessStatus processStatus);
 

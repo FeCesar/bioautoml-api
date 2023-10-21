@@ -15,7 +15,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class ResultVO implements Serializable {
 
-    private UUID processId;
+    private Long processId;
     private String link;
     private LocalDateTime referenceDate;
 

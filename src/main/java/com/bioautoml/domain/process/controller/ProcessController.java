@@ -40,7 +40,7 @@ public class ProcessController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProcessDTO> getById(@PathVariable UUID id) {
+    public ResponseEntity<ProcessDTO> getById(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(this.processService.getById(id));
     }
 
@@ -115,7 +115,7 @@ public class ProcessController {
 
     @GetMapping(value = "/{id}/aggregated")
     public ResponseEntity<ProcessAggregatedDTO> getAllFromProcessBy(
-            @PathVariable UUID id
+            @PathVariable Long id
     ) {
         return ResponseEntity.status(HttpStatus.OK).body(this.processAggregatedService.getAllInfoFrom(id));
     }

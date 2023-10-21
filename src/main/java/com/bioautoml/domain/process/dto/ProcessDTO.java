@@ -18,7 +18,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class ProcessDTO implements BaseEntity {
 
-    private UUID id;
+    private Long id;
     private ProcessType processType;
     private ProcessStatus processStatus;
     private LocalDateTime startupTime;

@@ -13,7 +13,7 @@ import java.io.Serializable;
 @Builder
 public class ResultTransferDTO implements Serializable {
 
-    private String processId;
+    private Long processId;
     private String referenceDate;
 
 }

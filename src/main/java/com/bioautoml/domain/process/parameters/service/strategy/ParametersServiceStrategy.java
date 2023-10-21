@@ -7,8 +7,8 @@ public interface ParametersServiceStrategy<ParameterModel, ParameterResponseDTO>
 
     void save(ParameterModel model);
 
-    ParameterResponseDTO getByProcessId(UUID id);
+    ParameterResponseDTO getByProcessId(Long id);
 
-    ParameterModel getModelByProcessId(UUID id);
+    ParameterModel getModelByProcessId(Long id);
 
 }

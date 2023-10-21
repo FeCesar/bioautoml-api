@@ -12,6 +12,6 @@ import java.util.UUID;
 public interface MetalearningRepository extends JpaRepository<MetalearningModel, UUID> {
 
     @Query(value = "SELECT * FROM metalearning_parameters WHERE process_id = :id", nativeQuery = true)
-    Optional<MetalearningModel> findByProcessId(UUID id);
+    Optional<MetalearningModel> findByProcessId(Long id);
 
 }

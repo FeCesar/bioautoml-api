@@ -12,6 +12,6 @@ import java.util.UUID;
 public interface AFEMRepository extends JpaRepository<AFEMModel, UUID> {
 
     @Query(value = "SELECT * FROM afem_parameters WHERE process_id = :id", nativeQuery = true)
-    Optional<AFEMModel> findByProcessId(UUID id);
+    Optional<AFEMModel> findByProcessId(Long id);
 
 }

@@ -64,7 +64,7 @@ public class ResultService {
 
             this.save(
                 ResultVO.builder()
-                    .processId(UUID.fromString(resultTransferDTO.getProcessId()))
+                    .processId(resultTransferDTO.getProcessId())
                     .link(s3FileURL.toString())
                     .referenceDate(referenceDate)
                     .build()
@@ -80,7 +80,7 @@ public class ResultService {
         }
     }
 
-    public Optional<ResultModel> getBy(UUID processId) {
+    public Optional<ResultModel> getBy(Long processId) {
         return this.resultRepository.findByProcess(processId);
     }
 

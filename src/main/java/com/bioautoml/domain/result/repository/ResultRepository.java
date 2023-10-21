@@ -12,6 +12,6 @@ import java.util.UUID;
 public interface ResultRepository extends JpaRepository<ResultModel, UUID> {
 
     @Query("SELECT result FROM ResultModel result WHERE result.processModel.id = :processId")
-    Optional<ResultModel> findByProcess(UUID processId);
+    Optional<ResultModel> findByProcess(Long processId);
 
 }

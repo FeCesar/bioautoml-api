@@ -25,7 +25,7 @@ public class MetalearningServiceStrategy implements ParametersServiceStrategy<Me
     }
 
     @Override
-    public MetalearningResponseDTO getByProcessId(UUID id) {
+    public MetalearningResponseDTO getByProcessId(Long id) {
         return this.metalearningRepository.findByProcessId(id)
                 .stream()
                 .map(MetalearningModel::toResponseDTO)
@@ -34,7 +34,7 @@ public class MetalearningServiceStrategy implements ParametersServiceStrategy<Me
     }
 
     @Override
-    public MetalearningModel getModelByProcessId(UUID id) {
+    public MetalearningModel getModelByProcessId(Long id) {
         return this.metalearningRepository.findByProcessId(id)
                 .stream()
                 .findFirst()

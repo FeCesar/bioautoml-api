@@ -79,7 +79,7 @@ public class ProcessService {
                 .collect(Collectors.toList());
     }
 
-    public ProcessDTO getById(UUID id){
+    public ProcessDTO getById(Long id){
         return this.processRepository.findById(id)
                 .stream()
                 .map(ProcessModel::toDTO)
@@ -100,10 +100,8 @@ public class ProcessService {
             String email,
             String referenceName
     ){
-        UUID processId = UUID.randomUUID();
 
         ProcessModel processModel = new ProcessModel();
-        processModel.setId(processId);
         processModel.setStartupTime(LocalDateTime.parse(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME)));
 
         processModel.setProcessType(ProcessType.valueOf(processName));
@@ -113,16 +111,16 @@ public class ProcessService {
         ProcessDTO processDTO = this.save(processModel);
         logger.info("saved process={}", processDTO.getId());
 
-        this.labelService.save(labelForm, processId);
+        this.labelService.save(labelForm, processDTO.getId());
         this.parameterService.createParameters(processModel.getProcessType(), processModel, parameters);
-        this.fileService.save(files, processId);
+        this.fileService.save(files, processDTO.getId());
 
-        this.createFilesInS3(files, processId);
+        this.createFilesInS3(files, processDTO.getId());
 
         return processDTO;
     }
 
-    private void createFilesInS3(Map<String, MultipartFile[]> files, UUID processId) {
+    private void createFilesInS3(Map<String, MultipartFile[]> files, Long processId) {
         List<MultipartFile> allFiles = new ArrayList<>();
 
         files.forEach((key, value) -> {
@@ -174,7 +172,7 @@ public class ProcessService {
         this.sendToInit(processArrangementDTO);
     }
 
-    private void updateStatus(UUID processId) {
+    private void updateStatus(Long processId) {
         Optional<ProcessModel> processModel = this.processRepository.findById(processId);
 
         processModel.ifPresent(process -> {

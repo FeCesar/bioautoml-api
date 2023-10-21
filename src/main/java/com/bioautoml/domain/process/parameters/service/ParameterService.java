@@ -67,7 +67,7 @@ public class ParameterService {
         }
     }
 
-    private String createOutputPath(UUID processId){
+    private String createOutputPath(Long processId){
         return SEPARATOR + this.initOutputPath + SEPARATOR + processId.toString() + SEPARATOR + this.endOutputPath + SEPARATOR;
     }
 }

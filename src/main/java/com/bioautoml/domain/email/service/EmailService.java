@@ -37,7 +37,7 @@ public class EmailService {
     private static final Logger logger = LoggerFactory.getLogger(EmailService.class);
 
     public void sendEmail(String processId) {
-        ResultModel result = this.resultService.getBy(UUID.fromString(processId)).get();
+        ResultModel result = this.resultService.getBy(Long.valueOf(processId)).get();
         ProcessDTO processDTO = result.getProcessModel().toDTO();
 
         EmailDTO emailDTO = this.createEmail(result.getLink(), processDTO);

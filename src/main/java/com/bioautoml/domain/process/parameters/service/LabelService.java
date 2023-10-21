@@ -22,7 +22,7 @@ public class LabelService {
     @Autowired
     private ProcessRepository processRepository;
 
-    public void save(LabelForm labelForm, UUID processId) {
+    public void save(LabelForm labelForm, Long processId) {
         this.processRepository.findById(processId).ifPresent(processModel -> {
             if(!labelForm.getTrainLabels().isEmpty()) {
                 labelForm.getTrainLabels().forEach(label -> {
