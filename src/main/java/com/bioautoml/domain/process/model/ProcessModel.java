@@ -63,16 +63,6 @@ public class ProcessModel implements BaseEntity {
                 .build();
     }
 
-    public ProcessByUserDTO toProcessByUserDTO(){
-        return ProcessByUserDTO.builder()
-                .id(this.getId())
-                .processType(this.getProcessType())
-                .processStatus(this.getProcessStatus())
-                .startupTime(this.getStartupTime())
-                .completionTime((this.getCompletionTime()))
-                .build();
-    }
-
     public ProcessSimpleDTO toSimpleDTO(){
         return ProcessSimpleDTO.builder()
                 .referenceName(this.getReferenceName())

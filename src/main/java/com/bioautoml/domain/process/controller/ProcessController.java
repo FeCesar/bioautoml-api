@@ -52,7 +52,7 @@ public class ProcessController {
             @RequestParam(required = false) String parameters,
             @RequestParam String labels,
             @RequestParam String referenceName,
-            @RequestHeader(value = "Authorization") String token) {
+            @RequestParam String email) {
         Map<String, MultipartFile[]> files = new HashMap<>();
         files.put("TRAIN", train);
 
@@ -69,6 +69,7 @@ public class ProcessController {
                         files,
                         afemForm,
                         labelForm,
+                        email,
                         referenceName
                 )
         );
@@ -84,7 +85,7 @@ public class ProcessController {
             @RequestPart MultipartFile[] test_name_sequence,
             @RequestParam String parameters,
             @RequestParam String referenceName,
-            @RequestHeader(value = "Authorization") String token) {
+            @RequestParam String email) {
         Map<String, MultipartFile[]> files = new HashMap<>();
         files.put("TRAIN", train);
         files.put("LABEL_TRAIN", train_label);
@@ -106,6 +107,7 @@ public class ProcessController {
                         files,
                         metalearningForm,
                         labelForm,
+                        email,
                         referenceName
                 )
         );

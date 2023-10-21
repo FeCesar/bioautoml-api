@@ -97,6 +97,7 @@ public class ProcessService {
             Map<String, MultipartFile[]> files,
             ParametersForm parameters,
             LabelForm labelForm,
+            String email,
             String referenceName
     ){
         UUID processId = UUID.randomUUID();
@@ -107,6 +108,7 @@ public class ProcessService {
 
         processModel.setProcessType(ProcessType.valueOf(processName));
         processModel.setReferenceName(referenceName);
+        processModel.setEmail(email);
 
         ProcessDTO processDTO = this.save(processModel);
         logger.info("saved process={}", processDTO.getId());
@@ -167,7 +169,7 @@ public class ProcessService {
 
         this.updateStatus(processModel.getId());
 
-        processArrangementDTO.setProcessModel(processModel.toProcessByUserDTO());
+        processArrangementDTO.setProcessModel(processModel.toDTO());
 
         this.sendToInit(processArrangementDTO);
     }
