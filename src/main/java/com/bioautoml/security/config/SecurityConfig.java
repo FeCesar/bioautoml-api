@@ -2,6 +2,7 @@ package com.bioautoml.security.config;
 
 import com.bioautoml.domain.role.enums.Role;
 import com.bioautoml.domain.user.service.UserService;
+import com.bioautoml.filters.AuthenticationFilter;
 import com.bioautoml.security.services.AuthenticationService;
 import com.bioautoml.security.services.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,12 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+
+import java.util.List;
 
 @EnableWebSecurity
 @Configuration
@@ -44,12 +50,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-//        CorsConfiguration corsConfiguration = new CorsConfiguration();
-//        corsConfiguration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
-//        corsConfiguration.setAllowedOrigins(List.of("*"));
-//        corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PUT","OPTIONS","PATCH", "DELETE"));
-//        corsConfiguration.setAllowCredentials(true);
-//        corsConfiguration.setExposedHeaders(List.of("Authorization"));
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+        corsConfiguration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
+        corsConfiguration.setAllowedOrigins(List.of("*"));
+        corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PUT","OPTIONS","PATCH", "DELETE"));
+        corsConfiguration.setAllowCredentials(true);
+        corsConfiguration.setExposedHeaders(List.of("Authorization"));
 
         http.authorizeRequests()
                 .antMatchers(HttpMethod.GET, "/swagger-ui/**").permitAll()
@@ -66,9 +72,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.OPTIONS, "*/*").permitAll()
                 .anyRequest().authenticated()
                 .and().cors(Customizer.withDefaults())
-                .csrf().disable();
-//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//                .and().addFilterBefore(new AuthenticationFilter(jwtService, userService), UsernamePasswordAuthenticationFilter.class);
+                .csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and().addFilterBefore(new AuthenticationFilter(jwtService, userService), UsernamePasswordAuthenticationFilter.class);
     }
 
 }
