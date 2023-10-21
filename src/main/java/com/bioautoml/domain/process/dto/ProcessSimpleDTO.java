@@ -21,5 +21,6 @@ public class ProcessSimpleDTO implements Serializable {
     private ProcessStatus processStatus;
     private LocalDateTime startupTime;
     private LocalDateTime completionTime;
+    private String email;
 
 }

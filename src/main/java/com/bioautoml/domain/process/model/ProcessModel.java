@@ -2,12 +2,10 @@ package com.bioautoml.domain.process.model;
 
 import com.bioautoml.domain.commons.BaseEntity;
 import com.bioautoml.domain.file.model.FileModel;
-import com.bioautoml.domain.process.dto.ProcessByUserDTO;
 import com.bioautoml.domain.process.dto.ProcessDTO;
 import com.bioautoml.domain.process.dto.ProcessSimpleDTO;
 import com.bioautoml.domain.process.enums.ProcessStatus;
 import com.bioautoml.domain.process.enums.ProcessType;
-import com.bioautoml.domain.user.model.UserModel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -47,9 +45,8 @@ public class ProcessModel implements BaseEntity {
     @Column
     private LocalDateTime completionTime;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private UserModel userModel;
+    @Column(name = "email")
+    private String email;
 
     @OneToMany(mappedBy = "processModel")
     private List<FileModel> files = new ArrayList<>();
@@ -62,7 +59,6 @@ public class ProcessModel implements BaseEntity {
                 .processStatus(this.getProcessStatus())
                 .startupTime(this.getStartupTime())
                 .completionTime((this.getCompletionTime()))
-                .user(this.getUserModel().toUserProcessDTO())
                 .referenceName(this.getReferenceName())
                 .build();
     }

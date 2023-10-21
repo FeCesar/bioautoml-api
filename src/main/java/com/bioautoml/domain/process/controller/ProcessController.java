@@ -8,8 +8,6 @@ import com.bioautoml.domain.process.parameters.form.MetalearningForm;
 import com.bioautoml.domain.process.parameters.service.ParameterService;
 import com.bioautoml.domain.process.service.ProcessAggregatedService;
 import com.bioautoml.domain.process.service.ProcessService;
-import com.bioautoml.domain.user.service.UserService;
-import com.bioautoml.security.services.JwtService;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,16 +26,10 @@ public class ProcessController {
     private ProcessService processService;
 
     @Autowired
-    private UserService userService;
-
-    @Autowired
     private ParameterService parameterService;
 
     @Autowired
     private ProcessAggregatedService processAggregatedService;
-
-    @Autowired
-    private JwtService jwtService;
 
     private final Gson gson = new Gson();
 
@@ -61,8 +53,6 @@ public class ProcessController {
             @RequestParam String labels,
             @RequestParam String referenceName,
             @RequestHeader(value = "Authorization") String token) {
-        UUID userId = this.jwtService.getUserId(token.split(" ")[1]);
-
         Map<String, MultipartFile[]> files = new HashMap<>();
         files.put("TRAIN", train);
 
@@ -77,7 +67,6 @@ public class ProcessController {
                 this.processService.start(
                         processName,
                         files,
-                        userId,
                         afemForm,
                         labelForm,
                         referenceName
@@ -96,8 +85,6 @@ public class ProcessController {
             @RequestParam String parameters,
             @RequestParam String referenceName,
             @RequestHeader(value = "Authorization") String token) {
-        UUID userId = this.jwtService.getUserId(token.split(" ")[1]);
-
         Map<String, MultipartFile[]> files = new HashMap<>();
         files.put("TRAIN", train);
         files.put("LABEL_TRAIN", train_label);
@@ -117,7 +104,6 @@ public class ProcessController {
                 this.processService.start(
                         processName,
                         files,
-                        userId,
                         metalearningForm,
                         labelForm,
                         referenceName

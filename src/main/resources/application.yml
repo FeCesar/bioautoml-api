@@ -45,10 +45,6 @@ application:
         errors: baml.processes.errors
         email: baml.processes.results.send-email
 
-  jwt:
-    secret: ${JWT_SECRET}
-    expiration: ${JWT_EXPIRATION}
-
   aws:
     secret: ${AWS_SECRET}
     access: ${AWS_ACCESS}

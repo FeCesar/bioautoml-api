@@ -18,7 +18,6 @@ import com.bioautoml.domain.process.parameters.repository.MetalearningRepository
 import com.bioautoml.domain.process.parameters.service.LabelService;
 import com.bioautoml.domain.process.parameters.service.ParameterService;
 import com.bioautoml.domain.process.repository.ProcessRepository;
-import com.bioautoml.domain.user.service.UserService;
 import com.bioautoml.exceptions.NotFoundException;
 import com.bioautoml.storage.Storage;
 import com.google.gson.Gson;
@@ -41,9 +40,6 @@ public class ProcessService {
 
     @Autowired
     private ProcessRepository processRepository;
-
-    @Autowired
-    private UserService userService;
 
     @Autowired
     private FileService fileService;
@@ -99,7 +95,6 @@ public class ProcessService {
     public ProcessDTO start(
             String processName,
             Map<String, MultipartFile[]> files,
-            UUID userId,
             ParametersForm parameters,
             LabelForm labelForm,
             String referenceName
@@ -108,7 +103,6 @@ public class ProcessService {
 
         ProcessModel processModel = new ProcessModel();
         processModel.setId(processId);
-        processModel.setUserModel(this.userService.getById(userId).toModel());
         processModel.setStartupTime(LocalDateTime.parse(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME)));
 
         processModel.setProcessType(ProcessType.valueOf(processName));

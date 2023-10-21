@@ -66,7 +66,7 @@ public class EmailService {
 
     private EmailDTO createEmail(String resultLink, ProcessDTO processDTO) {
         EmailDTO emailDTO = new EmailDTO();
-        emailDTO.setReceiverEmail(processDTO.getUser().getEmail());
+        emailDTO.setReceiverEmail("");
         emailDTO.setSenderEmail(this.email);
         emailDTO.setSubject("Finished the " + processDTO.getReferenceName() + " process - Bioautoml");
         emailDTO.setContentType(ContentType.TEXT_PLAIN);

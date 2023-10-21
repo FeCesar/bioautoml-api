@@ -4,7 +4,6 @@ import com.bioautoml.domain.commons.BaseEntity;
 import com.bioautoml.domain.process.enums.ProcessStatus;
 import com.bioautoml.domain.process.enums.ProcessType;
 import com.bioautoml.domain.process.model.ProcessModel;
-import com.bioautoml.domain.user.dto.UserProcessDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,7 +24,7 @@ public class ProcessDTO implements BaseEntity {
     private LocalDateTime startupTime;
     private LocalDateTime completionTime;
     private String referenceName;
-    private UserProcessDTO user;
+    private String email;
 
     public ProcessModel toModel(){
         return ProcessModel.builder()
@@ -34,7 +33,7 @@ public class ProcessDTO implements BaseEntity {
                 .processStatus(this.getProcessStatus())
                 .startupTime(this.getStartupTime())
                 .completionTime(this.getCompletionTime())
-                .userModel(this.user.toModel())
+                .email(this.getEmail())
                 .build();
     }
 

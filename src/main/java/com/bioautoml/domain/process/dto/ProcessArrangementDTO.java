@@ -17,7 +17,7 @@ import java.util.List;
 @Builder
 public class ProcessArrangementDTO implements Serializable {
 
-    private ProcessByUserDTO processModel;
+    private ProcessDTO processModel;
     private ParametersEntity parametersEntity;
     private List<LabelDTO> labels;
     private List<FileDTO> files;
