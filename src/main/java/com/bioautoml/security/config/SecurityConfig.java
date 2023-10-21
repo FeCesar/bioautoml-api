@@ -58,9 +58,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         corsConfiguration.setExposedHeaders(List.of("Authorization"));
 
         http.authorizeRequests()
+                .antMatchers(HttpMethod.OPTIONS, "*").permitAll()
                 .antMatchers(HttpMethod.GET, "/swagger-ui/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/api-docs/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/auth").permitAll()
+                .antMatchers(HttpMethod.OPTIONS, "/auth").permitAll()
                 .antMatchers(HttpMethod.POST, "/users").permitAll()
                 .antMatchers(HttpMethod.GET, "/users").hasAnyAuthority(Role.ADMIN.name())
                 .antMatchers(HttpMethod.GET, "/users/*").hasAnyAuthority(Role.ADMIN.name(), Role.DEFAULT.name())
@@ -69,7 +71,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/processes/*").hasAnyAuthority(Role.ADMIN.name(), Role.DEFAULT.name())
                 .antMatchers(HttpMethod.PUT, "/processes").hasAnyAuthority(Role.ADMIN.name())
                 .antMatchers(HttpMethod.GET, "/actuator/*").hasAnyAuthority(Role.ADMIN.name())
-                .antMatchers(HttpMethod.OPTIONS, "*/*").permitAll()
                 .anyRequest().authenticated()
                 .and().cors(Customizer.withDefaults())
                 .csrf().disable()
