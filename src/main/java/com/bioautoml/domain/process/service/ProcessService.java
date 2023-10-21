@@ -72,19 +72,27 @@ public class ProcessService {
 
     private final Logger logger = LoggerFactory.getLogger(ProcessService.class);
 
-    public List<ProcessDTO> getAll(){
+    public List<ProcessDTO> getAll() {
         return this.processRepository.findAll()
                 .stream()
                 .map(ProcessModel::toDTO)
                 .collect(Collectors.toList());
     }
 
-    public ProcessDTO getById(Long id){
+    public ProcessDTO getById(Long id) {
         return this.processRepository.findById(id)
                 .stream()
                 .map(ProcessModel::toDTO)
                 .findFirst()
                 .orElseThrow(() -> new NotFoundException("Process not Exists!"));
+    }
+
+    public List<ProcessDTO> getByEmail(String email) {
+        List<ProcessDTO> processes = this.processRepository.findByEmail(email)
+                .stream()
+                .map(ProcessModel::toDTO)
+                .collect(Collectors.toList());
+        return processes.isEmpty() ? Collections.emptyList() : processes;
     }
 
     private ProcessDTO save(ProcessModel processModel) {
@@ -99,7 +107,7 @@ public class ProcessService {
             LabelForm labelForm,
             String email,
             String referenceName
-    ){
+    ) {
 
         ProcessModel processModel = new ProcessModel();
         processModel.setStartupTime(LocalDateTime.parse(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME)));
@@ -136,24 +144,24 @@ public class ProcessService {
         long totalProcessRunning = amountOfProcessingProcesses + amountOfProcessingInQueue;
 
         this.processRepository.findByProcessStatusIsOrderByStartupTime(ProcessStatus.WAITING)
-            .ifPresent(processes -> {
-                if(totalProcessRunning < this.amountOfRunProcesses) {
-                    processes.stream()
-                        .limit(this.amountOfRunProcesses - totalProcessRunning)
-                        .forEach(this::prepareToSend);
-                }
-            });
+                .ifPresent(processes -> {
+                    if (totalProcessRunning < this.amountOfRunProcesses) {
+                        processes.stream()
+                                .limit(this.amountOfRunProcesses - totalProcessRunning)
+                                .forEach(this::prepareToSend);
+                    }
+                });
     }
 
     private void prepareToSend(ProcessModel processModel) {
         ProcessArrangementDTO processArrangementDTO = ProcessArrangementDTO.builder()
-            .build();
+                .build();
 
-        if(processModel.getProcessType().getParameterType() == ParametersType.AFEM) {
+        if (processModel.getProcessType().getParameterType() == ParametersType.AFEM) {
             processArrangementDTO.setParametersEntity(this.afemRepository.findByProcessId(processModel.getId()).get().toVO());
         }
 
-        if(processModel.getProcessType().getParameterType() == ParametersType.METALEARNING) {
+        if (processModel.getProcessType().getParameterType() == ParametersType.METALEARNING) {
             processArrangementDTO.setParametersEntity(this.metalearningRepository.findByProcessId(processModel.getId()).get().toVO());
         }
 

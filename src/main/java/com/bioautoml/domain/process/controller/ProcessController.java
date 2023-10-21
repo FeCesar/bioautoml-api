@@ -44,6 +44,11 @@ public class ProcessController {
         return ResponseEntity.status(HttpStatus.OK).body(this.processService.getById(id));
     }
 
+    @GetMapping("/{email}")
+    public ResponseEntity<List<ProcessDTO>> getById(@PathVariable String email) {
+        return ResponseEntity.status(HttpStatus.OK).body(this.processService.getByEmail(email));
+    }
+
     @PostMapping(value = "/afem/{processName}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<ProcessDTO> afemStart(
             @PathVariable String processName,

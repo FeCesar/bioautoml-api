@@ -16,6 +16,7 @@ public interface ProcessRepository extends JpaRepository<ProcessModel, UUID> {
     Optional<ProcessModel> findById(Long id);
 
     Optional<List<ProcessModel>> findByProcessStatusIsOrderByStartupTime(ProcessStatus processStatus);
+    List<ProcessModel> findByEmail(String email);
 
     long countByProcessStatusIs(ProcessStatus processStatus);
 
