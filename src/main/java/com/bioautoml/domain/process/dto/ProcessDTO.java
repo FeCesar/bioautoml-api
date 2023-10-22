@@ -34,7 +34,6 @@ public class ProcessDTO implements BaseEntity {
                 .startupTime(this.getStartupTime())
                 .completionTime(this.getCompletionTime())
                 .email(this.getEmail())
-                .referenceName(this.getReferenceName())
                 .build();
     }
 
@@ -46,7 +45,6 @@ public class ProcessDTO implements BaseEntity {
                 .startupTime(model.getStartupTime())
                 .completionTime(model.getCompletionTime())
                 .email(model.getEmail())
-                .referenceName(model.getReferenceName())
                 .build();
     }
 
