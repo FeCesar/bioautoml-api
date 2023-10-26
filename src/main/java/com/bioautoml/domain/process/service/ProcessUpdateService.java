@@ -28,7 +28,7 @@ public class ProcessUpdateService {
     private final Logger logger = LoggerFactory.getLogger(ProcessUpdateService.class);
 
     public void updateStatus(ProcessUpdateStatusDTO processUpdateStatusDTO) {
-        UUID processId =  UUID.fromString(processUpdateStatusDTO.getProcessId());
+        Long processId =  processUpdateStatusDTO.getProcessId();
         Optional<ProcessModel> processModelOptional = this.processRepository.findById(processId);
 
         if(processModelOptional.isEmpty()){

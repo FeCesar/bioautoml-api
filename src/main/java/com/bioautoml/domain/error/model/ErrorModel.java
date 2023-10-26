@@ -29,7 +29,7 @@ public class ErrorModel implements BaseEntity {
     private String message;
 
     @Column
-    private UUID processId;
+    private Long processId;
 
     @Column(name = "dat_created")
     private LocalDateTime dateCreated = LocalDateTime.now();

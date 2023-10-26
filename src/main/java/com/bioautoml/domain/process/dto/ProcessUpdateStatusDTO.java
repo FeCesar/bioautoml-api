@@ -13,7 +13,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class ProcessUpdateStatusDTO implements Serializable {
 
-    String processId;
+    Long processId;
     String status;
     String referenceDate;
 

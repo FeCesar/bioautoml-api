@@ -38,7 +38,7 @@ public class ErrorService {
         ErrorModel errorModel = new ErrorModel();
         errorModel.setType(errorDTO.getErrorType());
         errorModel.setMessage(errorDTO.getMessage());
-        errorModel.setProcessId(UUID.fromString(errorDTO.getProcessId()));
+        errorModel.setProcessId(errorDTO.getProcessId());
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime referenceDate = LocalDateTime.parse(errorDTO.getReferenceDate(), formatter);

@@ -15,7 +15,7 @@ public class ErrorDTO implements Serializable {
 
     private String errorType;
     private String message;
-    private String processId;
+    private Long processId;
     private String referenceDate;
 
 }
