@@ -69,8 +69,8 @@ public class EmailService {
         emailDTO.setReceiverEmail(processDTO.getEmail());
         emailDTO.setSenderEmail(this.email);
         emailDTO.setSubject("Finished the " + processDTO.getReferenceName() + " process - Bioautoml");
-        emailDTO.setContentType(ContentType.TEXT_PLAIN);
-        emailDTO.setContent("Wow! Your bioautoml process was finished. Your download link is avaliable on " + resultLink);
+        emailDTO.setContentType(ContentType.HTML);
+        emailDTO.setContent("Wow! Your bioautoml process <strong>was finished.</strong> Your download link is available on <a href='" + resultLink + "' target='_blank'>here</a>");
 
         return emailDTO;
     }

@@ -36,15 +36,4 @@ public class ProcessDTO implements BaseEntity {
                 .build();
     }
 
-    public ProcessDTO fromModel(ProcessModel model){
-        return ProcessDTO.builder()
-                .id(model.getId())
-                .processType(model.getProcessType())
-                .processStatus(model.getProcessStatus())
-                .startupTime(model.getStartupTime())
-                .completionTime(model.getCompletionTime())
-                .email(model.getEmail())
-                .build();
-    }
-
 }
