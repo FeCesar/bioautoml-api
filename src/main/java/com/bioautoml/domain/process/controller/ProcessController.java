@@ -106,7 +106,6 @@ public class ProcessController {
         MetalearningForm metalearningForm = this.gson.fromJson(parameters, MetalearningForm.class);
 
         LabelForm labelForm = new LabelForm();
-        labelForm.setTestLabels(Collections.emptyList());
 
         return ResponseEntity.status(HttpStatus.OK).body(
                 this.processService.start(

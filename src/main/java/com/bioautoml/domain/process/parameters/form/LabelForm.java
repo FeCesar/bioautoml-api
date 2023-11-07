@@ -15,6 +15,6 @@ import java.util.List;
 public class LabelForm {
 
     private List<String> trainLabels = Collections.emptyList();
-    private List<String> testLabels = List.of("unknown");
+    private List<String> testLabels = Collections.emptyList();
 
 }
