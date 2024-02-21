@@ -4,6 +4,50 @@ services:
     container_name: bioautoml-api
     build: .
     restart: always
-    env_file: .env
+    environment:
+      - PROFILE=dev
+      - POSTGRES_URL=jdbc:postgresql://database:5432/bioautoml
+      - POSTGRES_USERNAME=postgres
+      - POSTGRES_PASSWORD=postgres
+      - MAX_FILE_SIZE=1000000000
+      - MAX_REQUEST_SIZE=1000000000
+      - APPLICATION_PORT=8080
+      - AWS_SECRET=${AWS_SECRET}
+      - AWS_ACCESS=${AWS_ACCESS}
+      - AWS_S3_BUCKET_NAME=${AWS_S3_BUCKET_NAME}
+      - OUTPUT_INIT_PATH=/processes
+      - OUTPUT_END_PATH=/results
+      - NUMBER_OF_CONCURRENT_PROCESSES=2
+      - SENDGRID_API_KEY=${SENDGRID_API_KEY}
+      - SENDGRID_FROM_EMAIL=${SENDGRID_FROM_EMAIL]
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_USERNAME=admin
+      - RABBITMQ_PASSWORD=admin
     ports:
-      - "8764:8764"
+      - "8080:8080"
+    depends_on:
+      - database
+      - rabbitmq
+
+  database:
+    container_name: postgres
+    image: postgres:latest
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=bioautoml
+    ports:
+      - "5432:5432"
+
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:3.11.8-management
+    restart: always
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=admin
+    ports:
+      - "15672:15672"
+      - "5672:5672"
